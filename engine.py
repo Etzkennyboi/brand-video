@@ -99,29 +99,33 @@ class MasterEngine:
         ref = ref_audio or os.path.join(ASSETS_DIR, "ref_voice_vid5.wav")
         ref_text = self.brand["audio"]["ref_voice_text"]
 
-        try:
-            self.voice.synthesize_speech(
-                text=story["full_script"],
-                output_wav=raw_audio,
-                ref_audio=ref,
-                ref_text=ref_text,
-                voice_engine=voice_engine
-            )
-        except Exception as e:
-            print(f"  [!] Fallback to gTTS due to: {e}", flush=True)
-            self.voice.synthesize_speech(
-                text=story["full_script"],
-                output_wav=raw_audio,
-                voice_engine="gtts"
-            )
+        if not (os.path.exists(tight_audio) and os.path.getsize(tight_audio) > 100000):
+            try:
+                self.voice.synthesize_speech(
+                    text=story["full_script"],
+                    output_wav=raw_audio,
+                    ref_audio=ref,
+                    ref_text=ref_text,
+                    voice_engine=voice_engine
+                )
+            except Exception as e:
+                print(f"  [!] Fallback to gTTS due to: {e}", flush=True)
+                self.voice.synthesize_speech(
+                    text=story["full_script"],
+                    output_wav=raw_audio,
+                    voice_engine="gtts"
+                )
 
-        is_dg = (voice_engine == "deepgram" or (voice_engine == "auto" and bool(self.voice.deepgram_key or os.getenv("DEEPGRAM_API_KEY"))))
-        self.voice.tighten_cadence(
-            input_wav=raw_audio,
-            output_wav=tight_audio,
-            speed_factor=self.brand["audio"]["voice_speed_factor"],
-            is_deepgram=is_dg
-        )
+            is_dg = (voice_engine == "deepgram" or (voice_engine == "auto" and bool(self.voice.deepgram_key or os.getenv("DEEPGRAM_API_KEY"))))
+            self.voice.tighten_cadence(
+                input_wav=raw_audio,
+                output_wav=tight_audio,
+                speed_factor=self.brand["audio"]["voice_speed_factor"],
+                is_deepgram=is_dg
+            )
+        else:
+            print(f"      [Voice] Using existing tightened narration: {tight_audio}", flush=True)
+
 
 
         # 3. Millisecond Whisper Transcription & Kinetic Subtitle Styling
