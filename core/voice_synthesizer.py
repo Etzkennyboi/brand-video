@@ -64,11 +64,12 @@ class VoiceSynthesizer:
             chunks.append(" ".join(curr))
         return chunks
 
-    def synthesize_deepgram(self, text, output_wav, model="aura-helios-en"):
+    def synthesize_deepgram(self, text, output_wav, model="aura-angus-en"):
         """
         Synthesizes high-fidelity speech in milliseconds using Deepgram Aura TTS API.
-        Models: aura-helios-en (British male - Sir Rogers), aura-arcas-en (conversational male), aura-orpheus-en
+        Models: aura-angus-en (Charismatic Irish/British male - Sir Rogers), aura-arcas-en, aura-orpheus-en
         """
+
         key = self.deepgram_key or os.getenv("DEEPGRAM_API_KEY")
         if not key:
             raise ValueError("DEEPGRAM_API_KEY not configured in .env or arguments.")
@@ -177,10 +178,22 @@ class VoiceSynthesizer:
                 os.remove(concat_txt)
             return output_wav
 
-    def tighten_cadence(self, input_wav, output_wav, speed_factor=None):
+    def tighten_cadence(self, input_wav, output_wav, speed_factor=None, is_deepgram=False):
         """
-        Applies signature viral tightening: silenceremove and atempo acceleration.
+        Applies cadence refinement. For Deepgram, preserves natural comedic pauses and clear pitch.
         """
+        if is_deepgram:
+            # Deepgram voices have human pacing out of the box. Do NOT strip pauses!
+            cmd_clean = [
+                FFMPEG, '-y',
+                '-i', input_wav,
+                '-ar', '44100',
+                '-ac', '2',
+                output_wav
+            ]
+            subprocess.run(cmd_clean, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+            return output_wav
+
         factor = speed_factor or self.speed_factor
         af = f"silenceremove=stop_periods=-1:stop_duration=0.28:stop_threshold=-42dB,atempo={factor}"
         cmd_tight = [
@@ -193,6 +206,7 @@ class VoiceSynthesizer:
         ]
         subprocess.run(cmd_tight, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
         return output_wav
+
 
     def synthesize(self, text, out_raw_wav, out_tight_wav, engine="auto", ref_audio=None, ref_text=None, deepgram_model="aura-helios-en"):
         self.synthesize_speech(text, out_raw_wav, ref_audio=ref_audio, ref_text=ref_text, voice_engine=engine, deepgram_model=deepgram_model)
