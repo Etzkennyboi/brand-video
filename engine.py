@@ -83,7 +83,7 @@ class MasterEngine:
         self.renderer.watermark_text = watermark_text
         self.thumb_gen.brand_title = brand_label
 
-    def run(self, topic_input, voice_engine="auto", ref_audio=None, out_name=None, personality=None):
+    def run(self, topic_input, voice_engine="f5", ref_audio=None, out_name=None, personality=None):
         if personality:
             self.set_personality(personality)
 
@@ -112,10 +112,9 @@ class MasterEngine:
         raw_audio = os.path.join(DRAFTS_DIR, f"{slug}_raw_voice.wav")
         tight_audio = os.path.join(DRAFTS_DIR, f"{slug}_tight_voice.wav")
 
-        ref = ref_audio or os.path.join(ASSETS_DIR, "ref_voice_vid5.wav")
+        ref = ref_audio or getattr(self.voice, "DEFAULT_REF_AUDIO", None) or os.path.join(ASSETS_DIR, "ref_voice_vid5.wav")
         ref_text = self.brand["audio"]["ref_voice_text"]
 
-        dg_model = "aura-orpheus-en" if "roger" in self.personality.lower() else "aura-arcas-en"
         if not (os.path.exists(tight_audio) and os.path.getsize(tight_audio) > 100000):
             try:
                 self.voice.synthesize_speech(
@@ -123,32 +122,20 @@ class MasterEngine:
                     output_wav=raw_audio,
                     ref_audio=ref,
                     ref_text=ref_text,
-                    voice_engine=voice_engine,
-                    deepgram_model=dg_model
+                    voice_engine=voice_engine
                 )
             except Exception as e:
-                print(f"  [!] Voice engine '{voice_engine}' failed ({e}). Falling back to Deepgram ({dg_model})...", flush=True)
-                try:
-                    self.voice.synthesize_speech(
-                        text=story["full_script"],
-                        output_wav=raw_audio,
-                        voice_engine="deepgram",
-                        deepgram_model=dg_model
-                    )
-                except Exception as e2:
-                    print(f"  [!] Deepgram fallback failed ({e2}). Using gTTS...", flush=True)
-                    self.voice.synthesize_speech(
-                        text=story["full_script"],
-                        output_wav=raw_audio,
-                        voice_engine="gtts"
-                    )
+                print(f"  [!] Primary F5 voice cloning failed ({e}). Using gTTS backup...", flush=True)
+                self.voice.synthesize_speech(
+                    text=story["full_script"],
+                    output_wav=raw_audio,
+                    voice_engine="gtts"
+                )
 
-            is_dg = (voice_engine == "deepgram" or bool(self.voice.deepgram_key or os.getenv("DEEPGRAM_API_KEY")))
             self.voice.tighten_cadence(
                 input_wav=raw_audio,
                 output_wav=tight_audio,
-                speed_factor=self.brand["audio"]["voice_speed_factor"],
-                is_deepgram=is_dg
+                speed_factor=self.brand["audio"]["voice_speed_factor"]
             )
         else:
             print(f"      [Voice] Using existing tightened narration: {tight_audio}", flush=True)
@@ -237,7 +224,7 @@ def main():
     parser.add_argument("--personality", type=str, default=None, choices=["untold_truth", "prof_layi", "sir_rogers", "ask"], help="Writer personality")
     parser.add_argument("--topic", type=str, default=None, help="Custom topic to produce")
     parser.add_argument("--auto", action="store_true", help="Pick next viral topic from topics vault")
-    parser.add_argument("--voice", type=str, default="auto", choices=["auto", "f5", "gtts"], help="Voice engine")
+    parser.add_argument("--voice", type=str, default="f5", choices=["f5", "gtts"], help="Voice engine (main: f5 cloned voice)")
     parser.add_argument("--ref", type=str, default=None, help="Reference audio for voice cloning")
     args = parser.parse_args()
 

@@ -16,10 +16,16 @@ def format_ass_time(sec):
     return f"{h}:{m:02d}:{s:02d}.{cs:02d}"
 
 class SubtitleGenerator:
-    def __init__(self, model_size="base", device="cpu", compute_type="int8"):
+    def __init__(self, model_size="tiny.en", device="cpu", compute_type="int8"):
         self.model_size = model_size
         self.device = device
         self.compute_type = compute_type
+        self._model = None
+
+    def get_model(self):
+        if self._model is None:
+            self._model = WhisperModel(self.model_size, device=self.device, compute_type=self.compute_type)
+        return self._model
 
     def extract_words(self, audio_path):
         """
@@ -29,7 +35,7 @@ class SubtitleGenerator:
         res = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=True)
         audio_data = np.frombuffer(res.stdout, dtype=np.int16).astype(np.float32) / 32768.0
 
-        model = WhisperModel(self.model_size, device=self.device, compute_type=self.compute_type)
+        model = self.get_model()
         segments, info = model.transcribe(audio_data, word_timestamps=True, beam_size=1)
 
         words = []

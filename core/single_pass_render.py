@@ -72,7 +72,7 @@ class SinglePassRender:
         print(f"      [Render] Generating {len(scenes)} camera-motion scenes in parallel...", flush=True)
         clip_paths = [os.path.join(temp_dir, f"_temp_scene_{i:02d}.mp4") for i in range(len(scenes))]
         
-        with ThreadPoolExecutor(max_workers=4) as executor:
+        with ThreadPoolExecutor(max_workers=2) as executor:
             futures = [
                 executor.submit(self.render_scene_clip, scene, clip_paths[i])
                 for i, scene in enumerate(scenes)
@@ -138,7 +138,7 @@ class SinglePassRender:
             '-i', mixed_audio,
             '-vf', final_vf,
             '-c:v', 'libx264',
-            '-preset', 'veryfast', # Optimized fast production encoding
+            '-preset', 'ultrafast', # Ultra-fast production encoding
             '-crf', '18',
             '-pix_fmt', 'yuv420p',
             '-c:a', 'aac',
