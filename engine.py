@@ -5,6 +5,14 @@ import time
 import json
 import argparse
 
+# Load environment variables
+try:
+    import dotenv
+    dotenv.load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
+    dotenv.load_dotenv(os.path.join(os.getcwd(), ".env"))
+except ImportError:
+    pass
+
 # Fix Windows console utf-8 encoding
 try:
     sys.stdout.reconfigure(encoding='utf-8')
@@ -107,6 +115,7 @@ class MasterEngine:
         ref = ref_audio or os.path.join(ASSETS_DIR, "ref_voice_vid5.wav")
         ref_text = self.brand["audio"]["ref_voice_text"]
 
+        dg_model = "aura-orpheus-en" if "roger" in self.personality.lower() else "aura-arcas-en"
         if not (os.path.exists(tight_audio) and os.path.getsize(tight_audio) > 100000):
             try:
                 self.voice.synthesize_speech(
@@ -114,17 +123,27 @@ class MasterEngine:
                     output_wav=raw_audio,
                     ref_audio=ref,
                     ref_text=ref_text,
-                    voice_engine=voice_engine
+                    voice_engine=voice_engine,
+                    deepgram_model=dg_model
                 )
             except Exception as e:
-                print(f"  [!] Fallback to gTTS due to: {e}", flush=True)
-                self.voice.synthesize_speech(
-                    text=story["full_script"],
-                    output_wav=raw_audio,
-                    voice_engine="gtts"
-                )
+                print(f"  [!] Voice engine '{voice_engine}' failed ({e}). Falling back to Deepgram ({dg_model})...", flush=True)
+                try:
+                    self.voice.synthesize_speech(
+                        text=story["full_script"],
+                        output_wav=raw_audio,
+                        voice_engine="deepgram",
+                        deepgram_model=dg_model
+                    )
+                except Exception as e2:
+                    print(f"  [!] Deepgram fallback failed ({e2}). Using gTTS...", flush=True)
+                    self.voice.synthesize_speech(
+                        text=story["full_script"],
+                        output_wav=raw_audio,
+                        voice_engine="gtts"
+                    )
 
-            is_dg = (voice_engine == "deepgram" or (voice_engine == "auto" and bool(self.voice.deepgram_key or os.getenv("DEEPGRAM_API_KEY"))))
+            is_dg = (voice_engine == "deepgram" or bool(self.voice.deepgram_key or os.getenv("DEEPGRAM_API_KEY")))
             self.voice.tighten_cadence(
                 input_wav=raw_audio,
                 output_wav=tight_audio,

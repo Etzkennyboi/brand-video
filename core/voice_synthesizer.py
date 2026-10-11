@@ -119,37 +119,39 @@ class VoiceSynthesizer:
         
         colab_url = os.getenv("F5_COLAB_URL") or os.getenv("F5_ENDPOINT")
         if colab_url:
-            try:
-                print(f"      [Voice] Generating via private Colab T4 GPU: {colab_url}...", flush=True)
-                client = Client(colab_url, httpx_kwargs={"timeout": 120.0})
+            for attempt in range(3):
                 try:
-                    res = client.predict(
-                        ref_audio_input=handle_file(ref_clip),
-                        ref_text_input=ref_txt,
-                        gen_text_input=chunk_text,
-                        remove_silence=True,
-                        randomize_seed=True,
-                        seed_input=0,
-                        cross_fade_duration_slider=0.15,
-                        speed_slider=1.0,
-                        api_name="/basic_tts"
-                    )
-                    wav_path = res[0] if isinstance(res, (tuple, list)) else res
-                except Exception:
-                    # Fallback for /predict endpoint
-                    res = client.predict(
-                        ref_audio=handle_file(ref_clip),
-                        ref_text=ref_txt,
-                        gen_text=chunk_text,
-                        remove_silence=True,
-                        api_name="/predict"
-                    )
-                    wav_path = res[0] if isinstance(res, (tuple, list)) else res
+                    print(f"      [Voice] Generating via private Colab T4 GPU (attempt {attempt+1}): {colab_url}...", flush=True)
+                    client = Client(colab_url, httpx_kwargs={"timeout": 120.0})
+                    try:
+                        res = client.predict(
+                            ref_audio_input=handle_file(ref_clip),
+                            ref_text_input=ref_txt,
+                            gen_text_input=chunk_text,
+                            remove_silence=True,
+                            randomize_seed=True,
+                            seed_input=0,
+                            cross_fade_duration_slider=0.15,
+                            speed_slider=1.0,
+                            api_name="/basic_tts"
+                        )
+                        wav_path = res[0] if isinstance(res, (tuple, list)) else res
+                    except Exception:
+                        # Fallback for /predict endpoint
+                        res = client.predict(
+                            ref_audio=handle_file(ref_clip),
+                            ref_text=ref_txt,
+                            gen_text=chunk_text,
+                            remove_silence=True,
+                            api_name="/predict"
+                        )
+                        wav_path = res[0] if isinstance(res, (tuple, list)) else res
 
-                shutil.copy2(wav_path, out_chunk_wav)
-                return True
-            except Exception as e:
-                print(f"      [Voice] Colab endpoint error ({e}). Trying HF space pool...", flush=True)
+                    shutil.copy2(wav_path, out_chunk_wav)
+                    return True
+                except Exception as e:
+                    print(f"      [Voice] Colab attempt {attempt+1} error ({e})...", flush=True)
+                    time.sleep(2.0)
 
         last_err = None
         for idx, tok in enumerate(self.tokens):
