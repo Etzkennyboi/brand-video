@@ -31,6 +31,14 @@ def slugify(text):
     text = re.sub(r'[^a-z0-9]+', '_', text).strip('_')
     return text[:40]
 
+def resolve_brand_label(personality, default_name="THE UNTOLD TRUTH"):
+    p = (personality or "").lower()
+    if "layi" in p or "laya" in p or "prof" in p:
+        return "PROF LAYI"
+    elif "roger" in p:
+        return "SIR ROGERS"
+    return default_name
+
 class MasterEngine:
     def __init__(self, personality="untold_truth"):
         brand_config_path = os.path.join(CONFIG_DIR, "brand_rules.json")
@@ -38,8 +46,8 @@ class MasterEngine:
             self.brand = json.load(f)
 
         self.personality = personality
-        brand_label = "SIR ROGERS" if "roger" in personality.lower() else self.brand["brand_name"]
-        watermark_text = "SIR ROGERS" if "roger" in personality.lower() else self.brand["watermark"]["text"]
+        brand_label = resolve_brand_label(personality, self.brand["brand_name"])
+        watermark_text = brand_label
 
         self.director = ScriptDirector(brand_title=brand_label, personality=personality)
         self.selector = VisualSelector(
@@ -60,8 +68,8 @@ class MasterEngine:
 
     def set_personality(self, personality):
         self.personality = personality
-        brand_label = "SIR ROGERS" if "roger" in personality.lower() else self.brand["brand_name"]
-        watermark_text = "SIR ROGERS" if "roger" in personality.lower() else self.brand["watermark"]["text"]
+        brand_label = resolve_brand_label(personality, self.brand["brand_name"])
+        watermark_text = brand_label
         self.director.set_personality(personality)
         self.renderer.brand_title = brand_label
         self.renderer.watermark_text = watermark_text
@@ -71,7 +79,7 @@ class MasterEngine:
         if personality:
             self.set_personality(personality)
 
-        brand_display = "SIR ROGERS" if "roger" in self.personality.lower() else "THE UNTOLD TRUTH"
+        brand_display = resolve_brand_label(self.personality, "THE UNTOLD TRUTH")
 
         t_start = time.time()
         print("=" * 75, flush=True)
@@ -192,19 +200,22 @@ class MasterEngine:
         return final_mp4
 
 def ask_user_personality():
-    print("\n" + "=" * 55)
+    print("\n" + "=" * 60)
     print("🎭 CHOOSE SCRIPT PERSONALITY:")
-    print("  [1] THE UNTOLD TRUTH (Dark, cynical, philosophical power)")
-    print("  [2] SIR ROGERS       (Cheeky, game theory, exploits, loopholes)")
-    print("=" * 55)
-    choice = input("Enter 1 or 2 (default 1): ").strip()
+    print("  [1] THE UNTOLD TRUTH (Dark, cynical, Machiavellian realism)")
+    print("  [2] PROF LAYI        (Deadpan satirical wisdom, legalistic proverbs)")
+    print("  [3] SIR ROGERS       (Cheeky, game theory, exploits, loopholes)")
+    print("=" * 60)
+    choice = input("Enter 1, 2, or 3 (default 1): ").strip()
     if choice == "2":
+        return "prof_layi"
+    elif choice == "3":
         return "sir_rogers"
     return "untold_truth"
 
 def main():
     parser = argparse.ArgumentParser(description="Automated Video Production Engine")
-    parser.add_argument("--personality", type=str, default=None, choices=["untold_truth", "sir_rogers", "ask"], help="Writer personality")
+    parser.add_argument("--personality", type=str, default=None, choices=["untold_truth", "prof_layi", "sir_rogers", "ask"], help="Writer personality")
     parser.add_argument("--topic", type=str, default=None, help="Custom topic to produce")
     parser.add_argument("--auto", action="store_true", help="Pick next viral topic from topics vault")
     parser.add_argument("--voice", type=str, default="auto", choices=["auto", "f5", "gtts"], help="Voice engine")
@@ -230,7 +241,13 @@ def main():
     elif args.topic:
         engine.run(args.topic, voice_engine=args.voice, ref_audio=args.ref)
     else:
-        default_topic = "How Casinos Trick Your Brain" if "roger" in chosen_personality else "The Myth of Loyalty at Work"
+        p_lower = chosen_personality.lower()
+        if "layi" in p_lower or "laya" in p_lower or "prof" in p_lower:
+            default_topic = "Nobody Wants To Accompany Who Is Not Accomplished"
+        elif "roger" in p_lower:
+            default_topic = "How Casinos Trick Your Brain"
+        else:
+            default_topic = "The Myth of Loyalty at Work"
         engine.run(default_topic, voice_engine=args.voice, ref_audio=args.ref)
 
 if __name__ == "__main__":

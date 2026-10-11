@@ -27,9 +27,18 @@ def build_dashboard():
             if not os.path.exists(os.path.join(ROOT_DIR, thumb_file)):
                 thumb_file = os.path.join("out", "ready_to_publish", f"preview_frame_2s.jpg")
 
+            p_raw = meta.get("personality", "")
+            if "layi" in p_raw.lower() or "prof" in p_raw.lower() or "laya" in p_raw.lower():
+                brand_tag = "PROF LAYI"
+            elif "roger" in p_raw.lower():
+                brand_tag = "SIR ROGERS"
+            else:
+                brand_tag = "THE UNTOLD TRUTH"
+
             videos_data.append({
                 "slug": base_slug,
                 "title": meta.get("title", base_slug),
+                "brand": brand_tag,
                 "hook": meta.get("hook", ""),
                 "description": meta.get("description", ""),
                 "hashtags": " ".join(meta.get("hashtags", [])),
@@ -54,7 +63,7 @@ def build_dashboard():
             </div>
             <div class="card-body">
                 <div class="badge-row">
-                    <span class="badge brand">[ THE UNTOLD TRUTH ]</span>
+                    <span class="badge brand">[ {v['brand']} ]</span>
                     <span class="badge duration">{v['duration']}</span>
                     <span class="badge time">{v['created_at']}</span>
                 </div>

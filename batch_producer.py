@@ -21,6 +21,15 @@ SIR_ROGERS_TOPICS = [
     {"title": "The One-Second Delay Hustle", "theme": "stadium live betting latency and AirPod phone calls"}
 ]
 
+PROF_LAYI_TOPICS = [
+    {"title": "Nobody Wants To Accompany Who Is Not Accomplished", "theme": "love does not cost a dime fallacy, London flights, and entourage radius"},
+    {"title": "The Mathematician's Dilemma", "theme": "baby formula calculus, minimum wage hard work, and info leverage"},
+    {"title": "The Proof Of Knowledge Is Demonstration", "theme": "shoe cobbler junction test, destiny vs destination, and Greek philosophy"},
+    {"title": "Why Currency Must Be Current", "theme": "stagnant mattress money, mosquito swamp metaphor, and inflation demotion"},
+    {"title": "Matrimony Without Money", "theme": "jollof rice poetry fallacy, emotional breakdown vs breakthrough, and independent economic power"},
+    {"title": "The Forty-Three Million Naira Watch", "theme": "dictating another man's time, overthinking vs overdoing, and perceived status"}
+]
+
 class ScriptRanker:
     def __init__(self, catalog_path=None):
         cat_file = catalog_path or os.path.join(ROOT_DIR, "assets", "visual_vault", "catalog.json")
@@ -56,8 +65,12 @@ class ScriptRanker:
         else:
             hook_score += 8
 
+        is_layi = "layi" in personality.lower() or "prof" in personality.lower() or "laya" in personality.lower()
         is_rogers = "roger" in personality.lower()
-        if is_rogers:
+
+        if is_layi:
+            triggers = ["quiet", "talk", "proof", "demonstration", "nobody", "accomplished", "mathematician", "money", "currency", "mentor", "matrimony", "watch"]
+        elif is_rogers:
             triggers = ["you", "problem", "bet", "lost", "job", "fix", "guru", "here", "scam", "fool", "delay", "billionaire"]
         else:
             triggers = ["never", "stop", "mistake", "hate", "silence", "knife", "loyalty", "replaced", "clapping", "winning", "salary", "truth", "secret"]
@@ -75,7 +88,9 @@ class ScriptRanker:
             economy_score += 10
 
         # 3. Psychological Depth & Stakes (25 pts)
-        if is_rogers:
+        if is_layi:
+            depth_markers = ["demonstration", "mentor", "accomplished", "currency", "breakdown", "breakthrough", "intellectual", "arrogance", "matrimony", "value", "formula", "fly", "gncc", "calculus"]
+        elif is_rogers:
             depth_markers = ["casino", "chips", "exploit", "near miss", "trance", "vip", "algorithm", "loophole", "freeze", "double", "investigator", "bribe", "congrats"]
         else:
             depth_markers = ["predator", "leverage", "superiority", "contempt", "citadel", "exploit", "predictability", "replace", "ledger", "severance", "pedestal", "galleon", "empire"]
@@ -110,8 +125,10 @@ class BatchProducer:
         self.engine = MasterEngine(personality=personality)
 
     def generate_candidate_scripts(self, theme_prompt, count=7):
-        is_rogers = "roger" in self.personality.lower()
-        if is_rogers:
+        p_lower = self.personality.lower()
+        if "layi" in p_lower or "prof" in p_lower or "laya" in p_lower:
+            topic_pool = PROF_LAYI_TOPICS
+        elif "roger" in p_lower:
             topic_pool = SIR_ROGERS_TOPICS
         else:
             topics_file = os.path.join(ROOT_DIR, "config", "viral_topics_vault.json")
@@ -130,7 +147,13 @@ class BatchProducer:
             self.personality = personality
             self.engine.set_personality(personality)
 
-        brand_display = "SIR ROGERS" if "roger" in self.personality.lower() else "THE UNTOLD TRUTH"
+        p_lower = self.personality.lower()
+        if "layi" in p_lower or "prof" in p_lower or "laya" in p_lower:
+            brand_display = "PROF LAYI"
+        elif "roger" in p_lower:
+            brand_display = "SIR ROGERS"
+        else:
+            brand_display = "THE UNTOLD TRUTH"
 
         print("\n" + "=" * 75)
         print(f"🎯 [{brand_display}] 7-SCRIPT CANDIDATE TOURNAMENT & TOP {top_k} ENGINE")
@@ -193,7 +216,7 @@ class BatchProducer:
 
 def main():
     parser = argparse.ArgumentParser(description="Candidate Tournament & Batch Video Producer")
-    parser.add_argument("--personality", type=str, default="untold_truth", choices=["untold_truth", "sir_rogers"], help="Personality model")
+    parser.add_argument("--personality", type=str, default="untold_truth", choices=["untold_truth", "prof_layi", "sir_rogers"], help="Personality model")
     parser.add_argument("--theme", type=str, default=None, help="Theme prompt")
     parser.add_argument("--candidates", type=int, default=7, help="Number of scripts to draft (default: 7)")
     parser.add_argument("--top", type=int, default=3, help="Number of top scripts to render (default: 3)")
