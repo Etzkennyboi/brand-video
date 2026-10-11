@@ -117,6 +117,23 @@ class VoiceSynthesizer:
     def _synthesize_chunk_f5(self, chunk_text, out_chunk_wav, ref_clip, ref_txt):
         from gradio_client import Client, handle_file
         
+        colab_url = os.getenv("F5_COLAB_URL") or os.getenv("F5_ENDPOINT")
+        if colab_url:
+            try:
+                print(f"      [Voice] Connecting to private Colab GPU endpoint: {colab_url}...", flush=True)
+                client = Client(colab_url, httpx_kwargs={"timeout": 120.0})
+                res = client.predict(
+                    ref_audio=handle_file(ref_clip),
+                    ref_text=ref_txt,
+                    gen_text=chunk_text,
+                    remove_silence=True,
+                    api_name="/predict"
+                )
+                shutil.copy2(res, out_chunk_wav)
+                return True
+            except Exception as e:
+                print(f"      [Voice] Colab endpoint error ({e}). Trying HF space pool...", flush=True)
+
         last_err = None
         for idx, tok in enumerate(self.tokens):
             try:
