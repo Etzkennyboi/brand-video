@@ -10,12 +10,12 @@ import urllib.request
 FFMPEG = r'C:\Users\User\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-9.0.1-full_build\bin\ffmpeg.EXE'
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DEFAULT_REF_AUDIO = os.path.join(ROOT_DIR, "assets", "ref_voice_vid5.wav")
-if not os.path.exists(DEFAULT_REF_AUDIO):
-    parent_dir = os.path.dirname(ROOT_DIR)
-    alt = os.path.join(parent_dir, "vid5_ref_clip.wav")
-    if os.path.exists(alt):
-        DEFAULT_REF_AUDIO = alt
+parent_dir = os.path.dirname(ROOT_DIR)
+vid5_clip = os.path.join(parent_dir, "vid5_ref_clip.wav")
+if os.path.exists(vid5_clip):
+    DEFAULT_REF_AUDIO = vid5_clip
+else:
+    DEFAULT_REF_AUDIO = os.path.join(ROOT_DIR, "assets", "ref_voice_vid5.wav")
 
 DEFAULT_REF_TEXT = "The word karma is a word used by losers. People use it when they're too powerless to get justice themselves."
 
@@ -120,16 +120,33 @@ class VoiceSynthesizer:
         colab_url = os.getenv("F5_COLAB_URL") or os.getenv("F5_ENDPOINT")
         if colab_url:
             try:
-                print(f"      [Voice] Connecting to private Colab GPU endpoint: {colab_url}...", flush=True)
+                print(f"      [Voice] Generating via private Colab T4 GPU: {colab_url}...", flush=True)
                 client = Client(colab_url, httpx_kwargs={"timeout": 120.0})
-                res = client.predict(
-                    ref_audio=handle_file(ref_clip),
-                    ref_text=ref_txt,
-                    gen_text=chunk_text,
-                    remove_silence=True,
-                    api_name="/predict"
-                )
-                shutil.copy2(res, out_chunk_wav)
+                try:
+                    res = client.predict(
+                        ref_audio_input=handle_file(ref_clip),
+                        ref_text_input=ref_txt,
+                        gen_text_input=chunk_text,
+                        remove_silence=True,
+                        randomize_seed=True,
+                        seed_input=0,
+                        cross_fade_duration_slider=0.15,
+                        speed_slider=1.0,
+                        api_name="/basic_tts"
+                    )
+                    wav_path = res[0] if isinstance(res, (tuple, list)) else res
+                except Exception:
+                    # Fallback for /predict endpoint
+                    res = client.predict(
+                        ref_audio=handle_file(ref_clip),
+                        ref_text=ref_txt,
+                        gen_text=chunk_text,
+                        remove_silence=True,
+                        api_name="/predict"
+                    )
+                    wav_path = res[0] if isinstance(res, (tuple, list)) else res
+
+                shutil.copy2(wav_path, out_chunk_wav)
                 return True
             except Exception as e:
                 print(f"      [Voice] Colab endpoint error ({e}). Trying HF space pool...", flush=True)
