@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE UNTOLD TRUTH | Production Studio Dashboard</title>
+    <style>
+        :root {
+            --bg-main: #0a0b0e;
+            --bg-card: #13151b;
+            --bg-elevated: #1a1e27;
+            --amber-glow: #F5A623;
+            --cyan-accent: #00D2FF;
+            --text-main: #f0f2f5;
+            --text-muted: #8b92a5;
+            --border: #232733;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--bg-main);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            padding: 30px 40px;
+            line-height: 1.5;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 30px;
+        }
+        .brand-logo {
+            font-family: "Georgia", serif;
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            color: #fff;
+        }
+        .brand-logo span { color: var(--amber-glow); }
+        .header-stats {
+            display: flex;
+            gap: 20px;
+        }
+        .stat-badge {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 10px 18px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-val { font-size: 20px; font-weight: bold; color: var(--amber-glow); }
+        .stat-lbl { font-size: 11px; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; }
+
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+        .section-header {
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber-glow);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .video-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            display: flex;
+            overflow: hidden;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .video-card:hover {
+            border-color: var(--amber-glow);
+            transform: translateY(-2px);
+        }
+        .media-container {
+            width: 270px;
+            min-width: 270px;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .media-container video {
+            width: 100%;
+            height: 100%;
+            max-height: 480px;
+            object-fit: cover;
+        }
+        .card-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+        }
+        .badge-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .badge {
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge.brand { background: rgba(245,166,35,0.15); color: var(--amber-glow); border: 1px solid rgba(245,166,35,0.3); font-family: Georgia, serif; }
+        .badge.duration { background: rgba(0,210,255,0.15); color: var(--cyan-accent); }
+        .badge.time { background: var(--bg-elevated); color: var(--text-muted); }
+
+        .video-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #fff;
+            line-height: 1.3;
+        }
+        .hook-quote {
+            font-style: italic;
+            color: var(--amber-glow);
+            margin-bottom: 15px;
+            font-size: 14px;
+            border-left: 2px solid var(--amber-glow);
+            padding-left: 10px;
+        }
+        .meta-section {
+            margin-bottom: 15px;
+        }
+        .meta-section label {
+            display: block;
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .code-box {
+            background: var(--bg-main);
+            border: 1px solid var(--border);
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #ccc;
+            user-select: all;
+        }
+        .action-row {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: background 0.2s;
+        }
+        .btn-primary {
+            background: var(--amber-glow);
+            color: #000;
+        }
+        .btn-primary:hover { background: #e09419; }
+        .btn-secondary {
+            background: var(--bg-elevated);
+            color: var(--text-main);
+            border-color: var(--border);
+        }
+        .btn-secondary:hover { background: #232834; }
+
+        .sidebar {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            height: fit-content;
+        }
+        .queue-item {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .queue-item:last-child { border-bottom: none; }
+        .q-pillar {
+            display: inline-block;
+            font-size: 10px;
+            color: var(--cyan-accent);
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .q-title {
+            display: block;
+            font-weight: bold;
+            color: #fff;
+            margin: 4px 0;
+            font-size: 14px;
+        }
+        .q-hook {
+            display: block;
+            font-size: 12px;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        .cmd-snippet {
+            margin-top: 20px;
+            background: var(--bg-main);
+            border: 1px solid var(--border);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 12px;
+            color: #00D2FF;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand-logo">[ THE UNTOLD <span>TRUTH</span> ]</div>
+        <div class="header-stats">
+            <div class="stat-badge">
+                <div class="stat-val">8</div>
+                <div class="stat-lbl">Videos Ready</div>
+            </div>
+            <div class="stat-badge">
+                <div class="stat-val">100</div>
+                <div class="stat-lbl">Vault Assets</div>
+            </div>
+            <div class="stat-badge">
+                <div class="stat-val">~52s</div>
+                <div class="stat-lbl">Avg Render Time</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="layout-grid">
+        <main>
+            <div class="section-header">📁 Produced Shorts Library</div>
+            
+        <div class="video-card">
+            <div class="media-container">
+                <video controls poster="out/ready_to_publish/the_comfort_cage_thumbnail.jpg" preload="metadata">
+                    <source src="out/ready_to_publish/the_comfort_cage_master.mp4" type="video/mp4">
+                    Your browser does not support video.
+                </video>
+            </div>
+            <div class="card-body">
+                <div class="badge-row">
+                    <span class="badge brand">[ THE UNTOLD TRUTH ]</span>
+                    <span class="badge duration">36.6s</span>
+                    <span class="badge time">2026-10-11 14:05:12</span>
+                </div>
+                <h3 class="video-title">THE COMFORT CAGE | The Harsh Reality They Never Tell You #shorts</h3>
+                <p class="hook-quote">"A comfortable salary is the drug employers give you to forget your ambition."</p>
+
+                <div class="meta-section">
+                    <label>Pinned Comment:</label>
+                    <div class="code-box">What is a truth you learned too late in life? Drop it below. 👇</div>
+                </div>
+
+                <div class="action-row">
+                    <button class="btn btn-primary" onclick="copyText(`THE COMFORT CAGE | The Harsh Reality They Never Tell You #shorts`)">📋 Copy Title</button>
+                    <button class="btn btn-secondary" onclick="copyText(`A comfortable salary is the drug employers give you to forget your ambition.
+
+A comfortable salary is the drug employers give you to forget your ambition. You tell yourself it is only temporary—just until you pay down the debt, just until you buy the car. But decade by decade, the gilded cage shrinks around you. The modern system does not shackle your wrists with iron; it sedates your mind with convenience, direct deposits, and subscription entertainment. You are not safe. You are merely well-fed livestock inside an economic pasture designed to harvest your prime years. Either build your own vessel today, or spend your entire life rowing someone else's galleon into the sunset.
+
+Subscribe to @TheUntoldTruth for daily unfiltered psychology, harsh truths, and cynical wisdom.
+
+#TheUntoldTruth #DarkPsychology #Stoicism #HardTruths #Mindset #LifeLessons #Shorts`)">📄 Copy Description</button>
+                    <button class="btn btn-secondary" onclick="copyText(`#TheUntoldTruth #DarkPsychology #Stoicism #CynicalTruth #LifeLessons #Shorts #Viral`)">🏷️ Copy Tags</button>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="video-card">
+            <div class="media-container">
+                <video controls poster="out/ready_to_publish/the_crowd_chooses_barabbas_thumbnail.jpg" preload="metadata">
+                    <source src="out/ready_to_publish/the_crowd_chooses_barabbas_master.mp4" type="video/mp4">
+                    Your browser does not support video.
+                </video>
+            </div>
+            <div class="card-body">
+                <div class="badge-row">
+                    <span class="badge brand">[ THE UNTOLD TRUTH ]</span>
+                    <span class="badge duration">30.9s</span>
+                    <span class="badge time">2026-10-11 19:46:14</span>
+                </div>
+                <h3 class="video-title">THE CROWD CHOOSES BARABBAS | The Harsh Reality They Never Tell You #shorts</h3>
+                <p class="hook-quote">"Never seek justice from a crowd. A mob does not want truth; it wants blood."</p>
+
+                <div class="meta-section">
+                    <label>Pinned Comment:</label>
+                    <div class="code-box">What is a truth you learned too late in life? Drop it below. 👇</div>
+                </div>
+
+                <div class="action-row">
+                    <button class="btn btn-primary" onclick="copyText(`THE CROWD CHOOSES BARABBAS | The Harsh Reality They Never Tell You #shorts`)">📋 Copy Title</button>
+                    <button class="btn btn-secondary" onclick="copyText(`Never seek justice from a crowd. A mob does not want truth; it wants blood.
+
+Never seek justice from a crowd. A mob does not want truth; it wants blood. The collective mind is blind, hysterical, and easily guided by demagogues. They will crown you king on Sunday and cheer your public execution by Friday morning. A crowd possesses zero conscience. Responsibility is diluted across thousands of screaming faces, allowing cowards to commit atrocities they would never dare alone. The most dangerous illusion is believing public consensus equals moral righteousness. Never adjust your compass by the roar of the arena. Stand alone, or be swallowed by the herd.
+
+Subscribe to @TheUntoldTruth for daily unfiltered psychology, harsh truths, and cynical wisdom.
+
+#TheUntoldTruth #DarkPsychology #Stoicism #HardTruths #Mindset #LifeLessons #Shorts`)">📄 Copy Description</button>
+                    <button class="btn btn-secondary" onclick="copyText(`#TheUntoldTruth #DarkPsychology #Stoicism #CynicalTruth #LifeLessons #Shorts #Viral`)">🏷️ Copy Tags</button>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="video-card">
+            <div class="media-container">
+                <video controls poster="out/ready_to_publish/the_curse_of_constant_availability_thumbnail.jpg" preload="metadata">
+                    <source src="out/ready_to_publish/the_curse_of_constant_availability_master.mp4" type="video/mp4">
+                    Your browser does not support video.
+                </video>
+            </div>
+            <div class="card-body">
+                <div class="badge-row">
+                    <span class="badge brand">[ THE UNTOLD TRUTH ]</span>
+                    <span class="badge duration">41.2s</span>
+                    <span class="badge time">2026-10-11 17:38:06</span>
+                </div>
+                <h3 class="video-title">THE CURSE OF CONSTANT AVAILABILITY | The Harsh Reality They Never Tell You #shorts</h3>
+                <p class="hook-quote">"Being too available is the fastest way to become invisible."</p>
+
+                <div class="meta-section">
+                    <label>Pinned Comment:</label>
+                    <div class="code-box">What is a truth you learned too late in life? Drop it below. 👇</div>
+                </div>
+
+                <div class="action-row">
+                    <button class="btn btn-primary" onclick="copyText(`THE CURSE OF CONSTANT AVAILABILITY | The Harsh Reality They Never Tell You #shorts`)">📋 Copy Title</button>
+                    <button class="btn btn-secondary" onclick="copyText(`Being too available is the fastest way to become invisible.
+
+Being too available is the fastest way to become invisible. When you respond instantly to every call, solve every crisis, and never say no, people do not appreciate your kindness—they discount your value. Free water is taken for granted until the well runs dry. Human psychology is fundamentally predatory: people only respect what requires effort to obtain. Scarcity creates value; unlimited accessibility creates contempt. If you keep setting yourself on fire to keep other people warm, you will die surrounded by spectators who will complain that you did not burn bright enough. Learn the power of calculated absence. Your presence only matters to those who feel your departure.
+
+Subscribe to @TheUntoldTruth for daily unfiltered psychology, harsh truths, and cynical wisdom.
+
+#TheUntoldTruth #DarkPsychology #Stoicism #HardTruths #Mindset #LifeLessons #Shorts`)">📄 Copy Description</button>
+                    <button class="btn btn-secondary" onclick="copyText(`#TheUntoldTruth #DarkPsychology #Stoicism #CynicalTruth #LifeLessons #Shorts #Viral`)">🏷️ Copy Tags</button>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="video-card">
+            <div class="media-container">
+                <video controls poster="out/ready_to_publish/the_financial_case_file_thumbnail.jpg" preload="metadata">
+                    <source src="out/ready_to_publish/the_financial_case_file_master.mp4" type="video/mp4">
+                    Your browser does not support video.
+                </video>
+            </div>
+            <div class="card-body">
+                <div class="badge-row">
+                    <span class="badge brand">[ THE UNTOLD TRUTH ]</span>
+                    <span class="badge duration">49.1s</span>
+                    <span class="badge time">2026-10-11 17:40:50</span>
+                </div>
+                <h3 class="video-title">THE FINANCIAL CASE FILE | The Harsh Reality They Never Tell You #shorts</h3>
+                <p class="hook-quote">"What do you say when a woman looks at you and says: 'I'm not fine'?"</p>
+
+                <div class="meta-section">
+                    <label>Pinned Comment:</label>
+                    <div class="code-box">What is a truth you learned too late in life? Drop it below. 👇</div>
+                </div>
+
+                <div class="action-row">
+                    <button class="btn btn-primary" onclick="copyText(`THE FINANCIAL CASE FILE | The Harsh Reality They Never Tell You #shorts`)">📋 Copy Title</button>
+                    <button class="btn btn-secondary" onclick="copyText(`What do you say when a woman looks at you and says: 'I'm not fine'?
+
+What do you say when a woman looks at you and says: 'I'm not fine'? Personally, I say: 'Sorry to hear that, chief. May God see you through.' And I keep walking. Because the moment you say 'What's wrong?', you have officially opened an international financial case file. She will tell you: 'It's nothing serious.' Do not insist! It is a legal trap. If you press further, that is when you discover rent is due on Friday, her phone screen is damaged, and her third cousin in Ondo needs tuition fees. You thought you were conducting an emotional inquiry. She heard: 'Chief, how much do you want to transfer?' Problem has traveled from her tear ducts straight into your savings account. Curiosity is completely free in this country, but the answer will cost you two months salary.
+
+Subscribe to @TheUntoldTruth for daily unfiltered psychology, harsh truths, and cynical wisdom.
+
+#TheUntoldTruth #DarkPsychology #Stoicism #HardTruths #Mindset #LifeLessons #Shorts`)">📄 Copy Description</button>
+                    <button class="btn btn-secondary" onclick="copyText(`#TheUntoldTruth #DarkPsychology #Stoicism #CynicalTruth #LifeLessons #Shorts #Viral`)">🏷️ Copy Tags</button>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="video-card">
+            <div class="media-container">
+                <video controls poster="out/ready_to_publish/the_kingmaker_dilemma_thumbnail.jpg" preload="metadata">
+                    <source src="out/ready_to_publish/the_kingmaker_dilemma_master.mp4" type="video/mp4">
+                    Your browser does not support video.
+                </video>
+            </div>
+            <div class="card-body">
+                <div class="badge-row">
+                    <span class="badge brand">[ THE UNTOLD TRUTH ]</span>
+                    <span class="badge duration">37.4s</span>
+                    <span class="badge time">2026-10-11 20:41:18</span>
+                </div>
+                <h3 class="video-title">THE KINGMAKER DILEMMA | The Harsh Reality They Never Tell You #shorts</h3>
+                <p class="hook-quote">"Notice who stopped clapping when you started winning."</p>
+
+                <div class="meta-section">
+                    <label>Pinned Comment:</label>
+                    <div class="code-box">What is a truth you learned too late in life? Drop it below. 👇</div>
+                </div>
+
+                <div class="action-row">
+                    <button class="btn btn-primary" onclick="copyText(`THE KINGMAKER DILEMMA | The Harsh Reality They Never Tell You #shorts`)">📋 Copy Title</button>
+                    <button class="btn btn-secondary" onclick="copyText(`Notice who stopped clapping when you started winning.
+
+Notice who stopped clapping when you started winning. People love supporting you when you are struggling because your pain reassures their superiority. They will happily play the mentor while you stay beneath them. The moment you ascend higher than the pedestal they built for you, their encouragement turns into whispered contempt. A Kingmaker rarely accepts becoming a subject. The knife that cuts the deepest is never held by a stranger. It is wielded by the ally who believed they owned your future. Build your empire with those who celebrate your throne, not those who demand rent for helping you lay the bricks.
+
+Subscribe to @TheUntoldTruth for daily unfiltered psychology, harsh truths, and cynical wisdom.
+
+#TheUntoldTruth #DarkPsychology #Stoicism #HardTruths #Mindset #LifeLessons #Shorts`)">📄 Copy Description</button>
+                    <button class="btn btn-secondary" onclick="copyText(`#TheUntoldTruth #DarkPsychology #Stoicism #CynicalTruth #LifeLessons #Shorts #Viral`)">🏷️ Copy Tags</button>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="video-card">
+            <div class="media-container">
+                <video controls poster="out/ready_to_publish/the_loyalty_trap_thumbnail.jpg" preload="metadata">
+                    <source src="out/ready_to_publish/the_loyalty_trap_master.mp4" type="video/mp4">
+                    Your browser does not support video.
+                </video>
+            </div>
+            <div class="card-body">
+                <div class="badge-row">
+                    <span class="badge brand">[ THE UNTOLD TRUTH ]</span>
+                    <span class="badge duration">48.6s</span>
+                    <span class="badge time">2026-10-11 13:11:08</span>
+                </div>
+                <h3 class="video-title">THE LOYALTY TRAP | The Harsh Reality They Never Tell You #shorts</h3>
+                <p class="hook-quote">"Being loyal to a company is the fastest way to get replaced."</p>
+
+                <div class="meta-section">
+                    <label>Pinned Comment:</label>
+                    <div class="code-box">What is a truth you learned too late in life? Drop it below. 👇</div>
+                </div>
+
+                <div class="action-row">
+                    <button class="btn btn-primary" onclick="copyText(`THE LOYALTY TRAP | The Harsh Reality They Never Tell You #shorts`)">📋 Copy Title</button>
+                    <button class="btn btn-secondary" onclick="copyText(`Being loyal to a company is the fastest way to get replaced.
+
+Being loyal to a company is the fastest way to get replaced. You trade your youth, your evenings, and your health believing loyalty is recorded in some celestial ledger. But the moment revenue dips, your decade of devotion is reduced to a severance check. Corporations do not reward sacrifice; they exploit predictability. The quiet worker who never complains is not respected—they are utilized. Promotion does not go to the most faithful, but to the most replaceable fear-inducer. Your company is an economic entity, not your family. If you dropped dead at your desk on a Tuesday, your position would be posted on LinkedIn by Thursday afternoon. Work for your skills, work for your equity, but never surrender your soul for a logo that will forget your name before your grave gets cold.
+
+Subscribe to @TheUntoldTruth for daily unfiltered psychology, harsh truths, and cynical wisdom.
+
+#TheUntoldTruth #DarkPsychology #Stoicism #HardTruths #Mindset #LifeLessons #Shorts`)">📄 Copy Description</button>
+                    <button class="btn btn-secondary" onclick="copyText(`#TheUntoldTruth #DarkPsychology #Stoicism #CynicalTruth #LifeLessons #Shorts #Viral`)">🏷️ Copy Tags</button>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="video-card">
+            <div class="media-container">
+                <video controls poster="out/ready_to_publish/the_national_audition_thumbnail.jpg" preload="metadata">
+                    <source src="out/ready_to_publish/the_national_audition_master.mp4" type="video/mp4">
+                    Your browser does not support video.
+                </video>
+            </div>
+            <div class="card-body">
+                <div class="badge-row">
+                    <span class="badge brand">[ THE UNTOLD TRUTH ]</span>
+                    <span class="badge duration">39.8s</span>
+                    <span class="badge time">2026-10-11 13:05:18</span>
+                </div>
+                <h3 class="video-title">THE NATIONAL AUDITION | The Harsh Reality They Never Tell You #shorts</h3>
+                <p class="hook-quote">"People do not actually hate corruption. They just hate that it is not their turn yet."</p>
+
+                <div class="meta-section">
+                    <label>Pinned Comment:</label>
+                    <div class="code-box">What is a truth you learned too late in life? Drop it below. 👇</div>
+                </div>
+
+                <div class="action-row">
+                    <button class="btn btn-primary" onclick="copyText(`THE NATIONAL AUDITION | The Harsh Reality They Never Tell You #shorts`)">📋 Copy Title</button>
+                    <button class="btn btn-secondary" onclick="copyText(`People do not actually hate corruption. They just hate that it is not their turn yet.
+
+People do not actually hate corruption. They just hate that it is not their turn yet. If a destitute man steals a loaf in the alley, an angry mob hunts him down without mercy. But when an oligarch embezzles eighty billion from the treasury, his community greets him with chieftaincy titles. The problem is rarely the leadership alone; it is the culture of survival. The loud activist shouts from the barricades, until they are granted an air-conditioned office and a seat at the banquet. The secret dream was never to dismantle the citadel. The secret dream was always to survive long enough to hold the golden ladle. Until a people hate the crime more than they envy the criminal, the cycle will repeat forever.
+
+Subscribe to @TheUntoldTruth for daily unfiltered psychology, harsh truths, and cynical wisdom.
+
+#TheUntoldTruth #DarkPsychology #Stoicism #HardTruths #Mindset #LifeLessons #Shorts`)">📄 Copy Description</button>
+                    <button class="btn btn-secondary" onclick="copyText(`#TheUntoldTruth #DarkPsychology #Stoicism #CynicalTruth #LifeLessons #Shorts #Viral`)">🏷️ Copy Tags</button>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="video-card">
+            <div class="media-container">
+                <video controls poster="out/ready_to_publish/the_power_of_silence_thumbnail.jpg" preload="metadata">
+                    <source src="out/ready_to_publish/the_power_of_silence_master.mp4" type="video/mp4">
+                    Your browser does not support video.
+                </video>
+            </div>
+            <div class="card-body">
+                <div class="badge-row">
+                    <span class="badge brand">[ THE UNTOLD TRUTH ]</span>
+                    <span class="badge duration">32.5s</span>
+                    <span class="badge time">2026-10-11 13:29:55</span>
+                </div>
+                <h3 class="video-title">THE POWER OF SILENCE | The Harsh Reality They Never Tell You #shorts</h3>
+                <p class="hook-quote">"The loudest person in the room is always the most insecure."</p>
+
+                <div class="meta-section">
+                    <label>Pinned Comment:</label>
+                    <div class="code-box">What is a truth you learned too late in life? Drop it below. 👇</div>
+                </div>
+
+                <div class="action-row">
+                    <button class="btn btn-primary" onclick="copyText(`THE POWER OF SILENCE | The Harsh Reality They Never Tell You #shorts`)">📋 Copy Title</button>
+                    <button class="btn btn-secondary" onclick="copyText(`The loudest person in the room is always the most insecure.
+
+The loudest person in the room is always the most insecure. Weakness announces itself with noise, bragging, and desperate demands for applause. True power sits in the corner, observing everything and revealing nothing. When you speak too much, you hand your enemies the blueprint to destroy you. Information given away for free is leverage you will never regain. The master strategist never explains his moves. He lets the result speak while his competitors scramble to understand what hit them. Learn to move in absolute silence. Surprise is the ultimate weapon.
+
+Subscribe to @TheUntoldTruth for daily unfiltered psychology, harsh truths, and cynical wisdom.
+
+#TheUntoldTruth #DarkPsychology #Stoicism #HardTruths #Mindset #LifeLessons #Shorts`)">📄 Copy Description</button>
+                    <button class="btn btn-secondary" onclick="copyText(`#TheUntoldTruth #DarkPsychology #Stoicism #CynicalTruth #LifeLessons #Shorts #Viral`)">🏷️ Copy Tags</button>
+                </div>
+            </div>
+        </div>
+        
+        </main>
+
+        <aside class="sidebar">
+            <div class="section-header">⚡ Next in Topic Queue</div>
+            
+        <div class="queue-item">
+            <span class="q-pillar">Power & Deception</span>
+            <span class="q-title">The Myth of Loyalty at Work</span>
+            <span class="q-hook">"Being loyal to a company is the fastest way to get replaced."</span>
+        </div>
+        
+
+        <div class="queue-item">
+            <span class="q-pillar">Human Nature</span>
+            <span class="q-title">People Don't Want Truth, They Want Theater</span>
+            <span class="q-hook">"People do not hate corruption. They just hate that it is not their turn yet."</span>
+        </div>
+        
+
+        <div class="queue-item">
+            <span class="q-pillar">Power & Strategy</span>
+            <span class="q-title">The Kingmaker Dilemma</span>
+            <span class="q-hook">"If she supported you when you were broke, leave her when you become rich. Release the Kingmaker."</span>
+        </div>
+        
+
+        <div class="queue-item">
+            <span class="q-pillar">Psychology</span>
+            <span class="q-title">Why Nice Guys Finish Last</span>
+            <span class="q-hook">"Being agreeable is not kindness. It is cowardice wearing perfume."</span>
+        </div>
+        
+
+        <div class="queue-item">
+            <span class="q-pillar">Wealth & Status</span>
+            <span class="q-title">The Trap of Middle-Class Comfort</span>
+            <span class="q-hook">"A comfortable salary is the drug employers give you to forget your dreams."</span>
+        </div>
+        
+
+        <div class="queue-item">
+            <span class="q-pillar">Power & Strategy</span>
+            <span class="q-title">The Power of Calculated Silence</span>
+            <span class="q-hook">"The loudest person in the room is always the most desperate for validation."</span>
+        </div>
+        
+
+            <div class="cmd-snippet">
+                # Generate next video:<br>
+                python the_untold_truth\engine.py --auto
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        function copyText(txt) {
+            navigator.clipboard.writeText(txt).then(() => {
+                alert("Copied to clipboard!");
+            });
+        }
+    </script>
+</body>
+</html>

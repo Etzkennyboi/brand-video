@@ -1,0 +1,40 @@
+# Environment & API Keys (CRITICAL - DO NOT COMMIT SECRETS)
+.env
+*.env
+.env.local
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# Temporary and render outputs
+out/audio_releases/
+out/drafts/
+out/layi_audio/
+out/ready_to_publish/*.mp4
+out/ready_to_publish/preview_frame*
+out/ready_to_publish/test_thumb*
+*.mp4
+*.m4a
+
+
+# Obsolete training / RVC datasets & large zip archives
+assets/layi*
+assets/layi_rvc_*
+*.zip
+*.tar.gz
+
+# Scratch / internal tests
+scratch/
+
+# System & OS junk
+.DS_Store
+Thumbs.db
+*.log
+

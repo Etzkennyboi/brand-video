@@ -1,0 +1,82 @@
+[
+  {
+    "id": "TOPIC_001",
+    "pillar": "Power & Deception",
+    "title": "The Myth of Loyalty at Work",
+    "hook": "Being loyal to a company is the fastest way to get replaced.",
+    "theme": "Corporate realism, replaced worker, silent exploitation",
+    "keywords": ["loyalty", "corporate", "worker", "boss", "replaced", "money", "power"]
+  },
+  {
+    "id": "TOPIC_002",
+    "pillar": "Human Nature",
+    "title": "People Don't Want Truth, They Want Theater",
+    "hook": "People do not hate corruption. They just hate that it is not their turn yet.",
+    "theme": "Hypocrisy, moral grandstanding, societal theater",
+    "keywords": ["corruption", "politician", "hypocrisy", "crowd", "truth", "justice"]
+  },
+  {
+    "id": "TOPIC_003",
+    "pillar": "Power & Strategy",
+    "title": "The Kingmaker Dilemma",
+    "hook": "If she supported you when you were broke, leave her when you become rich. Release the Kingmaker.",
+    "theme": "Betrayal, discarded ally, cold ambition",
+    "keywords": ["kingmaker", "betrayal", "crown", "ambition", "knife", "discarded"]
+  },
+  {
+    "id": "TOPIC_004",
+    "pillar": "Psychology",
+    "title": "Why Nice Guys Finish Last",
+    "hook": "Being agreeable is not kindness. It is cowardice wearing perfume.",
+    "theme": "Assertiveness, dark psychology, respect vs pleasing",
+    "keywords": ["kindness", "coward", "respect", "weakness", "boundary", "truth"]
+  },
+  {
+    "id": "TOPIC_005",
+    "pillar": "Wealth & Status",
+    "title": "The Trap of Middle-Class Comfort",
+    "hook": "A comfortable salary is the drug employers give you to forget your dreams.",
+    "theme": "Golden handcuffs, wage slavery, consumerism",
+    "keywords": ["salary", "comfort", "cage", "banker", "chains", "slave"]
+  },
+  {
+    "id": "TOPIC_006",
+    "pillar": "Power & Strategy",
+    "title": "The Power of Calculated Silence",
+    "hook": "The loudest person in the room is always the most desperate for validation.",
+    "theme": "Silence, strategic restraint, observation",
+    "keywords": ["silence", "stoic", "observer", "loud", "insecure", "strategy"]
+  },
+  {
+    "id": "TOPIC_007",
+    "pillar": "Human Nature",
+    "title": "The Myth of Karma",
+    "hook": "Karma is the comforting fairy tale weak men tell themselves to avoid fighting back.",
+    "theme": "Realpolitik, harsh justice, strength vs waiting",
+    "keywords": ["karma", "justice", "weak", "strength", "revenge", "power"]
+  },
+  {
+    "id": "TOPIC_008",
+    "pillar": "Wealth & Status",
+    "title": "Why Flashing Wealth Keeps You Broke",
+    "hook": "Poor people buy luxury to look rich. Rich people stay invisible to stay wealthy.",
+    "theme": "Stealth wealth, consumer trap, ego tax",
+    "keywords": ["luxury", "rich", "poor", "gold", "invisible", "ego"]
+  },
+  {
+    "id": "TOPIC_009",
+    "pillar": "Relationships & Reality",
+    "title": "Conditional Affection",
+    "hook": "Nobody loves you for who you are. They love what you bring to the table.",
+    "theme": "Transactional bonds, value, unconditional love myth",
+    "keywords": ["love", "transaction", "value", "table", "respect", "bond"]
+  },
+  {
+    "id": "TOPIC_010",
+    "pillar": "Human Nature",
+    "title": "The Crowd Always Chooses Barabbas",
+    "hook": "Never seek justice from a crowd. A mob does not want truth, it wants blood.",
+    "theme": "Mob mentality, scapegoating, collective folly",
+    "keywords": ["mob", "crowd", "justice", "truth", "blood", "anger"]
+  }
+]

@@ -1,0 +1,47 @@
+{
+  "brand_name": "THE UNTOLD TRUTH",
+  "watermark": {
+    "enabled": true,
+    "text": "THE UNTOLD TRUTH",
+    "font_file": "C:/Windows/Fonts/georgiab.ttf",
+    "font_size": 32,
+    "font_color": "white@0.80",
+    "shadow_color": "black@0.90",
+    "shadow_x": 2,
+    "shadow_y": 2,
+    "y_offset_from_bottom": 240
+  },
+  "subtitles": {
+    "font_name": "Arial",
+    "font_size": 58,
+    "bold": true,
+    "primary_color": "&H00FFFFFF",
+    "highlight_color": "&H0023A6F5",
+    "outline_color": "&H00000000",
+    "back_color": "&H90000000",
+    "outline_width": 5,
+    "shadow_depth": 6,
+    "margin_v": 960,
+    "chunk_size": 3,
+    "highlight_scale": 112
+  },
+  "audio": {
+    "default_bgm": "assets/bgm/soundtrack_from_video5.mp3",
+    "bgm_volume_multiplier": 3.75,
+    "bgm_boost_label": "500%",
+    "ref_voice_audio": "assets/ref_voice_vid5.wav",
+    "ref_voice_text": "The word karma is a word used by losers. People use it when they're too powerless to get justice themselves.",
+    "voice_speed_factor": 1.14,
+    "hf_tokens": []
+  },
+  "video": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "crf": 18,
+    "preset": "veryfast",
+    "encoder": "libx264",
+    "zoom_step": 0.00045,
+    "max_zoom": 1.08
+  }
+}

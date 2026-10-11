@@ -1,0 +1,1373 @@
+[
+  {
+    "id": 1,
+    "pillar": "Cynical Observer",
+    "shot_type": "CU",
+    "title": "Cynical Epiphany",
+    "keywords": [
+      "Wisdom",
+      "Karma",
+      "Truth"
+    ],
+    "hook_suggestion": "Contrarian opening hook: 'The word karma is a word used by losers...'",
+    "image_file": "Aging_king_smirking_in_shadows.jpg",
+    "original_source": null
+  },
+  {
+    "id": 2,
+    "pillar": "Cynical Observer",
+    "shot_type": "MCU",
+    "title": "Cold Detachment",
+    "keywords": [
+      "Stoicism",
+      "Detachment",
+      "Observation"
+    ],
+    "hook_suggestion": "Provocative advice: 'When someone tells you their problems, do not become their therapist.'",
+    "image_file": "Antique_brass_key_on_deed.jpg",
+    "original_source": null
+  },
+  {
+    "id": 3,
+    "pillar": "Cynical Observer",
+    "shot_type": "CU",
+    "title": "Grim Realism",
+    "keywords": [
+      "Power",
+      "Aging",
+      "Mortality"
+    ],
+    "hook_suggestion": "Reality check: 'The people giving you advice haven't survived what you are facing.'",
+    "image_file": "Aging_king_smirking_in_shadows.jpg",
+    "original_source": "Aging_king_smirking_in_shadows_20261011061048.jpg"
+  },
+  {
+    "id": 4,
+    "pillar": "Cynical Observer",
+    "shot_type": "MS",
+    "title": "Quiet Superiority",
+    "keywords": [
+      "Hierarchy",
+      "Strategy",
+      "Solitude"
+    ],
+    "hook_suggestion": "Hook: 'Never interrupt your enemy while they are making a mistake.'",
+    "image_file": "Architects_quarreling_near_unfin_.jpg",
+    "original_source": null
+  },
+  {
+    "id": 5,
+    "pillar": "Cynical Observer",
+    "shot_type": "CU",
+    "title": "Philosophical Skepticism",
+    "keywords": [
+      "Illusion",
+      "Masks",
+      "Deception"
+    ],
+    "hook_suggestion": "Hook: 'People do not want the truth. They want a comforting lie with good delivery.'",
+    "image_file": "Citizens_holding_golden_masks_in_.jpg",
+    "original_source": "Citizens_holding_golden_masks_in…_20261011061048.jpg"
+  },
+  {
+    "id": 6,
+    "pillar": "Cynical Observer",
+    "shot_type": "MCU",
+    "title": "Unspoken Judgment",
+    "keywords": [
+      "Silence",
+      "Power",
+      "Restraint"
+    ],
+    "hook_suggestion": "Hook: 'The loudest person in the room is always the most insecure.'",
+    "image_file": "Aristocratic_woman_posing_in_velvet.jpg",
+    "original_source": null
+  },
+  {
+    "id": 7,
+    "pillar": "Cynical Observer",
+    "shot_type": "CU",
+    "title": "Unshakable Stoicism",
+    "keywords": [
+      "Endurance",
+      "Hardship",
+      "Solitude"
+    ],
+    "hook_suggestion": "Hook: 'Peace is not the absence of trouble; it is the refusal to care about nonsense.'",
+    "image_file": "Aristocrats_dancing_in_Baroque_b_.jpg",
+    "original_source": null
+  },
+  {
+    "id": 8,
+    "pillar": "Cynical Observer",
+    "shot_type": "MS",
+    "title": "The Master Chessplayer",
+    "keywords": [
+      "Calculated Moves",
+      "Patience"
+    ],
+    "hook_suggestion": "Hook: 'You are playing checkers with people who are already thinking three years ahead.'",
+    "image_file": "Master_whispering_to_apprentice.jpg",
+    "original_source": "Master_whispering_to_apprentice_20261011061048.jpg"
+  },
+  {
+    "id": 9,
+    "pillar": "Cynical Observer",
+    "shot_type": "CU",
+    "title": "The Price of Knowledge",
+    "keywords": [
+      "Regret",
+      "Enlightenment",
+      "Coldness"
+    ],
+    "hook_suggestion": "Hook: 'Curiosity is free. The answer might not be.'",
+    "image_file": "Coins_tip_scales_of_justice.jpg",
+    "original_source": "Coins_tip_scales_of_justice_20261011061048.jpg"
+  },
+  {
+    "id": 10,
+    "pillar": "Cynical Observer",
+    "shot_type": "MCU",
+    "title": "The Unimpressed Monarch",
+    "keywords": [
+      "Boredom with Flattery",
+      "Cynicism"
+    ],
+    "hook_suggestion": "Hook: 'When everyone agrees with you, you are surrounded by sycophants, not allies.'",
+    "image_file": "Monarch_reclining_on_throne.jpg",
+    "original_source": "Monarch_reclining_on_throne_20261011061048.jpg"
+  },
+  {
+    "id": 11,
+    "pillar": "Betrayal & Loyalty",
+    "shot_type": "MCU",
+    "title": "Cold Betrayal",
+    "keywords": [
+      "Kingmaker",
+      "Ambition",
+      "Discarded"
+    ],
+    "hook_suggestion": "Hook: 'If she supported you when you were broke, leave her when you become rich. Release the Kingmaker.'",
+    "image_file": "Banker_counting_gold_bars.jpg",
+    "original_source": null
+  },
+  {
+    "id": 12,
+    "pillar": "Betrayal & Loyalty",
+    "shot_type": "CU",
+    "title": "The Hidden Dagger",
+    "keywords": [
+      "Deceit",
+      "Poisoned Smile",
+      "Ambush"
+    ],
+    "hook_suggestion": "Hook: 'The knife in your back is rarely held by a stranger.'",
+    "image_file": "Beggar_boy_watching_banquet.jpg",
+    "original_source": null
+  },
+  {
+    "id": 13,
+    "pillar": "Betrayal & Loyalty",
+    "shot_type": "MS",
+    "title": "The Discarded Ally",
+    "keywords": [
+      "Sacrifice",
+      "Abandonment",
+      "Power Shift"
+    ],
+    "hook_suggestion": "Hook: 'When the war is won, the generals become dangerous to the king.'",
+    "image_file": "Bishops_counting_gold_coins.jpg",
+    "original_source": null
+  },
+  {
+    "id": 14,
+    "pillar": "Betrayal & Loyalty",
+    "shot_type": "MCU",
+    "title": "The Banquet Judas",
+    "keywords": [
+      "False Friendship",
+      "Dinner",
+      "Traitor"
+    ],
+    "hook_suggestion": "Hook: 'Notice who stopped clapping when you started winning.'",
+    "image_file": "Beggar_boy_watching_banquet.jpg",
+    "original_source": "Beggar_boy_watching_banquet_20261011061048.jpg"
+  },
+  {
+    "id": 15,
+    "pillar": "Betrayal & Loyalty",
+    "shot_type": "CU",
+    "title": "Torn Royal Contract",
+    "keywords": [
+      "Broken Vows",
+      "Business",
+      "Realism"
+    ],
+    "hook_suggestion": "Hook: 'Loyalty in business lasts exactly until a better margin appears.'",
+    "image_file": "Bound_man_smiling_at_camera.jpg",
+    "original_source": null
+  },
+  {
+    "id": 16,
+    "pillar": "Betrayal & Loyalty",
+    "shot_type": "MS",
+    "title": "The Kingmaker's Departure",
+    "keywords": [
+      "Pride",
+      "Self-Worth",
+      "Walking Away"
+    ],
+    "hook_suggestion": "Hook: 'A real Kingmaker never begs for a seat at the table they built.'",
+    "image_file": "Aging_king_smirking_in_shadows.jpg",
+    "original_source": "Aging_king_smirking_in_shadows_20261011061048.jpg"
+  },
+  {
+    "id": 17,
+    "pillar": "Betrayal & Loyalty",
+    "shot_type": "CU",
+    "title": "The Poisoned Goblet",
+    "keywords": [
+      "Subtle Murder",
+      "Palace Politics"
+    ],
+    "hook_suggestion": "Hook: 'Some people will feed you just to see you choke.'",
+    "image_file": "Hands_exchanging_goblet_of_wine.jpg",
+    "original_source": "Hands_exchanging_goblet_of_wine_20261011061048.jpg"
+  },
+  {
+    "id": 18,
+    "pillar": "Betrayal & Loyalty",
+    "shot_type": "MCU",
+    "title": "The Two-Faced Courtier",
+    "keywords": [
+      "Hypocrisy",
+      "Flattery",
+      "Deceit"
+    ],
+    "hook_suggestion": "Hook: 'Be careful of people whose respect only appears in public.'",
+    "image_file": "Aristocratic_courtier_bowing_wit_.jpg",
+    "original_source": "Aristocratic_courtier_bowing_wit…_20261011061048.jpg"
+  },
+  {
+    "id": 19,
+    "pillar": "Betrayal & Loyalty",
+    "shot_type": "MS",
+    "title": "The Divided Camp",
+    "keywords": [
+      "Civil Conflict",
+      "Fracture",
+      "Suspicion"
+    ],
+    "hook_suggestion": "Hook: 'A house divided cannot stand, but it sells plenty of tickets.'",
+    "image_file": "Citizens_holding_golden_masks_in_.jpg",
+    "original_source": null
+  },
+  {
+    "id": 20,
+    "pillar": "Betrayal & Loyalty",
+    "shot_type": "CU",
+    "title": "The Crown Left in Mud",
+    "keywords": [
+      "Lost Loyalty",
+      "Disillusionment"
+    ],
+    "hook_suggestion": "Hook: 'You can give someone the crown, but you cannot make them worthy of wearing it.'",
+    "image_file": "Knight_walking_past_crown.jpg",
+    "original_source": "Knight_walking_past_crown_20261011061048.jpg"
+  },
+  {
+    "id": 21,
+    "pillar": "Money & Power",
+    "shot_type": "MCU",
+    "title": "The Corrupt Oligarch",
+    "keywords": [
+      "Impunity",
+      "Wealth",
+      "Chieftaincy"
+    ],
+    "hook_suggestion": "Hook: 'If a politician steals eighty billion, his village gives him a chieftaincy title.'",
+    "image_file": "Gatekeeper_permitting_wealthy_pe_.jpg",
+    "original_source": "Gatekeeper_permitting_wealthy_pe…_20261011061048.jpg"
+  },
+  {
+    "id": 22,
+    "pillar": "Money & Power",
+    "shot_type": "CU",
+    "title": "Holding the Golden Spoon",
+    "keywords": [
+      "The Climax",
+      "The Feasting Elite"
+    ],
+    "hook_suggestion": "Hook: 'The dream was never to fix the country. The dream is to become the one holding the spoon.'",
+    "image_file": "Citizens_holding_golden_masks_in_.jpg",
+    "original_source": "Citizens_holding_golden_masks_in…_20261011061048.jpg"
+  },
+  {
+    "id": 23,
+    "pillar": "Money & Power",
+    "shot_type": "MS",
+    "title": "Counting Gold by Midnight",
+    "keywords": [
+      "Greed",
+      "Avarice",
+      "Secret Wealth"
+    ],
+    "hook_suggestion": "Hook: 'Money does not change people; it merely removes the mask of politeness.'",
+    "image_file": "Banker_counting_gold_bars.jpg",
+    "original_source": "Banker_counting_gold_bars_20261011061048.jpg"
+  },
+  {
+    "id": 24,
+    "pillar": "Money & Power",
+    "shot_type": "CU",
+    "title": "The Price Tag on Justice",
+    "keywords": [
+      "Corruption",
+      "Bribery",
+      "Courts"
+    ],
+    "hook_suggestion": "Hook: 'Justice in this town is not blind; it is just waiting for the wire transfer.'",
+    "image_file": "Antique_brass_key_on_deed.jpg",
+    "original_source": "Antique_brass_key_on_deed_20261011061048.jpg"
+  },
+  {
+    "id": 25,
+    "pillar": "Money & Power",
+    "shot_type": "MCU",
+    "title": "The Nouveau Riche Feast",
+    "keywords": [
+      "Vulgarity",
+      "Luxury",
+      "Arrogance"
+    ],
+    "hook_suggestion": "Hook: 'Nouveau riche always show you what they bought; old wealth shows you who they own.'",
+    "image_file": "Drawbridge_pulling_up_castle_moat.jpg",
+    "original_source": null
+  },
+  {
+    "id": 26,
+    "pillar": "Money & Power",
+    "shot_type": "MS",
+    "title": "The Monopoly Board of Life",
+    "keywords": [
+      "Capitalism",
+      "Ruthless Growth",
+      "Control"
+    ],
+    "hook_suggestion": "Hook: 'You are worrying about rent while three men are deciding the price of the city.'",
+    "image_file": "Coins_tip_scales_of_justice.jpg",
+    "original_source": "Coins_tip_scales_of_justice_20261011061048.jpg"
+  },
+  {
+    "id": 27,
+    "pillar": "Money & Power",
+    "shot_type": "CU",
+    "title": "The Bloodstained Gold Coin",
+    "keywords": [
+      "Tainted Wealth",
+      "Conscience",
+      "Price"
+    ],
+    "hook_suggestion": "Hook: 'Clean hands rarely build massive empires.'",
+    "image_file": "Bishops_counting_gold_coins.jpg",
+    "original_source": "Bishops_counting_gold_coins_20261011061048.jpg"
+  },
+  {
+    "id": 28,
+    "pillar": "Money & Power",
+    "shot_type": "MCU",
+    "title": "The Executive Handshake",
+    "keywords": [
+      "Behind Closed Doors",
+      "Cartel",
+      "Deals"
+    ],
+    "hook_suggestion": "Hook: 'The real contracts are signed before the public meeting even starts.'",
+    "image_file": "Evangelist_holding_Bible_with_gl_.jpg",
+    "original_source": null
+  },
+  {
+    "id": 29,
+    "pillar": "Money & Power",
+    "shot_type": "MS",
+    "title": "The Treasury Siphon",
+    "keywords": [
+      "Government Theft",
+      "Plunder",
+      "Bureaucracy"
+    ],
+    "hook_suggestion": "Hook: 'A national budget is often just a wishlist for the five people in charge.'",
+    "image_file": "Exhausted_soldier_watching_carri_.jpg",
+    "original_source": null
+  },
+  {
+    "id": 30,
+    "pillar": "Money & Power",
+    "shot_type": "CU",
+    "title": "The Golden Handcuffs",
+    "keywords": [
+      "Wealth as Prison",
+      "Comfort",
+      "Trap"
+    ],
+    "hook_suggestion": "Hook: 'Most people do not want freedom; they just want gilded chains with air conditioning.'",
+    "image_file": "Citizens_holding_golden_masks_in_.jpg",
+    "original_source": "Citizens_holding_golden_masks_in…_20261011061048.jpg"
+  },
+  {
+    "id": 31,
+    "pillar": "The Mob & Hypocrisy",
+    "shot_type": "MS",
+    "title": "Marketplace Mob Justice",
+    "keywords": [
+      "Visceral Injustice",
+      "Rage",
+      "Hypocrisy"
+    ],
+    "hook_suggestion": "Hook: 'A poor man steals a phone in the market, an angry mob beats him to death.'",
+    "image_file": "Coins_tip_scales_of_justice.jpg",
+    "original_source": "Coins_tip_scales_of_justice_20261011061048.jpg"
+  },
+  {
+    "id": 32,
+    "pillar": "The Mob & Hypocrisy",
+    "shot_type": "MCU",
+    "title": "The First Stone",
+    "keywords": [
+      "Self-Righteousness",
+      "Hypocrisy",
+      "Crowd"
+    ],
+    "hook_suggestion": "Hook: 'The people most eager to stone you are always guilty of worse behind closed doors.'",
+    "image_file": "Crowd_member_holding_rock.jpg",
+    "original_source": "Crowd_member_holding_rock_20261011061048.jpg"
+  },
+  {
+    "id": 33,
+    "pillar": "The Mob & Hypocrisy",
+    "shot_type": "MS",
+    "title": "The Courtroom Spectacle",
+    "keywords": [
+      "Mock Trial",
+      "Scapegoat",
+      "Injustice"
+    ],
+    "hook_suggestion": "Hook: 'When the system needs a sacrifice, they never choose the billionaire.'",
+    "image_file": "Gentleman_carrying_gifts_behind__.jpg",
+    "original_source": null
+  },
+  {
+    "id": 34,
+    "pillar": "The Mob & Hypocrisy",
+    "shot_type": "CU",
+    "title": "The Screaming Crowd Face",
+    "keywords": [
+      "Mass Hysteria",
+      "Frenzy",
+      "Mob Mind"
+    ],
+    "hook_suggestion": "Hook: 'Never underestimate the stupidity of people in large groups.'",
+    "image_file": "Crowd_member_holding_rock.jpg",
+    "original_source": "Crowd_member_holding_rock_20261011061048.jpg"
+  },
+  {
+    "id": 35,
+    "pillar": "The Mob & Hypocrisy",
+    "shot_type": "MCU",
+    "title": "The Quiet Executioner",
+    "keywords": [
+      "Duty",
+      "Indifference",
+      "System"
+    ],
+    "hook_suggestion": "Hook: 'The system does not hate you; it is simply indifferent to your existence.'",
+    "image_file": "Masked_executioner_holding_blade.jpg",
+    "original_source": "Masked_executioner_holding_blade_20261011061048.jpg"
+  },
+  {
+    "id": 36,
+    "pillar": "The Mob & Hypocrisy",
+    "shot_type": "MS",
+    "title": "The Burning Scapegoat",
+    "keywords": [
+      "Persecution",
+      "Distraction",
+      "Propaganda"
+    ],
+    "hook_suggestion": "Hook: 'Give the mob a villain to hate, and they will never notice your hand in their pocket.'",
+    "image_file": "Wooden_cart_burning_in_square.jpg",
+    "original_source": "Wooden_cart_burning_in_square_20261011061048.jpg"
+  },
+  {
+    "id": 37,
+    "pillar": "The Mob & Hypocrisy",
+    "shot_type": "CU",
+    "title": "The Finger Pointer",
+    "keywords": [
+      "Blame",
+      "Deflection",
+      "Betrayal"
+    ],
+    "hook_suggestion": "Hook: 'Watch who they blame first when the money goes missing.'",
+    "image_file": "Politician_pointing_finger_in_panic.jpg",
+    "original_source": "Politician_pointing_finger_in_panic_20261011061048.jpg"
+  },
+  {
+    "id": 38,
+    "pillar": "The Mob & Hypocrisy",
+    "shot_type": "MS",
+    "title": "The Cheering Amphitheater",
+    "keywords": [
+      "Public Entertainment",
+      "Cruelty"
+    ],
+    "hook_suggestion": "Hook: 'The crowd cheering for your downfall today was begging for your autograph yesterday.'",
+    "image_file": "Hands_holding_wooden_mug.jpg",
+    "original_source": null
+  },
+  {
+    "id": 39,
+    "pillar": "The Mob & Hypocrisy",
+    "shot_type": "MCU",
+    "title": "The Smug Juror",
+    "keywords": [
+      "Biased Justice",
+      "Prejudgment"
+    ],
+    "hook_suggestion": "Hook: 'Do not explain yourself to people who are determined to misunderstand you.'",
+    "image_file": "Juror_crossing_arms_with_pipe.jpg",
+    "original_source": "Juror_crossing_arms_with_pipe_20261011061048.jpg"
+  },
+  {
+    "id": 40,
+    "pillar": "The Mob & Hypocrisy",
+    "shot_type": "CU",
+    "title": "Broken Scales of Justice",
+    "keywords": [
+      "Collapse of Law",
+      "Anarchy",
+      "Truth"
+    ],
+    "hook_suggestion": "Hook: 'When the law protects the corrupt from the public, justice goes underground.'",
+    "image_file": "Coins_tip_scales_of_justice.jpg",
+    "original_source": "Coins_tip_scales_of_justice_20261011061048.jpg"
+  },
+  {
+    "id": 41,
+    "pillar": "Relationship Realism",
+    "shot_type": "CU",
+    "title": "The 'I'm Not Fine' Gaze",
+    "keywords": [
+      "Financial Case File",
+      "Expectation",
+      "Trap"
+    ],
+    "hook_suggestion": "Hook: 'What do you say when a woman tells you: I am not fine? You just opened a financial case file.'",
+    "image_file": "Aging_king_smirking_in_shadows.jpg",
+    "original_source": "Aging_king_smirking_in_shadows_20261011061048.jpg"
+  },
+  {
+    "id": 42,
+    "pillar": "Relationship Realism",
+    "shot_type": "MCU",
+    "title": "The Customer Service Hero",
+    "keywords": [
+      "One-Way Effort",
+      "Transactional",
+      "Realism"
+    ],
+    "hook_suggestion": "Hook: 'Help a woman in trouble? You didn't become her hero. You became customer service.'",
+    "image_file": "King_Solomon_judging_disputed_in_.jpg",
+    "original_source": null
+  },
+  {
+    "id": 43,
+    "pillar": "Relationship Realism",
+    "shot_type": "MS",
+    "title": "The Queue of Suitors",
+    "keywords": [
+      "Abundance",
+      "Options",
+      "Competition"
+    ],
+    "hook_suggestion": "Hook: 'She does not have high standards; she just has twenty men funding her delusions.'",
+    "image_file": "Coins_tip_scales_of_justice.jpg",
+    "original_source": "Coins_tip_scales_of_justice_20261011061048.jpg"
+  },
+  {
+    "id": 44,
+    "pillar": "Relationship Realism",
+    "shot_type": "CU",
+    "title": "The Calculating Smile",
+    "keywords": [
+      "Hidden Motives",
+      "Seduction",
+      "Strategy"
+    ],
+    "hook_suggestion": "Hook: 'A woman's loyalty is tested when her man has nothing; a man's loyalty is tested when he has everything.'",
+    "image_file": "Knight_walking_past_crown.jpg",
+    "original_source": null
+  },
+  {
+    "id": 45,
+    "pillar": "Relationship Realism",
+    "shot_type": "MS",
+    "title": "The Expensive Silence",
+    "keywords": [
+      "Emotional Manipulation",
+      "Tension"
+    ],
+    "hook_suggestion": "Hook: 'Silence from a woman is either peace or an incoming invoice. Prepare accordingly.'",
+    "image_file": "Lone_figure_facing_crowd.jpg",
+    "original_source": null
+  },
+  {
+    "id": 46,
+    "pillar": "Relationship Realism",
+    "shot_type": "MCU",
+    "title": "The Sovereign Queen",
+    "keywords": [
+      "High Value",
+      "Detachment",
+      "Elegance"
+    ],
+    "hook_suggestion": "Hook: 'A queen builds with a king; she does not raise a boy into an emperor.'",
+    "image_file": "Man_escaping_seductive_queen.jpg",
+    "original_source": "Man_escaping_seductive_queen_20261011061048.jpg"
+  },
+  {
+    "id": 47,
+    "pillar": "Relationship Realism",
+    "shot_type": "CU",
+    "title": "Tears into Diamonds",
+    "keywords": [
+      "Performative Grief",
+      "Manipulation"
+    ],
+    "hook_suggestion": "Hook: 'Beware of tears that stop the moment the card clears.'",
+    "image_file": "Man_gazing_into_cracked_mirrors.jpg",
+    "original_source": "Man_gazing_into_cracked_mirrors_20261011061048.jpg"
+  },
+  {
+    "id": 48,
+    "pillar": "Relationship Realism",
+    "shot_type": "MS",
+    "title": "The Exit Strategy",
+    "keywords": [
+      "Hypergamy",
+      "Moving On",
+      "Ambition"
+    ],
+    "hook_suggestion": "Hook: 'When a woman decides to leave, she checked out six months before she packed her bags.'",
+    "image_file": "Man_drinking_whiskey_reading_book.jpg",
+    "original_source": null
+  },
+  {
+    "id": 49,
+    "pillar": "Relationship Realism",
+    "shot_type": "CU",
+    "title": "The Double Standard Mirror",
+    "keywords": [
+      "Hypocrisy",
+      "Modern Dating",
+      "Expectations"
+    ],
+    "hook_suggestion": "Hook: 'She wants traditional provision from a man, but modern freedom for herself.'",
+    "image_file": "Man_gazing_into_cracked_mirrors.jpg",
+    "original_source": "Man_gazing_into_cracked_mirrors_20261011061048.jpg"
+  },
+  {
+    "id": 50,
+    "pillar": "Relationship Realism",
+    "shot_type": "MCU",
+    "title": "The Unbothered Solitude",
+    "keywords": [
+      "Peace Over Drama",
+      "Freedom",
+      "Walk Away"
+    ],
+    "hook_suggestion": "Hook: 'A man's greatest luxury is coming home to a quiet house with zero drama.'",
+    "image_file": "Man_gazing_into_cracked_mirrors.jpg",
+    "original_source": null
+  },
+  {
+    "id": 51,
+    "pillar": "Male Self-Reliance",
+    "shot_type": "MCU",
+    "title": "The Silent Provider",
+    "keywords": [
+      "Duty",
+      "Uncomplaining",
+      "Stoic Hustle"
+    ],
+    "hook_suggestion": "Hook: 'You will never hear a grown man say: I pay my bills, I go to work, I cook my food. Because that is the baseline.'",
+    "image_file": "Man_holding_letter_and_match.jpg",
+    "original_source": null
+  },
+  {
+    "id": 52,
+    "pillar": "Male Self-Reliance",
+    "shot_type": "CU",
+    "title": "The Solitary Blacksmith",
+    "keywords": [
+      "Forging Strength",
+      "Isolation",
+      "Fire"
+    ],
+    "hook_suggestion": "Hook: 'The iron does not complain about the hammer; it becomes a blade.'",
+    "image_file": "Blacksmith_striking_steel_on_anvil.jpg",
+    "original_source": "Blacksmith_striking_steel_on_anvil_20261011061048.jpg"
+  },
+  {
+    "id": 53,
+    "pillar": "Male Self-Reliance",
+    "shot_type": "MS",
+    "title": "Walking Alone in the Rain",
+    "keywords": [
+      "Independence",
+      "Rejection",
+      "Moving Forward"
+    ],
+    "hook_suggestion": "Hook: 'The fastest runner is always the one running alone.'",
+    "image_file": "King_walking_past_cloaked_woman.jpg",
+    "original_source": "King_walking_past_cloaked_woman_20261011061048.jpg"
+  },
+  {
+    "id": 54,
+    "pillar": "Male Self-Reliance",
+    "shot_type": "MCU",
+    "title": "The Late Night Blueprint",
+    "keywords": [
+      "Obsession",
+      "Building Empires",
+      "Solitude"
+    ],
+    "hook_suggestion": "Hook: 'Nobody cares about your preparation until you arrive in the victory parade.'",
+    "image_file": "Knight_walking_past_crown.jpg",
+    "original_source": "Knight_walking_past_crown_20261011061048.jpg"
+  },
+  {
+    "id": 55,
+    "pillar": "Male Self-Reliance",
+    "shot_type": "CU",
+    "title": "The Unflinching Boxer / Gladiator",
+    "keywords": [
+      "Resilience",
+      "Scars",
+      "Defiance"
+    ],
+    "hook_suggestion": "Hook: 'You cannot break a man who finds peace in the fire.'",
+    "image_file": "Gladiator_catching_breath_in_cat_.jpg",
+    "original_source": "Gladiator_catching_breath_in_cat…_20261011061048.jpg"
+  },
+  {
+    "id": 56,
+    "pillar": "Male Self-Reliance",
+    "shot_type": "MS",
+    "title": "The Silent Feast of One",
+    "keywords": [
+      "Solitary Success",
+      "Peace",
+      "Boundaries"
+    ],
+    "hook_suggestion": "Hook: 'A man who enjoys his own company is completely untamable.'",
+    "image_file": "Coins_tip_scales_of_justice.jpg",
+    "original_source": "Coins_tip_scales_of_justice_20261011061048.jpg"
+  },
+  {
+    "id": 57,
+    "pillar": "Male Self-Reliance",
+    "shot_type": "MCU",
+    "title": "The Mentor and the Student",
+    "keywords": [
+      "Wisdom Passing",
+      "Harsh Truths"
+    ],
+    "hook_suggestion": "Hook: 'A good mentor does not tell you what you want to hear; he ruins your excuses.'",
+    "image_file": "Commanders_plotting_over_war_map.jpg",
+    "original_source": "Commanders_plotting_over_war_map_20261011061048.jpg"
+  },
+  {
+    "id": 58,
+    "pillar": "Male Self-Reliance",
+    "shot_type": "CU",
+    "title": "The Calloused Hands",
+    "keywords": [
+      "Honest Work",
+      "Reality",
+      "Proof"
+    ],
+    "hook_suggestion": "Hook: 'Show me your hands, and I will tell you if you talk or build.'",
+    "image_file": "Hands_exchanging_goblet_of_wine.jpg",
+    "original_source": "Hands_exchanging_goblet_of_wine_20261011061048.jpg"
+  },
+  {
+    "id": 59,
+    "pillar": "Male Self-Reliance",
+    "shot_type": "MS",
+    "title": "Standing at the Crossroads",
+    "keywords": [
+      "Critical Choice",
+      "No Turning Back"
+    ],
+    "hook_suggestion": "Hook: 'The easy path is crowded because it leads nowhere worth going.'",
+    "image_file": "Traveler_standing_at_road_fork.jpg",
+    "original_source": "Traveler_standing_at_road_fork_20261011061048.jpg"
+  },
+  {
+    "id": 60,
+    "pillar": "Male Self-Reliance",
+    "shot_type": "MCU",
+    "title": "The Lion Resting in Shadow",
+    "keywords": [
+      "Dangerous Restraint",
+      "Unspoken Power"
+    ],
+    "hook_suggestion": "Hook: 'Do not mistake a peaceful man for a harmless man.'",
+    "image_file": "Aging_king_smirking_in_shadows.jpg",
+    "original_source": "Aging_king_smirking_in_shadows_20261011061048.jpg"
+  },
+  {
+    "id": 61,
+    "pillar": "Religious Hypocrisy",
+    "shot_type": "MS",
+    "title": "The Cathedral Blessing",
+    "keywords": [
+      "Religious Grandeur",
+      "Corruption",
+      "Front Row"
+    ],
+    "hook_suggestion": "Hook: 'His pastor gives him the front row, and the congregation shouts Amen when he testifies to blessings.'",
+    "image_file": "Politician_receiving_blessing_in_.jpg",
+    "original_source": "Politician_receiving_blessing_in…_20261011061048.jpg"
+  },
+  {
+    "id": 62,
+    "pillar": "Religious Hypocrisy",
+    "shot_type": "CU",
+    "title": "The Preacher's Gold Watch",
+    "keywords": [
+      "Tithe",
+      "Prosperity Gospel",
+      "Greed"
+    ],
+    "hook_suggestion": "Hook: 'He tells you to sow a seed for heaven while he buys a mansion on earth.'",
+    "image_file": "Banker_counting_gold_bars.jpg",
+    "original_source": "Banker_counting_gold_bars_20261011061048.jpg"
+  },
+  {
+    "id": 63,
+    "pillar": "Religious Hypocrisy",
+    "shot_type": "MS",
+    "title": "The Pearly Gate with Armed Guards",
+    "keywords": [
+      "Existential Doubt",
+      "Heaven",
+      "Exclusion"
+    ],
+    "hook_suggestion": "Hook: 'If heaven is safe, why does it have a gate?'",
+    "image_file": "Audience_member_clapping_with_te_.jpg",
+    "original_source": "Audience_member_clapping_with_te…_20261011061048.jpg"
+  },
+  {
+    "id": 64,
+    "pillar": "Religious Hypocrisy",
+    "shot_type": "MCU",
+    "title": "The False Prophet Smirk",
+    "keywords": [
+      "Spiritual Manipulation",
+      "Performance"
+    ],
+    "hook_suggestion": "Hook: 'The easiest way to rob a man is to convince him that God requested the withdrawal.'",
+    "image_file": "Aging_king_smirking_in_shadows.jpg",
+    "original_source": "Aging_king_smirking_in_shadows_20261011061048.jpg"
+  },
+  {
+    "id": 65,
+    "pillar": "Religious Hypocrisy",
+    "shot_type": "MS",
+    "title": "The Money Changers in the Temple",
+    "keywords": [
+      "Sanctuary Turned Market",
+      "Outrage"
+    ],
+    "hook_suggestion": "Hook: 'The temple did not fall to enemies; it fell to businessmen in holy robes.'",
+    "image_file": "Aging_king_smirking_in_shadows.jpg",
+    "original_source": "Aging_king_smirking_in_shadows_20261011061048.jpg"
+  },
+  {
+    "id": 66,
+    "pillar": "Religious Hypocrisy",
+    "shot_type": "CU",
+    "title": "The Velvet Tithe Basket",
+    "keywords": [
+      "Extraction",
+      "Wealth Transfer",
+      "Guilt"
+    ],
+    "hook_suggestion": "Hook: 'They sell guilt by the bucket and buy luxury by the gallon.'",
+    "image_file": "Aristocratic_woman_posing_in_velvet.jpg",
+    "original_source": "Aristocratic_woman_posing_in_velvet_20261011061048.jpg"
+  },
+  {
+    "id": 67,
+    "pillar": "Religious Hypocrisy",
+    "shot_type": "MCU",
+    "title": "The Sanctified Politician",
+    "keywords": [
+      "Washing Crimes",
+      "Holy Water"
+    ],
+    "hook_suggestion": "Hook: 'Holy water cannot wash a conscience that was sold for billions.'",
+    "image_file": "Politicians_dueling_with_wooden__.jpg",
+    "original_source": "Politicians_dueling_with_wooden_…_20261011061048.jpg"
+  },
+  {
+    "id": 68,
+    "pillar": "Religious Hypocrisy",
+    "shot_type": "MS",
+    "title": "The Cathedral Shadows",
+    "keywords": [
+      "Hidden Vice in Holy Places"
+    ],
+    "hook_suggestion": "Hook: 'The holiest buildings often cast the darkest shadows.'",
+    "image_file": "Aging_king_smirking_in_shadows.jpg",
+    "original_source": "Aging_king_smirking_in_shadows_20261011061048.jpg"
+  },
+  {
+    "id": 69,
+    "pillar": "Religious Hypocrisy",
+    "shot_type": "CU",
+    "title": "The Burning Idol",
+    "keywords": [
+      "False Gods",
+      "Awakening",
+      "Reckoning"
+    ],
+    "hook_suggestion": "Hook: 'When your idol falls, do not weep for the stone; celebrate your freedom.'",
+    "image_file": "Wooden_cart_burning_in_square.jpg",
+    "original_source": "Wooden_cart_burning_in_square_20261011061048.jpg"
+  },
+  {
+    "id": 70,
+    "pillar": "Religious Hypocrisy",
+    "shot_type": "MCU",
+    "title": "The Sinner on the Front Pew",
+    "keywords": [
+      "Bought Absolution",
+      "Impunity"
+    ],
+    "hook_suggestion": "Hook: 'In this church, your repentance is directly proportional to your bank balance.'",
+    "image_file": "Antique_brass_key_on_deed.jpg",
+    "original_source": "Antique_brass_key_on_deed_20261011061048.jpg"
+  },
+  {
+    "id": 71,
+    "pillar": "The Masquerade & Pretense",
+    "shot_type": "MS",
+    "title": "The National Audition",
+    "keywords": [
+      "Auditioning Citizens",
+      "Golden Masks"
+    ],
+    "hook_suggestion": "Hook: 'We do not have a leadership problem. We have a national audition.'",
+    "image_file": "Noblewoman_reviewing_suitor_resumes.jpg",
+    "original_source": null
+  },
+  {
+    "id": 72,
+    "pillar": "The Masquerade & Pretense",
+    "shot_type": "CU",
+    "title": "Taking Off the Smiling Mask",
+    "keywords": [
+      "Two Faces",
+      "True Intent",
+      "Unmasked"
+    ],
+    "hook_suggestion": "Hook: 'Pay attention to how people treat you when they no longer need you to play your role.'",
+    "image_file": "Bound_man_smiling_at_camera.jpg",
+    "original_source": "Bound_man_smiling_at_camera_20261011061048.jpg"
+  },
+  {
+    "id": 73,
+    "pillar": "The Masquerade & Pretense",
+    "shot_type": "MS",
+    "title": "The Venetian Masquerade Ball",
+    "keywords": [
+      "Elite Hypocrisy",
+      "Aristocracy",
+      "Shadows"
+    ],
+    "hook_suggestion": "Hook: 'The highest levels of society are just kindergarten with expensive costumes.'",
+    "image_file": "Aging_king_smirking_in_shadows.jpg",
+    "original_source": "Aging_king_smirking_in_shadows_20261011061048.jpg"
+  },
+  {
+    "id": 74,
+    "pillar": "The Masquerade & Pretense",
+    "shot_type": "MCU",
+    "title": "The Air-Conditioned Activist",
+    "keywords": [
+      "Complacency",
+      "Co-optation",
+      "The Chair"
+    ],
+    "hook_suggestion": "Hook: 'The moment an angry activist gets appointed into office, his outrage evaporates into air conditioning.'",
+    "image_file": "Elderly_aristocrat_sitting_in_chair.jpg",
+    "original_source": "Elderly_aristocrat_sitting_in_chair_20261011061048.jpg"
+  },
+  {
+    "id": 75,
+    "pillar": "The Masquerade & Pretense",
+    "shot_type": "CU",
+    "title": "The Puppet Strings",
+    "keywords": [
+      "Control",
+      "Illusion of Choice",
+      "Manipulation"
+    ],
+    "hook_suggestion": "Hook: 'You think you are voting for leaders; you are just choosing which hand holds the strings.'",
+    "image_file": "Philosopher_holding_coin_portrait.jpg",
+    "original_source": null
+  },
+  {
+    "id": 76,
+    "pillar": "The Masquerade & Pretense",
+    "shot_type": "MS",
+    "title": "The Stage Play of Power",
+    "keywords": [
+      "Political Theater",
+      "Drama",
+      "Illusions"
+    ],
+    "hook_suggestion": "Hook: 'Politics is wrestling for people with college degrees.'",
+    "image_file": "Coins_tip_scales_of_justice.jpg",
+    "original_source": "Coins_tip_scales_of_justice_20261011061048.jpg"
+  },
+  {
+    "id": 77,
+    "pillar": "The Masquerade & Pretense",
+    "shot_type": "CU",
+    "title": "The Cracked Mirror Reflection",
+    "keywords": [
+      "Identity Crisis",
+      "Pretense",
+      "Hollow"
+    ],
+    "hook_suggestion": "Hook: 'If you perform for everyone, you will eventually forget who was behind the costume.'",
+    "image_file": "Man_gazing_into_cracked_mirrors.jpg",
+    "original_source": "Man_gazing_into_cracked_mirrors_20261011061048.jpg"
+  },
+  {
+    "id": 78,
+    "pillar": "The Masquerade & Pretense",
+    "shot_type": "MCU",
+    "title": "The Fake Mourners",
+    "keywords": [
+      "Performative Grief",
+      "Public Sympathy"
+    ],
+    "hook_suggestion": "Hook: 'Most sympathy is just rehearsal for gossip.'",
+    "image_file": "Politicians_dueling_with_wooden__.jpg",
+    "original_source": null
+  },
+  {
+    "id": 79,
+    "pillar": "The Masquerade & Pretense",
+    "shot_type": "MS",
+    "title": "The Empty Golden Throne",
+    "keywords": [
+      "Power Vacuum",
+      "Vanity",
+      "Fleeting Glory"
+    ],
+    "hook_suggestion": "Hook: 'Every emperor believed his dynasty was permanent until the grass grew over his throne.'",
+    "image_file": "Golden_throne_in_abandoned_hall.jpg",
+    "original_source": "Golden_throne_in_abandoned_hall_20261011061048.jpg"
+  },
+  {
+    "id": 80,
+    "pillar": "The Masquerade & Pretense",
+    "shot_type": "CU",
+    "title": "The Applause at Gunpoint",
+    "keywords": [
+      "Forced Loyalty",
+      "Dictatorship",
+      "Fear"
+    ],
+    "hook_suggestion": "Hook: 'When loyalty is enforced by fear, betrayal is guaranteed by morning.'",
+    "image_file": "Aristocratic_courtier_bowing_wit_.jpg",
+    "original_source": "Aristocratic_courtier_bowing_wit…_20261011061048.jpg"
+  },
+  {
+    "id": 81,
+    "pillar": "The Fortress & Elites",
+    "shot_type": "MS",
+    "title": "The Unreachable Citadel",
+    "keywords": [
+      "The Dream",
+      "Disillusionment",
+      "Spiked Gates"
+    ],
+    "hook_suggestion": "Hook: 'The dream was never to fix the country.'",
+    "image_file": "Prisoner_in_cage_in_court.jpg",
+    "original_source": null
+  },
+  {
+    "id": 82,
+    "pillar": "The Fortress & Elites",
+    "shot_type": "MCU",
+    "title": "The Elites on the Balcony",
+    "keywords": [
+      "Looking Down",
+      "Separation",
+      "Disdain"
+    ],
+    "hook_suggestion": "Hook: 'The view from the penthouse always makes the traffic below look insignificant.'",
+    "image_file": "Aristocrats_looking_from_balcony.jpg",
+    "original_source": "Aristocrats_looking_from_balcony_20261011061048.jpg"
+  },
+  {
+    "id": 83,
+    "pillar": "The Fortress & Elites",
+    "shot_type": "MS",
+    "title": "The Narrow Gate Entry",
+    "keywords": [
+      "Exclusivity",
+      "Quota",
+      "Gatekeepers"
+    ],
+    "hook_suggestion": "Hook: 'They do not want the door closed; they just want to be the ones selling the key.'",
+    "image_file": "Gatekeeper_permitting_wealthy_pe_.jpg",
+    "original_source": "Gatekeeper_permitting_wealthy_pe…_20261011061048.jpg"
+  },
+  {
+    "id": 84,
+    "pillar": "The Fortress & Elites",
+    "shot_type": "CU",
+    "title": "The Key to the City",
+    "keywords": [
+      "Access",
+      "Privileged Club",
+      "Oligarchy"
+    ],
+    "hook_suggestion": "Hook: 'Power is not about wealth; power is having the master key.'",
+    "image_file": "Antique_brass_key_on_deed.jpg",
+    "original_source": "Antique_brass_key_on_deed_20261011061048.jpg"
+  },
+  {
+    "id": 85,
+    "pillar": "The Fortress & Elites",
+    "shot_type": "MS",
+    "title": "The Banquet Outside the Window",
+    "keywords": [
+      "Starvation vs Decadence",
+      "Contrast"
+    ],
+    "hook_suggestion": "Hook: 'While ninety percent of the people hustle for bread, ten percent argue about the vintage of wine.'",
+    "image_file": "Beggar_boy_watching_banquet.jpg",
+    "original_source": "Beggar_boy_watching_banquet_20261011061048.jpg"
+  },
+  {
+    "id": 86,
+    "pillar": "The Fortress & Elites",
+    "shot_type": "MCU",
+    "title": "The Watchtower Guard",
+    "keywords": [
+      "Vigilance",
+      "Threat of Revolt",
+      "Fear of Mob"
+    ],
+    "hook_suggestion": "Hook: 'Those inside the castle are far more terrified of the crowd than the crowd is of the walls.'",
+    "image_file": "Armored_guard_looking_at_torches.jpg",
+    "original_source": "Armored_guard_looking_at_torches_20261011061048.jpg"
+  },
+  {
+    "id": 87,
+    "pillar": "The Fortress & Elites",
+    "shot_type": "MS",
+    "title": "The Secret Escape Tunnel",
+    "keywords": [
+      "Elites Fleeing",
+      "Abandoning Ship"
+    ],
+    "hook_suggestion": "Hook: 'When the crisis hits, notice which planes take off first.'",
+    "image_file": "Silhouettes_gazing_at_golden_cit_.jpg",
+    "original_source": null
+  },
+  {
+    "id": 88,
+    "pillar": "The Fortress & Elites",
+    "shot_type": "CU",
+    "title": "The Moat and the Drawbridge",
+    "keywords": [
+      "Fortified Isolation",
+      "Distrust"
+    ],
+    "hook_suggestion": "Hook: 'Build your life so solidly that other people's chaos cannot cross your moat.'",
+    "image_file": "Drawbridge_pulling_up_castle_moat.jpg",
+    "original_source": "Drawbridge_pulling_up_castle_moat_20261011061048.jpg"
+  },
+  {
+    "id": 89,
+    "pillar": "The Fortress & Elites",
+    "shot_type": "MCU",
+    "title": "The Bouncer of High Society",
+    "keywords": [
+      "Gatekeeping",
+      "Class Divide",
+      "Rejection"
+    ],
+    "hook_suggestion": "Hook: 'They will never invite you into their club, so stop auditioning and build your own.'",
+    "image_file": "Coins_tip_scales_of_justice.jpg",
+    "original_source": "Coins_tip_scales_of_justice_20261011061048.jpg"
+  },
+  {
+    "id": 90,
+    "pillar": "The Fortress & Elites",
+    "shot_type": "MS",
+    "title": "The Gilded Cage",
+    "keywords": [
+      "Golden Prison",
+      "Trapped in Luxury"
+    ],
+    "hook_suggestion": "Hook: 'Never trade your freedom for someone else's comfortable prison.'",
+    "image_file": "Prisoner_in_cage_in_court.jpg",
+    "original_source": "Prisoner_in_cage_in_court_20261011061048.jpg"
+  },
+  {
+    "id": 91,
+    "pillar": "Biblical & Ancient Parables",
+    "shot_type": "MS",
+    "title": "Joseph Running from Potiphar's Wife",
+    "keywords": [
+      "Unexpected Motives",
+      "Ancient Paradox"
+    ],
+    "hook_suggestion": "Hook: 'What if the reason Joseph ran from Potiphar's wife was because he wasn't into women? Just think about it.'",
+    "image_file": "Aristocrats_looking_from_balcony.jpg",
+    "original_source": "Aristocrats_looking_from_balcony_20261011061048.jpg"
+  },
+  {
+    "id": 92,
+    "pillar": "Biblical & Ancient Parables",
+    "shot_type": "MCU",
+    "title": "Socrates Holding the Hemlock Cup",
+    "keywords": [
+      "The Price of Truth",
+      "Martyrdom",
+      "Calm"
+    ],
+    "hook_suggestion": "Hook: 'They killed the wisest man in Athens because he asked too many uncomfortable questions.'",
+    "image_file": "Socrates_reaching_for_poison_cup.jpg",
+    "original_source": "Socrates_reaching_for_poison_cup_20261011061048.jpg"
+  },
+  {
+    "id": 93,
+    "pillar": "Biblical & Ancient Parables",
+    "shot_type": "CU",
+    "title": "The Thirty Pieces of Silver",
+    "keywords": [
+      "The Price of Loyalty",
+      "Judas"
+    ],
+    "hook_suggestion": "Hook: 'Everyone has a price until they realize what they traded away.'",
+    "image_file": "Coins_tip_scales_of_justice.jpg",
+    "original_source": "Coins_tip_scales_of_justice_20261011061048.jpg"
+  },
+  {
+    "id": 94,
+    "pillar": "Biblical & Ancient Parables",
+    "shot_type": "MS",
+    "title": "David and the Giant's Armor",
+    "keywords": [
+      "Rejecting Borrowed Tools",
+      "Authenticity"
+    ],
+    "hook_suggestion": "Hook: 'Do not fight with weapons you have not tested.'",
+    "image_file": "Armored_guard_looking_at_torches.jpg",
+    "original_source": "Armored_guard_looking_at_torches_20261011061048.jpg"
+  },
+  {
+    "id": 95,
+    "pillar": "Biblical & Ancient Parables",
+    "shot_type": "MCU",
+    "title": "Solomon's Sword over the Child",
+    "keywords": [
+      "Testing True Motives",
+      "Extreme Truth"
+    ],
+    "hook_suggestion": "Hook: 'Pressure does not change who you are; it reveals what you care about.'",
+    "image_file": "Commanders_plotting_over_war_map.jpg",
+    "original_source": "Commanders_plotting_over_war_map_20261011061048.jpg"
+  },
+  {
+    "id": 96,
+    "pillar": "Biblical & Ancient Parables",
+    "shot_type": "MS",
+    "title": "The Tower of Babel Confusion",
+    "keywords": [
+      "Miscommunication",
+      "Hubris",
+      "Collapse"
+    ],
+    "hook_suggestion": "Hook: 'When God wants to destroy an arrogant project, He does not send an army; He confuses their language.'",
+    "image_file": "Coins_tip_scales_of_justice.jpg",
+    "original_source": "Coins_tip_scales_of_justice_20261011061048.jpg"
+  },
+  {
+    "id": 97,
+    "pillar": "Biblical & Ancient Parables",
+    "shot_type": "CU",
+    "title": "The Prodigal Son's Empty Bowl",
+    "keywords": [
+      "Rock Bottom",
+      "Realization",
+      "Hunger"
+    ],
+    "hook_suggestion": "Hook: 'Rock bottom is the solid foundation upon which real wisdom is built.'",
+    "image_file": "Prisoner_in_cage_in_court.jpg",
+    "original_source": "Prisoner_in_cage_in_court_20261011061048.jpg"
+  },
+  {
+    "id": 98,
+    "pillar": "Biblical & Ancient Parables",
+    "shot_type": "MCU",
+    "title": "Samson in Chains",
+    "keywords": [
+      "Betrayed by Charm",
+      "Blinded",
+      "Regret"
+    ],
+    "hook_suggestion": "Hook: 'A man defeated in battle can rebuild; a man defeated by his own desires is destroyed.'",
+    "image_file": "Aging_king_smirking_in_shadows.jpg",
+    "original_source": "Aging_king_smirking_in_shadows_20261011061048.jpg"
+  },
+  {
+    "id": 99,
+    "pillar": "Biblical & Ancient Parables",
+    "shot_type": "MS",
+    "title": "The Blind Leading the Blind",
+    "keywords": [
+      "Mass Delusion",
+      "Following Fools"
+    ],
+    "hook_suggestion": "Hook: 'Be careful whose leadership you follow; they might just be walking off the cliff with good posture.'",
+    "image_file": "Woman_smiling_with_diamond_necklace.jpg",
+    "original_source": null
+  },
+  {
+    "id": 100,
+    "pillar": "Biblical & Ancient Parables",
+    "shot_type": "CU",
+    "title": "The Rebirth of the Fallen Angel",
+    "keywords": [
+      "Final Awakening",
+      "Unbroken Will",
+      "The Brand Hook"
+    ],
+    "hook_suggestion": "Closing viral brand hook: 'Do the work you are afraid to do. Truth Unfiltered.'",
+    "image_file": "Coins_tip_scales_of_justice.jpg",
+    "original_source": "Coins_tip_scales_of_justice_20261011061048.jpg"
+  }
+]

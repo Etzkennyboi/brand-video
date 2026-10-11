@@ -1,0 +1,348 @@
+{
+  "all_ranked": [
+    {
+      "id": "CAND_03",
+      "title": "THE CROWD CHOOSES BARABBAS",
+      "hook": "Never seek justice from a crowd. A mob does not want truth; it wants blood.",
+      "reality": "The collective mind is blind, hysterical, and easily guided by demagogues. They will crown you king on Sunday and cheer your public execution by Friday morning.",
+      "mechanism": "A crowd possesses zero conscience. Responsibility is diluted across thousands of screaming faces, allowing cowards to commit atrocities they would never dare alone.",
+      "truth": "The most dangerous illusion is believing public consensus equals moral righteousness.",
+      "outro": "Never adjust your compass by the roar of the arena. Stand alone, or be swallowed by the herd.",
+      "scores": {
+        "hook_score": 10.0,
+        "friction_score": 6.5,
+        "visual_score": 7.6,
+        "viral_score": 10.0,
+        "total_score": 34.1
+      },
+      "rank": 1
+    },
+    {
+      "id": "CAND_08",
+      "title": "THE KINGMAKER DILEMMA",
+      "hook": "Notice who stopped clapping when you started winning.",
+      "reality": "People love supporting you when you are struggling because your misery flatters their superiority. They will happily play the protector as long as you stay beneath them.",
+      "mechanism": "The moment you outgrow the pedestal built by your mentor, their encouragement curdles into quiet resentment. An ally rarely forgives you for becoming their superior.",
+      "truth": "The knife that cuts the deepest is never held by a stranger. It is wielded by the ally who believed they owned your future.",
+      "outro": "Build your kingdom with those who celebrate your crown, not those who demand rent for helping you lay the bricks.",
+      "scores": {
+        "hook_score": 10.0,
+        "friction_score": 7.2,
+        "visual_score": 8.4,
+        "viral_score": 8.5,
+        "total_score": 34.1
+      },
+      "rank": 2
+    },
+    {
+      "id": "CAND_02",
+      "title": "THE COMFORT CAGE",
+      "hook": "A comfortable salary is the drug employers give you to forget your ambition.",
+      "reality": "You tell yourself it is only temporary\u2014just until you pay down the debt, just until you buy the car. But decade by decade, the gilded cage shrinks around you.",
+      "mechanism": "The modern empire does not shackle your wrists with iron; it sedates your mind with convenience, direct deposits, and subscription entertainment.",
+      "truth": "You are not safe. You are merely well-fed livestock inside an economic pasture designed to harvest your prime years.",
+      "outro": "Either build your own vessel today, or spend your entire life rowing someone else's galleon into the sunset.",
+      "scores": {
+        "hook_score": 8.5,
+        "friction_score": 8.6,
+        "visual_score": 6.8,
+        "viral_score": 10.0,
+        "total_score": 33.9
+      },
+      "rank": 3
+    },
+    {
+      "id": "CAND_09",
+      "title": "THE TRANSACTIONAL TRUTH",
+      "hook": "Nobody loves you for who you are. They love what you bring to the table.",
+      "reality": "Strip away your usefulness, your income, your energy, and your humor. Watch how quickly the warmest room turns ice cold.",
+      "mechanism": "Every human relationship is an unwritten contract of mutual leverage. When your value drops to zero, sentimentality evaporates into thin air.",
+      "truth": "Do not weep over the transactional nature of humanity. Master it, so you are never left begging at an empty banquet.",
+      "outro": "Make sure you always own the table everyone else wants to sit at.",
+      "scores": {
+        "hook_score": 10.0,
+        "friction_score": 7.2,
+        "visual_score": 6.8,
+        "viral_score": 8.5,
+        "total_score": 32.5
+      },
+      "rank": 4
+    },
+    {
+      "id": "CAND_10",
+      "title": "THE ARCHITECT OF CHAOS",
+      "hook": "Never reveal your competence too early. It only earns you more work and more enemies.",
+      "reality": "The overachiever rushes forward with solutions and instantly inherits everyone else's neglected burdens. The wise strategist plays the fool and studies the board.",
+      "mechanism": "When people underestimate your intellect, they speak freely in front of you. They lower their shields and hand you the keys to their weaknesses.",
+      "truth": "Appearing harmless is the most lethal armor in history. It lets you strike from point-blank range.",
+      "outro": "Hide your brilliance behind a mask of simplicity until the moment of irreversible victory.",
+      "scores": {
+        "hook_score": 10.0,
+        "friction_score": 6.5,
+        "visual_score": 6.0,
+        "viral_score": 10.0,
+        "total_score": 32.5
+      },
+      "rank": 5
+    },
+    {
+      "id": "CAND_05",
+      "title": "THE MYTH OF KARMA",
+      "hook": "Karma is the comforting fairy tale weak men tell themselves to avoid fighting back.",
+      "reality": "The universe does not balance ledgers. Tyrants die peacefully in silk sheets, while the righteous starve in forgotten trenches waiting for cosmic retribution.",
+      "mechanism": "Justice is not a mystical law of physics; it is an act of human will and concentrated power. Waiting for karma is merely outsourcing your courage to the sky.",
+      "truth": "The wicked do not trip over their own shadows. They reign until someone with superior force strips the sceptre from their hands.",
+      "outro": "Stop praying for the storm to strike your enemy. Become the lightning yourself.",
+      "scores": {
+        "hook_score": 8.5,
+        "friction_score": 6.5,
+        "visual_score": 6.8,
+        "viral_score": 10.0,
+        "total_score": 31.8
+      },
+      "rank": 6
+    },
+    {
+      "id": "CAND_06",
+      "title": "THE PRICE OF CONSTANT AVAILABILITY",
+      "hook": "If you are always available, you will always be undervalued.",
+      "reality": "You answer every call on the first ring and solve emergencies that aren't yours. You think you are dependable; they think you have nothing better to do.",
+      "mechanism": "Human psychology only prizes what is scarce. Water in a desert is worth a fortune; water from an overflowing gutter is ignored and stepped on.",
+      "truth": "When your presence costs nothing, your absence leaves no void.",
+      "outro": "Make yourself scarce. Only what can be lost is ever cherished.",
+      "scores": {
+        "hook_score": 10.0,
+        "friction_score": 6.5,
+        "visual_score": 6.0,
+        "viral_score": 8.5,
+        "total_score": 31.0
+      },
+      "rank": 7
+    },
+    {
+      "id": "CAND_04",
+      "title": "THE STEALTH WEALTH PARADOX",
+      "hook": "Poor people buy luxury to look rich. Powerful people stay invisible to stay dangerous.",
+      "reality": "The moment you flash gold and designer logos, you paint a target on your back. You announce to competitors and envious relatives exactly what you have.",
+      "mechanism": "Ego demands an audience; sovereignty requires anonymity. When your wealth is silent, enemies fight in the dark against an adversary they cannot measure.",
+      "truth": "Flashing your treasure is the amateur's tax. It buys temporary envy at the price of permanent vulnerability.",
+      "outro": "Accumulate absolute power in silence, and let fools drown in their rented jewelry.",
+      "scores": {
+        "hook_score": 8.5,
+        "friction_score": 6.5,
+        "visual_score": 6.8,
+        "viral_score": 8.5,
+        "total_score": 30.3
+      },
+      "rank": 8
+    },
+    {
+      "id": "CAND_07",
+      "title": "THE SINNER ON THE FRONT PEW",
+      "hook": "The louder someone proclaims their virtue, the darker the rot in their basement.",
+      "reality": "The most ruthless hypocrites always wear the brightest robes. They police everyone else's morality to distract the crowd from inspecting their own hands.",
+      "mechanism": "Public sanctimony is an ancient armor. It shields the predator behind a wall of righteous indignation, daring anyone to question the crusader.",
+      "truth": "Genuine integrity is quiet and private. Loud morality is almost always an alibi.",
+      "outro": "Beware the man holding the collection plate. He usually counts the gold with the curtains closed.",
+      "scores": {
+        "hook_score": 8.5,
+        "friction_score": 6.5,
+        "visual_score": 6.8,
+        "viral_score": 8.5,
+        "total_score": 30.3
+      },
+      "rank": 9
+    },
+    {
+      "id": "CAND_01",
+      "title": "THE COWARD'S PERFUME",
+      "hook": "Being agreeable is not kindness. It is cowardice wearing perfume.",
+      "reality": "You swallow your tongue and smile through insults, believing compliance makes you noble. But the world never respects a doormat; it merely wipes its muddy boots on it.",
+      "mechanism": "Predators do not attack the strong; they hunt the predictable. When you never say no, your yes becomes completely worthless in every negotiation.",
+      "truth": "Kindness without teeth is not virtue. It is helplessness masquerading as morality.",
+      "outro": "Grow your claws first. Only then is your restraint a choice.",
+      "scores": {
+        "hook_score": 8.5,
+        "friction_score": 6.5,
+        "visual_score": 6.0,
+        "viral_score": 8.5,
+        "total_score": 29.5
+      },
+      "rank": 10
+    }
+  ],
+  "top_3": [
+    {
+      "id": "CAND_03",
+      "title": "THE CROWD CHOOSES BARABBAS",
+      "hook": "Never seek justice from a crowd. A mob does not want truth; it wants blood.",
+      "reality": "The collective mind is blind, hysterical, and easily guided by demagogues. They will crown you king on Sunday and cheer your public execution by Friday morning.",
+      "mechanism": "A crowd possesses zero conscience. Responsibility is diluted across thousands of screaming faces, allowing cowards to commit atrocities they would never dare alone.",
+      "truth": "The most dangerous illusion is believing public consensus equals moral righteousness.",
+      "outro": "Never adjust your compass by the roar of the arena. Stand alone, or be swallowed by the herd.",
+      "scores": {
+        "hook_score": 10.0,
+        "friction_score": 6.5,
+        "visual_score": 7.6,
+        "viral_score": 10.0,
+        "total_score": 34.1
+      },
+      "rank": 1
+    },
+    {
+      "id": "CAND_08",
+      "title": "THE KINGMAKER DILEMMA",
+      "hook": "Notice who stopped clapping when you started winning.",
+      "reality": "People love supporting you when you are struggling because your misery flatters their superiority. They will happily play the protector as long as you stay beneath them.",
+      "mechanism": "The moment you outgrow the pedestal built by your mentor, their encouragement curdles into quiet resentment. An ally rarely forgives you for becoming their superior.",
+      "truth": "The knife that cuts the deepest is never held by a stranger. It is wielded by the ally who believed they owned your future.",
+      "outro": "Build your kingdom with those who celebrate your crown, not those who demand rent for helping you lay the bricks.",
+      "scores": {
+        "hook_score": 10.0,
+        "friction_score": 7.2,
+        "visual_score": 8.4,
+        "viral_score": 8.5,
+        "total_score": 34.1
+      },
+      "rank": 2
+    },
+    {
+      "id": "CAND_02",
+      "title": "THE COMFORT CAGE",
+      "hook": "A comfortable salary is the drug employers give you to forget your ambition.",
+      "reality": "You tell yourself it is only temporary\u2014just until you pay down the debt, just until you buy the car. But decade by decade, the gilded cage shrinks around you.",
+      "mechanism": "The modern empire does not shackle your wrists with iron; it sedates your mind with convenience, direct deposits, and subscription entertainment.",
+      "truth": "You are not safe. You are merely well-fed livestock inside an economic pasture designed to harvest your prime years.",
+      "outro": "Either build your own vessel today, or spend your entire life rowing someone else's galleon into the sunset.",
+      "scores": {
+        "hook_score": 8.5,
+        "friction_score": 8.6,
+        "visual_score": 6.8,
+        "viral_score": 10.0,
+        "total_score": 33.9
+      },
+      "rank": 3
+    }
+  ],
+  "discarded": [
+    {
+      "id": "CAND_09",
+      "title": "THE TRANSACTIONAL TRUTH",
+      "hook": "Nobody loves you for who you are. They love what you bring to the table.",
+      "reality": "Strip away your usefulness, your income, your energy, and your humor. Watch how quickly the warmest room turns ice cold.",
+      "mechanism": "Every human relationship is an unwritten contract of mutual leverage. When your value drops to zero, sentimentality evaporates into thin air.",
+      "truth": "Do not weep over the transactional nature of humanity. Master it, so you are never left begging at an empty banquet.",
+      "outro": "Make sure you always own the table everyone else wants to sit at.",
+      "scores": {
+        "hook_score": 10.0,
+        "friction_score": 7.2,
+        "visual_score": 6.8,
+        "viral_score": 8.5,
+        "total_score": 32.5
+      },
+      "rank": 4
+    },
+    {
+      "id": "CAND_10",
+      "title": "THE ARCHITECT OF CHAOS",
+      "hook": "Never reveal your competence too early. It only earns you more work and more enemies.",
+      "reality": "The overachiever rushes forward with solutions and instantly inherits everyone else's neglected burdens. The wise strategist plays the fool and studies the board.",
+      "mechanism": "When people underestimate your intellect, they speak freely in front of you. They lower their shields and hand you the keys to their weaknesses.",
+      "truth": "Appearing harmless is the most lethal armor in history. It lets you strike from point-blank range.",
+      "outro": "Hide your brilliance behind a mask of simplicity until the moment of irreversible victory.",
+      "scores": {
+        "hook_score": 10.0,
+        "friction_score": 6.5,
+        "visual_score": 6.0,
+        "viral_score": 10.0,
+        "total_score": 32.5
+      },
+      "rank": 5
+    },
+    {
+      "id": "CAND_05",
+      "title": "THE MYTH OF KARMA",
+      "hook": "Karma is the comforting fairy tale weak men tell themselves to avoid fighting back.",
+      "reality": "The universe does not balance ledgers. Tyrants die peacefully in silk sheets, while the righteous starve in forgotten trenches waiting for cosmic retribution.",
+      "mechanism": "Justice is not a mystical law of physics; it is an act of human will and concentrated power. Waiting for karma is merely outsourcing your courage to the sky.",
+      "truth": "The wicked do not trip over their own shadows. They reign until someone with superior force strips the sceptre from their hands.",
+      "outro": "Stop praying for the storm to strike your enemy. Become the lightning yourself.",
+      "scores": {
+        "hook_score": 8.5,
+        "friction_score": 6.5,
+        "visual_score": 6.8,
+        "viral_score": 10.0,
+        "total_score": 31.8
+      },
+      "rank": 6
+    },
+    {
+      "id": "CAND_06",
+      "title": "THE PRICE OF CONSTANT AVAILABILITY",
+      "hook": "If you are always available, you will always be undervalued.",
+      "reality": "You answer every call on the first ring and solve emergencies that aren't yours. You think you are dependable; they think you have nothing better to do.",
+      "mechanism": "Human psychology only prizes what is scarce. Water in a desert is worth a fortune; water from an overflowing gutter is ignored and stepped on.",
+      "truth": "When your presence costs nothing, your absence leaves no void.",
+      "outro": "Make yourself scarce. Only what can be lost is ever cherished.",
+      "scores": {
+        "hook_score": 10.0,
+        "friction_score": 6.5,
+        "visual_score": 6.0,
+        "viral_score": 8.5,
+        "total_score": 31.0
+      },
+      "rank": 7
+    },
+    {
+      "id": "CAND_04",
+      "title": "THE STEALTH WEALTH PARADOX",
+      "hook": "Poor people buy luxury to look rich. Powerful people stay invisible to stay dangerous.",
+      "reality": "The moment you flash gold and designer logos, you paint a target on your back. You announce to competitors and envious relatives exactly what you have.",
+      "mechanism": "Ego demands an audience; sovereignty requires anonymity. When your wealth is silent, enemies fight in the dark against an adversary they cannot measure.",
+      "truth": "Flashing your treasure is the amateur's tax. It buys temporary envy at the price of permanent vulnerability.",
+      "outro": "Accumulate absolute power in silence, and let fools drown in their rented jewelry.",
+      "scores": {
+        "hook_score": 8.5,
+        "friction_score": 6.5,
+        "visual_score": 6.8,
+        "viral_score": 8.5,
+        "total_score": 30.3
+      },
+      "rank": 8
+    },
+    {
+      "id": "CAND_07",
+      "title": "THE SINNER ON THE FRONT PEW",
+      "hook": "The louder someone proclaims their virtue, the darker the rot in their basement.",
+      "reality": "The most ruthless hypocrites always wear the brightest robes. They police everyone else's morality to distract the crowd from inspecting their own hands.",
+      "mechanism": "Public sanctimony is an ancient armor. It shields the predator behind a wall of righteous indignation, daring anyone to question the crusader.",
+      "truth": "Genuine integrity is quiet and private. Loud morality is almost always an alibi.",
+      "outro": "Beware the man holding the collection plate. He usually counts the gold with the curtains closed.",
+      "scores": {
+        "hook_score": 8.5,
+        "friction_score": 6.5,
+        "visual_score": 6.8,
+        "viral_score": 8.5,
+        "total_score": 30.3
+      },
+      "rank": 9
+    },
+    {
+      "id": "CAND_01",
+      "title": "THE COWARD'S PERFUME",
+      "hook": "Being agreeable is not kindness. It is cowardice wearing perfume.",
+      "reality": "You swallow your tongue and smile through insults, believing compliance makes you noble. But the world never respects a doormat; it merely wipes its muddy boots on it.",
+      "mechanism": "Predators do not attack the strong; they hunt the predictable. When you never say no, your yes becomes completely worthless in every negotiation.",
+      "truth": "Kindness without teeth is not virtue. It is helplessness masquerading as morality.",
+      "outro": "Grow your claws first. Only then is your restraint a choice.",
+      "scores": {
+        "hook_score": 8.5,
+        "friction_score": 6.5,
+        "visual_score": 6.0,
+        "viral_score": 8.5,
+        "total_score": 29.5
+      },
+      "rank": 10
+    }
+  ]
+}
