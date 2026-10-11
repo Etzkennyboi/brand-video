@@ -3,12 +3,17 @@ import json
 import random
 import re
 
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DEFAULT_CATALOG = os.path.join(ROOT_DIR, "assets", "visual_vault", "catalog.json")
+DEFAULT_IMAGES = os.path.join(ROOT_DIR, "assets", "visual_vault", "images")
+
 class VisualSelector:
-    def __init__(self, catalog_path="the_untold_truth/assets/visual_vault/catalog.json", images_dir="the_untold_truth/assets/visual_vault/images"):
-        self.catalog_path = catalog_path
-        self.images_dir = images_dir
-        with open(catalog_path, "r", encoding="utf-8") as f:
+    def __init__(self, catalog_path=None, images_dir=None):
+        self.catalog_path = catalog_path or DEFAULT_CATALOG
+        self.images_dir = images_dir or DEFAULT_IMAGES
+        with open(self.catalog_path, "r", encoding="utf-8") as f:
             self.catalog = json.load(f)
+
 
     def _clean_word(self, w):
         return re.sub(r'[^a-zA-Z0-9]', '', w).lower()
@@ -80,13 +85,29 @@ class VisualSelector:
         if scene_segments:
             scene_segments[0]["start"] = 0.0
             for i in range(len(scene_segments) - 1):
-                # Bridge any gaps between sentences so video never stutters
                 boundary = round((scene_segments[i]["end"] + scene_segments[i+1]["start"]) / 2, 2)
                 scene_segments[i]["end"] = boundary
                 scene_segments[i]["duration"] = round(scene_segments[i]["end"] - scene_segments[i]["start"], 2)
                 scene_segments[i+1]["start"] = boundary
             scene_segments[-1]["end"] = round(total_duration, 2)
             scene_segments[-1]["duration"] = round(scene_segments[-1]["end"] - scene_segments[-1]["start"], 2)
+
+            # Consolidate micro-scenes (< 2.2s) into adjacent scenes, keeping scenes between 2.8s and 5.2s
+            merged = []
+            for seg in scene_segments:
+                if not merged:
+                    merged.append(seg)
+                else:
+                    last = merged[-1]
+                    if (seg["duration"] < 2.4 or last["duration"] < 2.5) and (last["duration"] + seg["duration"] <= 5.5):
+                        last["text"] += " " + seg["text"]
+                        last["end"] = seg["end"]
+                        last["duration"] = round(last["end"] - last["start"], 2)
+                        last["keywords"].extend(seg.get("keywords", []))
+                    else:
+                        merged.append(seg)
+            scene_segments = merged
+
 
         # 2. Semantic visual matching for each scene segment
         used_ids = set()
@@ -95,6 +116,34 @@ class VisualSelector:
         all_disk_images = set(os.listdir(self.images_dir))
 
         CONCEPT_MAP = {
+            "casino": ["banker", "coins", "gold", "scales", "deed"],
+            "slot": ["coins", "gold", "machinery", "anvil", "scales"],
+            "machine": ["blacksmith", "steel", "architect", "scales"],
+            "chips": ["coins", "gold", "silver", "balance"],
+            "chip": ["coins", "gold", "silver"],
+            "bet": ["coins", "hands", "exchange", "scales"],
+            "betting": ["coins", "hands", "exchange", "scales"],
+            "roulette": ["scales", "balance", "coins", "clock"],
+            "loss": ["ruins", "tomb", "beggar", "mud"],
+            "lose": ["ruins", "tomb", "beggar", "mud"],
+            "win": ["crown", "throne", "gold", "celebrate"],
+            "winning": ["crown", "throne", "gold"],
+            "trance": ["mirrors", "shadows", "candlelight"],
+            "vip": ["banquet", "wine", "goblet", "aristocrat"],
+            "drink": ["wine", "goblet", "banquet"],
+            "drinks": ["wine", "goblet", "banquet"],
+            "money": ["gold", "banker", "coins", "silver", "deed"],
+            "dollars": ["gold", "banker", "coins"],
+            "cents": ["coins", "silver", "palm"],
+            "politician": ["politician", "oligarch", "bishops", "courtier"],
+            "politicians": ["politician", "oligarch", "bishops", "courtier"],
+            "scam": ["courtier", "mask", "whispering", "bribe"],
+            "scammer": ["courtier", "mask", "whispering"],
+            "scammers": ["courtier", "mask", "whispering"],
+            "billionaire": ["oligarch", "banquet", "crown", "gold"],
+            "airline": ["carriage", "traveler", "road"],
+            "delay": ["clock", "window", "candlelight"],
+            "sports": ["gladiator", "warrior", "arena"],
             "applaud": ["clapping", "audience", "crowd"],
             "applause": ["clapping", "audience", "crowd"],
             "clapping": ["clapping", "audience"],
@@ -114,7 +163,6 @@ class VisualSelector:
             "weapon": ["blacksmith", "steel", "sword", "guard"],
             "surprise": ["mask", "carnival", "guard"],
             "gold": ["gold", "banker", "coins", "bishops"],
-            "money": ["gold", "banker", "coins", "deed"],
             "salary": ["gold", "deed", "key", "banker"],
             "corrupt": ["bishops", "gold", "scales", "mob"],
             "corruption": ["bishops", "gold", "scales", "mob"],
@@ -125,6 +173,7 @@ class VisualSelector:
             "replaced": ["grave", "key", "deed", "ruins"],
             "grave": ["shadows", "solitary", "ruins"]
         }
+
 
         for i, seg in enumerate(scene_segments):
             seg_text = seg["text"].lower()

@@ -64,11 +64,12 @@ class VoiceSynthesizer:
             chunks.append(" ".join(curr))
         return chunks
 
-    def synthesize_deepgram(self, text, output_wav, model="aura-angus-en"):
+    def synthesize_deepgram(self, text, output_wav, model="aura-orpheus-en"):
         """
         Synthesizes high-fidelity speech in milliseconds using Deepgram Aura TTS API.
-        Models: aura-angus-en (Charismatic Irish/British male - Sir Rogers), aura-arcas-en, aura-orpheus-en
+        Models: aura-orpheus-en (Crisp, confident, charismatic narrator - Sir Rogers), aura-arcas-en
         """
+
 
         key = self.deepgram_key or os.getenv("DEEPGRAM_API_KEY")
         if not key:
@@ -133,7 +134,7 @@ class VoiceSynthesizer:
                     print(f"      [Voice] Token #{idx+1} busy ({e}). Rolling over...", flush=True)
         raise RuntimeError(f"All tokens in pool exhausted. Last error: {last_err}")
 
-    def synthesize_speech(self, text, output_wav, ref_audio=None, ref_text=None, voice_engine="auto", deepgram_model="aura-helios-en"):
+    def synthesize_speech(self, text, output_wav, ref_audio=None, ref_text=None, voice_engine="auto", deepgram_model="aura-orpheus-en"):
         """
         Unified speech synthesis entrypoint.
         Engine choices: 'deepgram', 'f5', 'gtts', or 'auto' (prefers deepgram if key present, else f5).
@@ -180,22 +181,12 @@ class VoiceSynthesizer:
 
     def tighten_cadence(self, input_wav, output_wav, speed_factor=None, is_deepgram=False):
         """
-        Applies cadence refinement. For Deepgram, preserves natural comedic pauses and clear pitch.
+        Applies cadence refinement. For Deepgram, applies 1.14x tempo and trims silence for snappy viral retention.
         """
-        if is_deepgram:
-            # Deepgram voices have human pacing out of the box. Do NOT strip pauses!
-            cmd_clean = [
-                FFMPEG, '-y',
-                '-i', input_wav,
-                '-ar', '44100',
-                '-ac', '2',
-                output_wav
-            ]
-            subprocess.run(cmd_clean, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
-            return output_wav
+        factor = speed_factor or (1.14 if is_deepgram else self.speed_factor)
+        silence_dur = 0.18 if is_deepgram else 0.25
+        af = f"silenceremove=stop_periods=-1:stop_duration={silence_dur}:stop_threshold=-40dB,atempo={factor}"
 
-        factor = speed_factor or self.speed_factor
-        af = f"silenceremove=stop_periods=-1:stop_duration=0.28:stop_threshold=-42dB,atempo={factor}"
         cmd_tight = [
             FFMPEG, '-y',
             '-i', input_wav,
@@ -208,7 +199,7 @@ class VoiceSynthesizer:
         return output_wav
 
 
-    def synthesize(self, text, out_raw_wav, out_tight_wav, engine="auto", ref_audio=None, ref_text=None, deepgram_model="aura-helios-en"):
+    def synthesize(self, text, out_raw_wav, out_tight_wav, engine="auto", ref_audio=None, ref_text=None, deepgram_model="aura-orpheus-en"):
         self.synthesize_speech(text, out_raw_wav, ref_audio=ref_audio, ref_text=ref_text, voice_engine=engine, deepgram_model=deepgram_model)
         self.tighten_cadence(out_raw_wav, out_tight_wav, speed_factor=self.speed_factor)
         return out_tight_wav

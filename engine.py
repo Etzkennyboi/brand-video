@@ -115,11 +115,14 @@ class MasterEngine:
                 voice_engine="gtts"
             )
 
+        is_dg = (voice_engine == "deepgram" or (voice_engine == "auto" and bool(self.voice.deepgram_key or os.getenv("DEEPGRAM_API_KEY"))))
         self.voice.tighten_cadence(
             input_wav=raw_audio,
             output_wav=tight_audio,
-            speed_factor=self.brand["audio"]["voice_speed_factor"]
+            speed_factor=self.brand["audio"]["voice_speed_factor"],
+            is_deepgram=is_dg
         )
+
 
         # 3. Millisecond Whisper Transcription & Kinetic Subtitle Styling
         print("\n[3/6] SUBTITLES: Transcribing word boundaries & generating ASS captions...", flush=True)

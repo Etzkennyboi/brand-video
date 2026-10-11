@@ -98,18 +98,20 @@ class SinglePassRender:
         ]
         subprocess.run(cmd_concat, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
 
-        # Step 4: Mix audio with 500% BGM boost + broadcast compand + loudnorm limiter
+        # Step 4: Mix audio with balanced BGM + broadcast compand + loudnorm limiter
         mixed_audio = os.path.join(temp_dir, "_temp_mixed_audio.wav")
+        safe_bgm_vol = 0.22 if bgm_volume > 0.5 else bgm_volume
         audio_filter = (
             "[0:a]equalizer=f=120:t=q:w=1.2:g=2.8,"
-            "equalizer=f=2800:t=q:w=1.0:g=1.8,"
-            "equalizer=f=5500:t=q:w=1.0:g=2.2,"
-            "compand=attacks=0.02:decays=0.15:points=-60/-60|-24/-14|-12/-7|0/-2:soft-knee=6:gain=3[v_proc];"
-            f"[1:a]lowpass=f=7500,volume={bgm_volume}[bg_proc];"
+            "equalizer=f=2800:t=q:w=1.0:g=2.2,"
+            "equalizer=f=5500:t=q:w=1.0:g=2.5,"
+            "compand=attacks=0.02:decays=0.15:points=-60/-60|-24/-14|-12/-7|0/-2:soft-knee=6:gain=4[v_proc];"
+            f"[1:a]lowpass=f=7500,volume={safe_bgm_vol}[bg_proc];"
             "[v_proc][bg_proc]amix=inputs=2:normalize=0:dropout_transition=0[mix];"
             f"[mix]afade=t=out:st={total_duration - 0.6}:d=0.6[faded];"
             "[faded]loudnorm=I=-14.0:TP=-1.0:LRA=7.0[master]"
         )
+
         cmd_audio = [
             FFMPEG, '-y',
             '-i', voice_audio,
