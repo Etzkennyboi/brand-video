@@ -2,7 +2,8 @@ import os
 import json
 import re
 
-TEMPLATES = {
+# 1. THE UNTOLD TRUTH TEMPLATES (Cynical, Machiavellian, Cold Realism)
+UNTOLD_TRUTH_TEMPLATES = {
     "loyalty": {
         "title": "THE LOYALTY TRAP",
         "hook": "Being loyal to a company is the fastest way to get replaced.",
@@ -45,15 +46,87 @@ TEMPLATES = {
     }
 }
 
-class ScriptDirector:
-    def __init__(self, brand_title="THE UNTOLD TRUTH"):
-        self.brand_title = brand_title
+# 2. SIR ROGERS TEMPLATES (Cheeky Exploit Analyst, Game Theory, Simulation & Loopholes)
+SIR_ROGERS_TEMPLATES = {
+    "casino": {
+        "title": "HOW CASINOS TRICK YOUR BRAIN",
+        "hook": "You're a casino owner, and you have a problem. People don't like losing their money to you. Here's how you fix it.",
+        "mechanism_1": "Take down all the clocks, block out the windows, and rearrange your floor to have a maze-like layout. Now their sense of time and direction starts to blur.",
+        "mechanism_2": "Next, the critical move: replace real money with chips. It is so much harder to track how much you're down when it is just abstract colored tokens.",
+        "escalation": "Before they leave, hand them free drinks. Now they feel valued, and alcohol isn't exactly famous for improving risk management. When they lose big, stop them and hand them a shiny VIP loyalty card.",
+        "punchline": "They are now premium customers eligible for free hotel suites. And all they had to do was lose their entire paycheck."
+    },
+    "martingale": {
+        "title": "THE DOUBLE OR NOTHING TRAP",
+        "hook": "You just bet ten dollars on red and lost it. Fortunately, some guru online told you about a guaranteed win strategy.",
+        "mechanism_1": "Each time you lose, you just double the bet. So to recoup that ten bucks, you bet twenty. Still lose. Now to regain that, you bet forty. Ah, tough luck. Eighty. So close. One-sixty.",
+        "mechanism_2": "You have never seen a black streak so long. Surely it can't go for any longer. Your previous bet was twelve hundred dollars.",
+        "escalation": "So to recoup that loss, you dig into your life savings and bet your final twenty-five hundred dollars. You're in too deep to stop now. The bets are locked.",
+        "punchline": "The dealer spins the wheel, and this is exactly what goes wrong when you follow the Martingale betting trap."
+    },
+    "slot_machine": {
+        "title": "THE MOST ADDICTIVE MACHINE",
+        "hook": "Your job is to design the most addictive slot machine in history. Here is how you do it.",
+        "mechanism_1": "First, when a player loses, make sure it is a near miss. Studies show the human brain reacts to near misses similarly to actual wins. It feels frustrating, but it forces us to keep pulling.",
+        "mechanism_2": "Second, disguise losses as wins. If they bet a dollar and hit point five, they didn't lose fifty cents. They won fifty cents. Celebrate it with bright lights, sounds, and animations.",
+        "escalation": "Lastly, make it fast. This is not roulette where you wait between spins. Pack in as many spins per minute as possible until they enter a betting-induced trance.",
+        "punchline": "Congrats. You just designed the most profitable casino game in human history."
+    },
+    "billionaire_bet": {
+        "title": "THE BILLIONAIRE AIRLINE BET",
+        "hook": "Two billionaire friends who were rival airline owners agreed to a crazy bet with their egos on the line.",
+        "mechanism_1": "They both owned competing airlines and Formula One racing teams. So they agreed: whoever's team finishes last has to dress as a female flight attendant and serve drinks on the winner's airline.",
+        "mechanism_2": "When Richard Branson's team came last, he kept his word. He shaved his legs, kept his beard, put on lipstick, heels, and the full rival uniform.",
+        "escalation": "He did the safety demo and served drinks. But while serving juice, he realized the passenger was Tony Fernandez, the rival he lost the bet to. So naturally, he accidentally dumped an entire tray of orange juice right onto his lap.",
+        "punchline": "Tony spent the rest of the flight in his underwear on his own airplane. Man, if I'm ever rich, I want to be like these guys."
+    },
+    "illegal_gambling": {
+        "title": "THE STREET TRIVIA TRAP",
+        "hook": "If an influencer comes up to you in the street offering five bucks to answer trivia, don't answer too fast. You might be committing a felony.",
+        "mechanism_1": "Under lottery laws, an illegal gambling game requires three elements: prize, chance, and consideration. That means risking something of value for a chance-based reward.",
+        "mechanism_2": "If you ever flip a coin to decide who pays for dinner, that technically could be unlicensed gambling. Or playing credit card roulette where the waiter randomly selects whose card pays for the whole group.",
+        "escalation": "A street influencer is usually just a giveaway since you don't put money on the line. But what if you answer correctly, and then he looks you in the eye with a grin?",
+        "punchline": "And says: Do you want to go double or nothing?"
+    },
+    "scam_reversal": {
+        "title": "HOW SCAMMERS SCAMMED THE POLITICIANS",
+        "hook": "Who could fall for some silly scam like the Nigerian prince fraud? Well, actually, some Nigerian politicians.",
+        "mechanism_1": "When advance-fee email scams exploded, causing nearly a billion dollars in losses, the government launched an anti-corruption commission to hunt the fraudsters.",
+        "mechanism_2": "However, this completely backfired. Scammers did something genius. Instead of targeting random foreigners, they posed as federal investigators and sent letters to corrupt politicians.",
+        "escalation": "They told the politicians they had proof of their illegal bribes, but would kill the investigation for a fee. Out of pure paranoia, guilty officials rushed to comply.",
+        "punchline": "Raking in millions of dollars by using the politicians' own guilty secrets against them."
+    },
+    "betting_delay": {
+        "title": "THE ONE-SECOND DELAY HUSTLE",
+        "hook": "It's not easy to fool a multi-billion dollar betting company, but this might be the dumbest way to try.",
+        "mechanism_1": "In live sports betting, you can wager on events in real-time. Problem is, when someone scores, there is a one to two second delay before the bookie updates the digital system.",
+        "mechanism_2": "So bettors buy tickets, sit in the stadium, and try to mash the button the split-second the ball crosses the line. Except spotters in the arena will kick you out if they catch you on your phone.",
+        "escalation": "The workaround? Pop in an AirPod, call your buddy at home, and yell 'Let's go, they scored!' while he places the bet from his sofa.",
+        "punchline": "Except bookmaker algorithms detect abnormal latency patterns in milliseconds, and they freeze your account before you can cash out."
+    }
+}
 
-    def generate_script(self, topic_input):
+class ScriptDirector:
+    def __init__(self, brand_title="THE UNTOLD TRUTH", personality="untold_truth"):
+        self.brand_title = brand_title
+        self.set_personality(personality)
+
+    def set_personality(self, personality_key):
+        key = personality_key.lower().replace(" ", "_")
+        if "roger" in key:
+            self.personality = "sir_rogers"
+            self.brand_title = "SIR ROGERS"
+        else:
+            self.personality = "untold_truth"
+            self.brand_title = "THE UNTOLD TRUTH"
+
+    def generate_script(self, topic_input, personality=None):
         """
-        Generates a 5-beat viral retention script JSON.
-        topic_input can be a topic string or dictionary.
+        Generates a 5-beat viral retention script tailored to the chosen personality:
+        - 'untold_truth': Cynical, Machiavellian, philosophical power realism
+        - 'sir_rogers': Cheeky exploit analyst, game theory, simulation hooks, behavioral mechanics
         """
+        active_personality = personality or self.personality
         if isinstance(topic_input, dict):
             topic_str = topic_input.get("title", "") + " " + topic_input.get("theme", "")
         else:
@@ -61,14 +134,115 @@ class ScriptDirector:
 
         topic_lower = topic_str.lower()
 
-        # Match template or adapt
+        if "roger" in active_personality.lower():
+            return self._generate_sir_rogers_script(topic_str, topic_lower)
+        else:
+            return self._generate_untold_truth_script(topic_str, topic_lower)
+
+    def _generate_sir_rogers_script(self, topic_str, topic_lower):
+        # Match built-in Sir Rogers samples
+        chosen_key = "casino"
+        if "martingale" in topic_lower or "double" in topic_lower or "red" in topic_lower or "streak" in topic_lower:
+            chosen_key = "martingale"
+        elif "slot" in topic_lower or "machine" in topic_lower or "addict" in topic_lower:
+            chosen_key = "slot_machine"
+        elif "billionaire" in topic_lower or "rival" in topic_lower or "branson" in topic_lower or "bet" in topic_lower:
+            chosen_key = "billionaire_bet"
+        elif "trivia" in topic_lower or "influencer" in topic_lower or "illegal" in topic_lower or "lottery" in topic_lower:
+            chosen_key = "illegal_gambling"
+        elif "nigerian" in topic_lower or "scam" in topic_lower or "fraud" in topic_lower or "politician" in topic_lower:
+            chosen_key = "scam_reversal"
+        elif "delay" in topic_lower or "sports" in topic_lower or "airpod" in topic_lower or "bookie" in topic_lower:
+            chosen_key = "betting_delay"
+        elif "casino" in topic_lower or "chip" in topic_lower or "trap" in topic_lower or "money" in topic_lower:
+            chosen_key = "casino"
+        else:
+            # Dynamic Sir Rogers generation for ANY custom topic
+            clean_subject = re.sub(r'[^a-zA-Z0-9\s]', '', topic_str).strip().title()
+            return self._synthesize_dynamic_sir_rogers(clean_subject)
+
+        data = SIR_ROGERS_TEMPLATES[chosen_key]
+        beats = [
+            {
+                "beat_index": 1,
+                "name": "1. POV Simulation Hook",
+                "text": data["hook"],
+                "zoom_dir": "in",
+                "keywords": ["casino", "banker", "player", "bet", "cards", "gold"]
+            },
+            {
+                "beat_index": 2,
+                "name": "2. The Tactical Exploit",
+                "text": data["mechanism_1"],
+                "zoom_dir": "out",
+                "keywords": ["clock", "window", "maze", "roulette", "crowd", "chips"]
+            },
+            {
+                "beat_index": 3,
+                "name": "3. The Psychological Mechanism",
+                "text": data["mechanism_2"],
+                "zoom_dir": "in",
+                "keywords": ["coins", "scale", "hands", "exchange", "lights", "trance"]
+            },
+            {
+                "beat_index": 4,
+                "name": "4. Escalation & Trap",
+                "text": data["escalation"],
+                "zoom_dir": "out",
+                "keywords": ["vip", "drinks", "airpod", "phone", "banquet", "loss"]
+            },
+            {
+                "beat_index": 5,
+                "name": "5. Cheeky Punchline / Wrap-up",
+                "text": data["punchline"],
+                "zoom_dir": "in",
+                "keywords": ["smirk", "throne", "jackpot", "trophy", "congrats", "master"]
+            }
+        ]
+
+        full_script = " ".join([b["text"] for b in beats])
+        return {
+            "title": data["title"],
+            "personality": "sir_rogers",
+            "topic": topic_str,
+            "full_script": full_script,
+            "beats": beats
+        }
+
+    def _synthesize_dynamic_sir_rogers(self, subject):
+        """
+        Dynamically crafts a script in Sir Rogers' exact DNA for any custom subject.
+        DNA: Second-person POV roleplay -> Exploit 1 -> Cognitive bias manipulation -> VIP Escalation -> Cheeky punchline.
+        """
+        title = f"THE TRUTH ABOUT {subject.upper()}"
+        hook = f"You run a {subject.lower()} empire, and you have a problem. Customers don't like handing over their hard-earned money. Here is how you fix it."
+        mech_1 = f"First, alter the perception of value. Make the process fast, effortless, and wrapped in warm design. Now their rational decision-making starts to blur."
+        mech_2 = f"Second, the critical step: disguise the actual cost behind abstract tokens and subscriptions. Studies show it is ten times harder to notice loss when it feels like frictionless membership."
+        escalation = f"And just when they realize the trap and want to cancel, stop them right there and offer a shiny loyalty perk. Now they feel valued, and they double down on the very thing draining them."
+        punchline = f"Congrats. You just designed the most profitable business loophole in modern history."
+
+        beats = [
+            {"beat_index": 1, "name": "1. POV Simulation Hook", "text": hook, "zoom_dir": "in", "keywords": ["banker", "courtier", "gold", "smirk", "deal"]},
+            {"beat_index": 2, "name": "2. The Tactical Exploit", "text": mech_1, "zoom_dir": "out", "keywords": ["architect", "blueprint", "palace", "crowd"]},
+            {"beat_index": 3, "name": "3. The Psychological Mechanism", "text": mech_2, "zoom_dir": "in", "keywords": ["coins", "hands", "scale", "deed"]},
+            {"beat_index": 4, "name": "4. Escalation & Trap", "text": escalation, "zoom_dir": "out", "keywords": ["aristocrat", "banquet", "wine", "exchange"]},
+            {"beat_index": 5, "name": "5. Cheeky Punchline / Wrap-up", "text": punchline, "zoom_dir": "in", "keywords": ["throne", "crown", "master", "departure"]}
+        ]
+        return {
+            "title": title,
+            "personality": "sir_rogers",
+            "topic": subject,
+            "full_script": " ".join([b["text"] for b in beats]),
+            "beats": beats
+        }
+
+    def _generate_untold_truth_script(self, topic_str, topic_lower):
         chosen_key = "loyalty"
-        for k in TEMPLATES.keys():
+        for k in UNTOLD_TRUTH_TEMPLATES.keys():
             if k in topic_lower:
                 chosen_key = k
                 break
         
-        # Check additional keywords
         if "corrupt" in topic_lower or "truth" in topic_lower or "theat" in topic_lower:
             chosen_key = "corruption"
         elif "knife" in topic_lower or "betray" in topic_lower or "kingmaker" in topic_lower:
@@ -78,8 +252,7 @@ class ScriptDirector:
         elif "silence" in topic_lower or "stoic" in topic_lower or "quiet" in topic_lower:
             chosen_key = "silence"
 
-        data = TEMPLATES[chosen_key]
-
+        data = UNTOLD_TRUTH_TEMPLATES[chosen_key]
         beats = [
             {
                 "beat_index": 1,
@@ -119,16 +292,27 @@ class ScriptDirector:
         ]
 
         full_script = " ".join([b["text"] for b in beats])
-
         return {
             "title": data["title"],
+            "personality": "untold_truth",
             "topic": topic_str,
             "full_script": full_script,
             "beats": beats
         }
 
 if __name__ == "__main__":
-    director = ScriptDirector()
-    res = director.generate_script("The Myth of Loyalty at Work")
-    print("Script Generated:")
-    print(json.dumps(res, indent=2))
+    director = ScriptDirector(personality="sir_rogers")
+    print("--- SIR ROGERS SAMPLE ---")
+    s = director.generate_script("casino")
+    print(f"Title: {s['title']}")
+    print(f"Script: {s['full_script']}\n")
+
+    print("--- DYNAMIC SIR ROGERS TOPIC ---")
+    d = director.generate_script("Gym Memberships")
+    print(f"Title: {d['title']}")
+    print(f"Script: {d['full_script']}\n")
+
+    print("--- UNTOLD TRUTH SAMPLE ---")
+    u = director.generate_script("loyalty", personality="untold_truth")
+    print(f"Title: {u['title']}")
+    print(f"Script: {u['full_script']}")

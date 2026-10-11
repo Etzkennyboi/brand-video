@@ -32,12 +32,16 @@ def slugify(text):
     return text[:40]
 
 class MasterEngine:
-    def __init__(self):
+    def __init__(self, personality="untold_truth"):
         brand_config_path = os.path.join(CONFIG_DIR, "brand_rules.json")
         with open(brand_config_path, "r", encoding="utf-8") as f:
             self.brand = json.load(f)
 
-        self.director = ScriptDirector(brand_title=self.brand["brand_name"])
+        self.personality = personality
+        brand_label = "SIR ROGERS" if "roger" in personality.lower() else self.brand["brand_name"]
+        watermark_text = "SIR ROGERS" if "roger" in personality.lower() else self.brand["watermark"]["text"]
+
+        self.director = ScriptDirector(brand_title=brand_label, personality=personality)
         self.selector = VisualSelector(
             catalog_path=os.path.join(ASSETS_DIR, "visual_vault", "catalog.json"),
             images_dir=os.path.join(ASSETS_DIR, "visual_vault", "images")
@@ -49,104 +53,123 @@ class MasterEngine:
         )
         self.subtitles = SubtitleGenerator(model_size="base")
         self.renderer = SinglePassRender(
-            brand_title=self.brand["brand_name"],
-            watermark_text=self.brand["watermark"]["text"]
+            brand_title=brand_label,
+            watermark_text=watermark_text
         )
-        self.thumb_gen = ThumbnailGenerator(brand_title=self.brand["brand_name"])
+        self.thumb_gen = ThumbnailGenerator(brand_title=brand_label)
 
-    def run(self, topic_input, voice_engine="auto", ref_audio=None, out_name=None):
+    def set_personality(self, personality):
+        self.personality = personality
+        brand_label = "SIR ROGERS" if "roger" in personality.lower() else self.brand["brand_name"]
+        watermark_text = "SIR ROGERS" if "roger" in personality.lower() else self.brand["watermark"]["text"]
+        self.director.set_personality(personality)
+        self.renderer.brand_title = brand_label
+        self.renderer.watermark_text = watermark_text
+        self.thumb_gen.brand_title = brand_label
+
+    def run(self, topic_input, voice_engine="auto", ref_audio=None, out_name=None, personality=None):
+        if personality:
+            self.set_personality(personality)
+
+        brand_display = "SIR ROGERS" if "roger" in self.personality.lower() else "THE UNTOLD TRUTH"
+
         t_start = time.time()
         print("=" * 75, flush=True)
-        print(f"🎬 [THE UNTOLD TRUTH] INITIALIZING MASTER PRODUCTION ENGINE", flush=True)
+        print(f"🎬 [{brand_display}] INITIALIZING MASTER PRODUCTION ENGINE", flush=True)
         print("=" * 75, flush=True)
 
         # 1. Script Generation
         print("\n[1/6] NARRATIVE DIRECTING: Generating 5-beat retention script...", flush=True)
-        story = self.director.generate_script(topic_input)
+        if isinstance(topic_input, dict) and "beats" in topic_input:
+            story = topic_input
+        else:
+            story = self.director.generate_script(topic_input, personality=self.personality)
+
         title = story["title"]
         slug = slugify(title if not out_name else out_name)
-        print(f"      Title: {title}", flush=True)
-        print(f"      Hook:  \"{story['beats'][0]['text']}\"", flush=True)
+        print(f"      Personality: {brand_display}", flush=True)
+        print(f"      Title:       {title}", flush=True)
+        print(f"      Hook:        \"{story['beats'][0]['text']}\"", flush=True)
 
         # 2. Voiceover Synthesis
         print("\n[2/6] AUDIO SYNTHESIS: Generating tightened narration...", flush=True)
         raw_audio = os.path.join(DRAFTS_DIR, f"{slug}_raw_voice.wav")
         tight_audio = os.path.join(DRAFTS_DIR, f"{slug}_tight_voice.wav")
 
-        # Synthesize fresh with signature Video 5 cloned voice (F5-TTS)
-        ref_path = ref_audio or os.path.join(ROOT_DIR, self.brand["audio"]["ref_voice_audio"])
-        ref_txt = self.brand["audio"]["ref_voice_text"]
-        self.voice.synthesize(
-            story["full_script"],
-            raw_audio,
-            tight_audio,
-            engine="f5",
-            ref_audio=ref_path,
-            ref_text=ref_txt
+        ref = ref_audio or os.path.join(ASSETS_DIR, "ref_voice_vid5.wav")
+        ref_text = self.brand["audio"]["ref_voice_text"]
+
+        try:
+            self.voice.synthesize_speech(
+                text=story["full_script"],
+                output_wav=raw_audio,
+                ref_audio=ref,
+                ref_text=ref_text,
+                voice_engine=voice_engine
+            )
+        except Exception as e:
+            print(f"  [!] Fallback to gTTS due to: {e}", flush=True)
+            self.voice.synthesize_speech(
+                text=story["full_script"],
+                output_wav=raw_audio,
+                voice_engine="gtts"
+            )
+
+        self.voice.tighten_cadence(
+            input_wav=raw_audio,
+            output_wav=tight_audio,
+            speed_factor=self.brand["audio"]["voice_speed_factor"]
         )
 
-        # 3. Subtitle Alignment & Timing
-        print("\n[3/6] SPEECH ALIGNMENT: Extracting word timestamps with Faster-Whisper...", flush=True)
-        words, total_duration = self.subtitles.extract_words(tight_audio)
-        print(f"      Narration Duration: {total_duration:.2f}s ({len(words)} words)", flush=True)
+        # 3. Millisecond Whisper Transcription & Kinetic Subtitle Styling
+        print("\n[3/6] SUBTITLES: Transcribing word boundaries & generating ASS captions...", flush=True)
+        words_data = self.subtitles.transcribe_words(tight_audio)
+        ass_path = os.path.join(DRAFTS_DIR, f"{slug}_captions.ass")
+        self.subtitles.generate_ass_file(words_data, ass_path, title=title)
 
-        # 4. Visual Scene Selection & Exact Whisper Boundary Synchronization
-        print("\n[4/6] SMART VAULT MATCHING: Synchronizing scenes with Whisper word boundaries...", flush=True)
-        scenes = self.selector.align_and_select_scenes(story["beats"], words, total_duration)
+        # 4. Cinematic Visual Matching & Dynamic Beat Alignment
+        print("\n[4/6] VISUAL CURATION: Matching 9:16 cinematic visuals from vault...", flush=True)
+        matched_cuts = self.selector.match_beats_to_images(story["beats"])
+        total_duration = words_data[-1]["end"] + 0.6 if words_data else 40.0
+        aligned_scenes = self.selector.align_cuts_to_whisper(matched_cuts, words_data, total_duration)
 
-        for s in scenes:
-            print(f"      Scene {s['scene_index']}: [{s['start']:05.2f}s - {s['end']:05.2f}s] ({s['duration']}s, {s['zoom_dir']}) -> {os.path.basename(s['image_path'])}", flush=True)
-            print(f"               Matching: \"{s['text_segment'][:55]}...\"", flush=True)
-
-        # 5. Kinetic Subtitles Generation
-        print("\n[5/6] SUBTITLES: Formatting amber kinetic pop ASS subtitles...", flush=True)
-        ass_path = os.path.join(DRAFTS_DIR, f"{slug}_subtitles.ass")
-        self.subtitles.generate_ass(words, title, ass_path, chunk_size=self.brand["subtitles"]["chunk_size"])
-
-        # 6. Single-Pass High-Speed Render (with 500% BGM Boost)
-        print(f"\n[6/6] COMPOSITING: Single-pass parallel rendering ({self.brand['audio'].get('bgm_boost_label', '500%')} BGM boost)...", flush=True)
-        bgm_rel = self.brand["audio"]["default_bgm"]
-        if bgm_rel.startswith("the_untold_truth/"):
-            bgm_rel = bgm_rel.replace("the_untold_truth/", "", 1)
-        bgm_path = os.path.join(ROOT_DIR, bgm_rel)
-        if not os.path.exists(bgm_path):
-            bgm_path = os.path.abspath(os.path.join(ROOT_DIR, "..", "soundtrack_from_video5.mp3"))
+        # 5. Parallel Motion Render & Single-Pass Compositor
+        print("\n[5/6] COMPOSITING: Single-pass hardware render with 500% BGM mix...", flush=True)
+        bgm_path = os.path.join(ASSETS_DIR, "bgm", "soundtrack_from_video5.mp3")
         final_mp4 = os.path.join(READY_DIR, f"{slug}_master.mp4")
 
-        self.renderer.build_video(
-            scenes=scenes,
+        self.renderer.render_full_video(
+            scenes=aligned_scenes,
             voice_audio=tight_audio,
             bgm_audio=bgm_path,
-            ass_path=ass_path,
-            total_duration=total_duration,
-            out_master_path=final_mp4,
-            bgm_volume=self.brand["audio"].get("bgm_volume_multiplier", 3.75)
+            ass_subtitles=ass_path,
+            output_mp4=final_mp4,
+            bgm_volume=self.brand["audio"]["bgm_volume_multiplier"],
+            total_duration=total_duration
         )
 
-        # 7. Cover Thumbnail Generation
-        print("\n[7/7] COVER THUMBNAIL: Generating high-CTR cover...", flush=True)
+        # 6. Cover Thumbnail & Metadata Generation
+        print("\n[6/6] PUBLISHING SUITE: Generating cover art thumbnail & metadata...", flush=True)
+        first_img = aligned_scenes[0]["image_path"] if aligned_scenes else os.path.join(ASSETS_DIR, "visual_vault", "images", "Aging_king_smirking_in_shadows.jpg")
         thumb_path = os.path.join(READY_DIR, f"{slug}_thumbnail.jpg")
-        try:
-            self.thumb_gen.generate_thumbnail(scenes[0]["image_path"], title, story["beats"][0]["text"], thumb_path)
-        except Exception as e:
-            print(f"      [Thumbnail] Warning: Thumbnail generation skipped ({e})", flush=True)
-            thumb_path = None
+        self.thumb_gen.generate_cover(
+            background_img=first_img,
+            title_text=title,
+            output_path=thumb_path,
+            brand_subtitle=brand_display
+        )
 
-        # 8. Metadata Packaging
+        # Save metadata JSON for publishing
         meta_path = os.path.join(READY_DIR, f"{slug}_metadata.json")
         metadata = {
-            "brand": self.brand["brand_name"],
-            "title": f"{title} | The Harsh Reality They Never Tell You #shorts",
+            "title": f"{title} | {brand_display}",
+            "personality": self.personality,
+            "description": f"{story['beats'][0]['text']}\n\nProduced autonomously by {brand_display} Studio.\n\n#psychology #mindset #motivation #shorts #viral",
             "hook": story["beats"][0]["text"],
-            "description": (
-                f"{story['beats'][0]['text']}\n\n"
-                f"{story['full_script']}\n\n"
-                f"Subscribe to @TheUntoldTruth for daily unfiltered psychology, harsh truths, and cynical wisdom.\n\n"
-                f"#TheUntoldTruth #DarkPsychology #Stoicism #HardTruths #Mindset #LifeLessons #Shorts"
-            ),
-            "hashtags": ["#TheUntoldTruth", "#DarkPsychology", "#Stoicism", "#CynicalTruth", "#LifeLessons", "#Shorts", "#Viral"],
-            "pinned_comment": f"What is a truth you learned too late in life? Drop it below. 👇",
-            "thumbnail": thumb_path,
+            "full_script": story["full_script"],
+            "tags": ["psychology", "viral", "shorts", "power", "truth", "gametheory", "mindset"],
+            "video_file": final_mp4,
+            "thumbnail_file": thumb_path,
             "duration_sec": total_duration,
             "created_at": time.strftime("%Y-%m-%d %H:%M:%S")
         }
@@ -155,35 +178,53 @@ class MasterEngine:
 
         total_elapsed = time.time() - t_start
         print("\n" + "=" * 75, flush=True)
-        print(f"✨ PRODUCTION COMPLETE in {total_elapsed:.1f}s!", flush=True)
+        print(f"✨ [{brand_display}] PRODUCTION COMPLETE in {total_elapsed:.1f}s!", flush=True)
         print(f"📁 Video:     {final_mp4}", flush=True)
         print(f"🖼️ Thumbnail: {thumb_path}", flush=True)
         print(f"📄 Metadata:  {meta_path}", flush=True)
         print("=" * 75 + "\n", flush=True)
         return final_mp4
 
+def ask_user_personality():
+    print("\n" + "=" * 55)
+    print("🎭 CHOOSE SCRIPT PERSONALITY:")
+    print("  [1] THE UNTOLD TRUTH (Dark, cynical, philosophical power)")
+    print("  [2] SIR ROGERS       (Cheeky, game theory, exploits, loopholes)")
+    print("=" * 55)
+    choice = input("Enter 1 or 2 (default 1): ").strip()
+    if choice == "2":
+        return "sir_rogers"
+    return "untold_truth"
+
 def main():
-    parser = argparse.ArgumentParser(description="THE UNTOLD TRUTH Video Production Engine")
+    parser = argparse.ArgumentParser(description="Automated Video Production Engine")
+    parser.add_argument("--personality", type=str, default=None, choices=["untold_truth", "sir_rogers", "ask"], help="Writer personality")
     parser.add_argument("--topic", type=str, default=None, help="Custom topic to produce")
     parser.add_argument("--auto", action="store_true", help="Pick next viral topic from topics vault")
     parser.add_argument("--voice", type=str, default="auto", choices=["auto", "f5", "gtts"], help="Voice engine")
     parser.add_argument("--ref", type=str, default=None, help="Reference audio for voice cloning")
     args = parser.parse_args()
 
-    engine = MasterEngine()
+    chosen_personality = args.personality
+    if not chosen_personality or chosen_personality == "ask":
+        if sys.stdin.isatty():
+            chosen_personality = ask_user_personality()
+        else:
+            chosen_personality = "untold_truth"
+
+    engine = MasterEngine(personality=chosen_personality)
 
     if args.auto:
         topics_file = os.path.join(CONFIG_DIR, "viral_topics_vault.json")
         with open(topics_file, "r", encoding="utf-8") as f:
             topics = json.load(f)
-        chosen_topic = topics[0] # Pick first or cycle
+        chosen_topic = topics[0]
         print(f"Autonomous Mode: Picked topic '{chosen_topic['title']}'", flush=True)
         engine.run(chosen_topic, voice_engine=args.voice, ref_audio=args.ref)
     elif args.topic:
         engine.run(args.topic, voice_engine=args.voice, ref_audio=args.ref)
     else:
-        # Default test topic
-        default_topic = "The Myth of Loyalty at Work"
+        default_topic = "How Casinos Trick Your Brain" if "roger" in chosen_personality else "The Myth of Loyalty at Work"
         engine.run(default_topic, voice_engine=args.voice, ref_audio=args.ref)
 
 if __name__ == "__main__":

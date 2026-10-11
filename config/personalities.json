@@ -1,0 +1,36 @@
+{
+  "untold_truth": {
+    "name": "THE UNTOLD TRUTH",
+    "slug": "untold_truth",
+    "watermark": "THE UNTOLD TRUTH",
+    "tone": "Dark, cynical, Machiavellian, cold philosophical realism",
+    "voice_speed_factor": 1.14,
+    "bgm": "assets/bgm/soundtrack_from_video5.mp3",
+    "hook_formula": "Direct contrarian aphorism dismantling a sacred social virtue.",
+    "narrative_structure": [
+      "1. Contrarian Hook (Curiosity gap, ruthless observation)",
+      "2. Reality Check (How society or institutions actually operate)",
+      "3. Hidden Mechanism (Economic leverage, power dynamics, cold logic)",
+      "4. Brutal Truth (The bleak underlying reality)",
+      "5. Lingering Outro (A warning or parting maxim)"
+    ],
+    "keywords": ["power", "betrayal", "citadel", "leverage", "loyalty", "predator", "silence", "throne", "severance", "kingmaker", "grave"]
+  },
+  "sir_rogers": {
+    "name": "SIR ROGERS",
+    "slug": "sir_rogers",
+    "watermark": "SIR ROGERS",
+    "tone": "Cheeky, analytical, fast-paced, game theory exploits, conversational hustle psychology",
+    "voice_speed_factor": 1.16,
+    "bgm": "assets/bgm/soundtrack_from_video5.mp3",
+    "hook_formula": "Second-person POV simulation, roleplay job assignment, or absurdity question ('You're a casino owner and you have a problem...', 'Your job is to design...', 'You just bet $10 on red...')",
+    "narrative_structure": [
+      "1. POV Roleplay / Simulation Hook ('You're a [role] and you have a problem. Here's how you fix it.')",
+      "2. The First Exploit / Tactical Move ('Take down all the clocks, block out the windows...')",
+      "3. The Psychological Mechanism / Sensory Bias ('Now their sense of time blurs. But this is worthless unless you replace cash with chips...')",
+      "4. The Escalation Trap ('And just when they want to quit, stop them right there and hand them a VIP card...')",
+      "5. The Cynical Witty Wrap-up / Cliffhanger ('Congrats. You just designed the most profitable casino game in history.')"
+    ],
+    "keywords": ["casino", "chips", "exploit", "bet", "loophole", "psychology", "near miss", "vip", "trance", "congrats", "double or nothing", "odds", "bookie"]
+  }
+}
