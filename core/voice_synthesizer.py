@@ -9,11 +9,16 @@ import urllib.request
 
 FFMPEG = r'C:\Users\User\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-9.0.1-full_build\bin\ffmpeg.EXE'
 
-DEFAULT_REF_AUDIO = os.path.abspath(r"the_untold_truth/assets/ref_voice_vid5.wav")
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DEFAULT_REF_AUDIO = os.path.join(ROOT_DIR, "assets", "ref_voice_vid5.wav")
 if not os.path.exists(DEFAULT_REF_AUDIO):
-    DEFAULT_REF_AUDIO = os.path.abspath(r"vid5_ref_clip.wav")
+    parent_dir = os.path.dirname(ROOT_DIR)
+    alt = os.path.join(parent_dir, "vid5_ref_clip.wav")
+    if os.path.exists(alt):
+        DEFAULT_REF_AUDIO = alt
 
 DEFAULT_REF_TEXT = "The word karma is a word used by losers. People use it when they're too powerless to get justice themselves."
+
 
 try:
     import dotenv
