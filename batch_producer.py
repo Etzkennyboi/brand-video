@@ -171,8 +171,9 @@ class BatchProducer:
         for r, winner in enumerate(winners):
             print(f"\n🎬 RENDERING CHAMPION [{r+1}/{top_k}]: {winner['title']}...")
             try:
-                mp4 = self.engine.run(winner, personality=self.personality)
+                mp4 = self.engine.run(winner, voice_engine="deepgram", personality=self.personality)
                 produced_videos.append(mp4)
+
             except Exception as e:
                 print(f"❌ Error rendering {winner['title']}: {e}")
 

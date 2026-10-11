@@ -7,7 +7,18 @@ class ThumbnailGenerator:
     def __init__(self, brand_title="THE UNTOLD TRUTH"):
         self.brand_title = brand_title
 
+    def generate_cover(self, background_img, title_text, output_path, brand_subtitle=None):
+        if brand_subtitle:
+            self.brand_title = brand_subtitle
+        return self.generate_thumbnail(
+            base_image=background_img,
+            hook_title=title_text,
+            hook_text=title_text,
+            out_thumbnail_path=output_path
+        )
+
     def generate_thumbnail(self, base_image, hook_title, hook_text, out_thumbnail_path):
+
         """
         Creates a high-CTR YouTube/TikTok cover thumbnail with dark vignette and bold curiosity hook.
         """

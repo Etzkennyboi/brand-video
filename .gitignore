@@ -19,9 +19,11 @@ out/drafts/
 out/layi_audio/
 out/ready_to_publish/*.mp4
 out/ready_to_publish/preview_frame*
-out/ready_to_publish/test_thumb*
+out/ready_to_publish/test*
+out/test*
 *.mp4
 *.m4a
+
 
 
 # Obsolete training / RVC datasets & large zip archives

@@ -4,6 +4,8 @@ import time
 import subprocess
 import shutil
 import re
+import json
+import urllib.request
 
 FFMPEG = r'C:\Users\User\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-9.0.1-full_build\bin\ffmpeg.EXE'
 
@@ -30,7 +32,7 @@ else:
 
 
 class VoiceSynthesizer:
-    def __init__(self, speed_factor=1.14, tokens=None, hf_token=None):
+    def __init__(self, speed_factor=1.14, tokens=None, hf_token=None, deepgram_api_key=None):
         self.speed_factor = speed_factor
         if isinstance(tokens, list) and len(tokens) > 0:
             self.tokens = tokens
@@ -38,6 +40,7 @@ class VoiceSynthesizer:
             self.tokens = [hf_token]
         else:
             self.tokens = DEFAULT_TOKENS
+        self.deepgram_key = deepgram_api_key or os.getenv("DEEPGRAM_API_KEY")
 
     def _chunk_text(self, text, max_words=26):
         """
@@ -61,16 +64,55 @@ class VoiceSynthesizer:
             chunks.append(" ".join(curr))
         return chunks
 
+    def synthesize_deepgram(self, text, output_wav, model="aura-helios-en"):
+        """
+        Synthesizes high-fidelity speech in milliseconds using Deepgram Aura TTS API.
+        Models: aura-helios-en (British male - Sir Rogers), aura-arcas-en (conversational male), aura-orpheus-en
+        """
+        key = self.deepgram_key or os.getenv("DEEPGRAM_API_KEY")
+        if not key:
+            raise ValueError("DEEPGRAM_API_KEY not configured in .env or arguments.")
+
+        os.makedirs(os.path.dirname(os.path.abspath(output_wav)), exist_ok=True)
+        url = f"https://api.deepgram.com/v1/speak?model={model}"
+        headers = {
+            "Authorization": f"Token {key}",
+            "Content-Type": "application/json"
+        }
+        payload = json.dumps({"text": text}).encode("utf-8")
+        req = urllib.request.Request(url, data=payload, headers=headers)
+
+        temp_audio = output_wav + ".temp.mp3"
+        t0 = time.time()
+        print(f"      [Deepgram] Synthesizing speech with model '{model}'...", flush=True)
+        with urllib.request.urlopen(req) as resp:
+            with open(temp_audio, "wb") as f:
+                f.write(resp.read())
+
+        # Convert to 44.1kHz 16-bit stereo WAV
+        cmd = [
+            FFMPEG, '-y',
+            '-i', temp_audio,
+            '-ar', '44100',
+            '-ac', '2',
+            output_wav
+        ]
+        subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+        if os.path.exists(temp_audio):
+            try:
+                os.remove(temp_audio)
+            except Exception:
+                pass
+
+        print(f"      [Deepgram] Audio generated in {time.time()-t0:.2f}s! Master WAV: {output_wav}", flush=True)
+        return output_wav
+
     def _synthesize_chunk_f5(self, chunk_text, out_chunk_wav, ref_clip, ref_txt):
-        """
-        Synthesizes a single chunk with F5-TTS, trying tokens in pool.
-        """
         from gradio_client import Client, handle_file
         
         last_err = None
         for idx, tok in enumerate(self.tokens):
             try:
-                masked_tok = f"{tok[:7]}...{tok[-4:]}"
                 client = Client("mrfakename/E2-F5-TTS", token=tok, httpx_kwargs={"timeout": 120.0})
                 res = client.predict(
                     ref_audio=handle_file(ref_clip),
@@ -82,85 +124,82 @@ class VoiceSynthesizer:
                 shutil.copy2(res, out_chunk_wav)
                 return True
             except Exception as e:
-                err_str = str(e)
                 last_err = e
+                err_str = str(e)
                 if "quota" in err_str.lower() or "exceeded" in err_str.lower():
                     print(f"      [Voice] Token #{idx+1} reached hourly quota. Rolling over...", flush=True)
                 else:
                     print(f"      [Voice] Token #{idx+1} busy ({e}). Rolling over...", flush=True)
         raise RuntimeError(f"All tokens in pool exhausted. Last error: {last_err}")
 
-    def synthesize(self, text, out_raw_wav, out_tight_wav, engine="f5", ref_audio=None, ref_text=None):
+    def synthesize_speech(self, text, output_wav, ref_audio=None, ref_text=None, voice_engine="auto", deepgram_model="aura-helios-en"):
         """
-        Synthesizes speech using the signature Video 5 cloned voice (F5-TTS).
-        Uses sentence chunking to prevent hallucinations, looping, and GPU quota timeouts.
+        Unified speech synthesis entrypoint.
+        Engine choices: 'deepgram', 'f5', 'gtts', or 'auto' (prefers deepgram if key present, else f5).
         """
-        os.makedirs(os.path.dirname(os.path.abspath(out_raw_wav)), exist_ok=True)
-        os.makedirs(os.path.dirname(os.path.abspath(out_tight_wav)), exist_ok=True)
+        os.makedirs(os.path.dirname(os.path.abspath(output_wav)), exist_ok=True)
 
-        ref_clip = ref_audio or DEFAULT_REF_AUDIO
-        ref_txt = ref_text or DEFAULT_REF_TEXT
+        if voice_engine == "deepgram" or (voice_engine == "auto" and (self.deepgram_key or os.getenv("DEEPGRAM_API_KEY"))):
+            return self.synthesize_deepgram(text, output_wav, model=deepgram_model)
+        elif voice_engine == "gtts":
+            from gtts import gTTS
+            tts = gTTS(text=text, lang='en', tld='co.uk', slow=False)
+            temp_mp3 = output_wav + ".gtts.mp3"
+            tts.save(temp_mp3)
+            cmd = [FFMPEG, '-y', '-i', temp_mp3, '-ar', '44100', '-ac', '2', output_wav]
+            subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+            if os.path.exists(temp_mp3):
+                os.remove(temp_mp3)
+            return output_wav
+        else:
+            # F5-TTS
+            ref_clip = ref_audio or DEFAULT_REF_AUDIO
+            ref_txt = ref_text or DEFAULT_REF_TEXT
+            chunks = self._chunk_text(text)
+            temp_dir = os.path.dirname(os.path.abspath(output_wav))
+            chunk_wavs = []
+            for c_idx, chunk in enumerate(chunks):
+                cf = os.path.join(temp_dir, f"_temp_vchunk_{c_idx:02d}.wav")
+                self._synthesize_chunk_f5(chunk, cf, ref_clip, ref_txt)
+                chunk_wavs.append(cf)
 
-        t0 = time.time()
-        chunks = self._chunk_text(text)
-        print(f"      [Voice] Synthesizing Video 5 voice in {len(chunks)} clean chunks (Token Pool: {len(self.tokens)})...", flush=True)
+            concat_txt = os.path.join(temp_dir, "_temp_vchunks_concat.txt")
+            with open(concat_txt, "w", encoding="utf-8") as f_concat:
+                for cw in chunk_wavs:
+                    f_concat.write(f"file '{os.path.abspath(cw)}'\n")
 
-        temp_dir = os.path.dirname(os.path.abspath(out_raw_wav))
-        chunk_wavs = []
-
-        for c_idx, chunk in enumerate(chunks):
-            chunk_file = os.path.join(temp_dir, f"_temp_vchunk_{c_idx:02d}.wav")
-            print(f"      [Voice] Chunk {c_idx+1}/{len(chunks)} ({len(chunk.split())} words): \"{chunk[:45]}...\"", flush=True)
-            self._synthesize_chunk_f5(chunk, chunk_file, ref_clip, ref_txt)
-            chunk_wavs.append(chunk_file)
-
-        # Concatenate chunks with clean audio stream
-        concat_txt = os.path.join(temp_dir, "_temp_vchunks_concat.txt")
-        with open(concat_txt, "w", encoding="utf-8") as f_concat:
+            cmd_concat = [FFMPEG, '-y', '-f', 'concat', '-safe', '0', '-i', concat_txt, '-c', 'pcm_s16le', '-ar', '44100', '-ac', '2', output_wav]
+            subprocess.run(cmd_concat, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
             for cw in chunk_wavs:
-                f_concat.write(f"file '{os.path.abspath(cw)}'\n")
-
-        cmd_concat = [
-            FFMPEG, '-y',
-            '-f', 'concat',
-            '-safe', '0',
-            '-i', concat_txt,
-            '-c', 'pcm_s16le',
-            '-ar', '44100',
-            '-ac', '2',
-            out_raw_wav
-        ]
-        subprocess.run(cmd_concat, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
-
-        # Clean up temporary chunk WAVs
-        for cw in chunk_wavs:
-            if os.path.exists(cw):
-                try:
+                if os.path.exists(cw):
                     os.remove(cw)
-                except Exception:
-                    pass
-        if os.path.exists(concat_txt):
-            try:
+            if os.path.exists(concat_txt):
                 os.remove(concat_txt)
-            except Exception:
-                pass
+            return output_wav
 
-        print(f"      [Voice] Cloned speech generated in {time.time()-t0:.2f}s! Applying signature 1.14x tightening...", flush=True)
-
-        # Apply signature 1.14x viral tightening & silenceremove
-        af = f"silenceremove=stop_periods=-1:stop_duration=0.28:stop_threshold=-42dB,atempo={self.speed_factor}"
+    def tighten_cadence(self, input_wav, output_wav, speed_factor=None):
+        """
+        Applies signature viral tightening: silenceremove and atempo acceleration.
+        """
+        factor = speed_factor or self.speed_factor
+        af = f"silenceremove=stop_periods=-1:stop_duration=0.28:stop_threshold=-42dB,atempo={factor}"
         cmd_tight = [
             FFMPEG, '-y',
-            '-i', out_raw_wav,
+            '-i', input_wav,
             '-af', af,
             '-ar', '44100',
             '-ac', '2',
-            out_tight_wav
+            output_wav
         ]
         subprocess.run(cmd_tight, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
-        print(f"      [Voice] Tightened master voice ready: {out_tight_wav}", flush=True)
+        return output_wav
+
+    def synthesize(self, text, out_raw_wav, out_tight_wav, engine="auto", ref_audio=None, ref_text=None, deepgram_model="aura-helios-en"):
+        self.synthesize_speech(text, out_raw_wav, ref_audio=ref_audio, ref_text=ref_text, voice_engine=engine, deepgram_model=deepgram_model)
+        self.tighten_cadence(out_raw_wav, out_tight_wav, speed_factor=self.speed_factor)
         return out_tight_wav
 
 if __name__ == "__main__":
     v = VoiceSynthesizer()
-    v.synthesize("Notice who stopped clapping when you started winning. People love supporting you when you are struggling.", "test_raw.wav", "test_tight.wav")
+    v.synthesize("You are a casino owner, and you have a problem. People do not like losing their money to you.", "out/test_dg_raw.wav", "out/test_dg_tight.wav", engine="deepgram")
+    print("Test successful!")

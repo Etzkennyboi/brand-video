@@ -45,7 +45,15 @@ class SubtitleGenerator:
                         })
         return words, info.duration
 
+    def transcribe_words(self, audio_path):
+        words, duration = self.extract_words(audio_path)
+        return words
+
+    def generate_ass_file(self, words, out_ass_path, title=""):
+        return self.generate_ass(words, title, out_ass_path)
+
     def generate_ass(self, words, hook_title, out_ass_path, chunk_size=3):
+
         """
         Generates kinetic pop .ass subtitles with brand styling.
         """

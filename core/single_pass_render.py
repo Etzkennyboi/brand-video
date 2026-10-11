@@ -47,7 +47,19 @@ class SinglePassRender:
         subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
         return out_clip
 
+    def render_full_video(self, scenes, voice_audio, bgm_audio, ass_subtitles, output_mp4, bgm_volume=0.14, total_duration=None):
+        return self.build_video(
+            scenes=scenes,
+            voice_audio=voice_audio,
+            bgm_audio=bgm_audio,
+            ass_path=ass_subtitles,
+            total_duration=total_duration,
+            out_master_path=output_mp4,
+            bgm_volume=bgm_volume
+        )
+
     def build_video(self, scenes, voice_audio, bgm_audio, ass_path, total_duration, out_master_path, bgm_volume=0.14):
+
         """
         Assembles all scenes in parallel, merges audio with dynamic ducking,
         and burns subtitles + brand watermark.

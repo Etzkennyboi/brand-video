@@ -128,10 +128,9 @@ class MasterEngine:
         self.subtitles.generate_ass_file(words_data, ass_path, title=title)
 
         # 4. Cinematic Visual Matching & Dynamic Beat Alignment
-        print("\n[4/6] VISUAL CURATION: Matching 9:16 cinematic visuals from vault...", flush=True)
-        matched_cuts = self.selector.match_beats_to_images(story["beats"])
         total_duration = words_data[-1]["end"] + 0.6 if words_data else 40.0
-        aligned_scenes = self.selector.align_cuts_to_whisper(matched_cuts, words_data, total_duration)
+        aligned_scenes = self.selector.align_and_select_scenes(story["beats"], words_data, total_duration)
+
 
         # 5. Parallel Motion Render & Single-Pass Compositor
         print("\n[5/6] COMPOSITING: Single-pass hardware render with 500% BGM mix...", flush=True)
