@@ -6,7 +6,11 @@ import shutil
 import re
 from concurrent.futures import ThreadPoolExecutor
 
-FFMPEG = r'C:\Users\User\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-9.0.1-full_build\bin\ffmpeg.EXE'
+import platform
+
+IS_WINDOWS = platform.system().lower() == "windows"
+WIN_FFMPEG = r'C:\Users\User\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-9.0.1-full_build\bin\ffmpeg.EXE'
+FFMPEG = shutil.which("ffmpeg") or (WIN_FFMPEG if IS_WINDOWS else "ffmpeg")
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 parent_dir = os.path.dirname(ROOT_DIR)
@@ -32,6 +36,54 @@ elif os.getenv("HF_TOKEN"):
     DEFAULT_TOKENS = [os.getenv("HF_TOKEN").strip()]
 else:
     DEFAULT_TOKENS = []
+
+
+def sanitize_voice_text(text: str) -> str:
+    """
+    Cleans and reformats text specifically for F5-TTS cloned voice synthesis:
+    - Colons (:) and semicolons (;) break voice cadence because F5-TTS does not
+      pause naturally on them. Replaces with a natural comma pause.
+    - Hyphens (-), em dashes (—), and en dashes (–) break flow without pausing.
+      Replaces with a natural comma pause.
+    - Hyphenated compound words (e.g. 'fear-inducer') -> 'fear inducer' for smooth articulation.
+    - Ellipses (...) -> converted to comma or period depending on context.
+    - Strips quotes, backticks, asterisks, brackets, and markdown formatting that confuse phonemizer.
+    - Normalizes punctuation combinations and whitespace.
+    """
+    if not text:
+        return ""
+    t = text
+    # 1. Colons & Semicolons -> comma pause
+    t = re.sub(r':\s*', ', ', t)
+    t = re.sub(r';\s*', ', ', t)
+
+    # 2. Em-dashes, en-dashes, and spaced hyphens -> comma pause
+    t = re.sub(r'\s*[\u2014\u2013—–]+\s*', ', ', t)
+    t = re.sub(r'\s+-\s+', ', ', t)
+
+    # 3. Compound hyphens -> single space for natural pronunciation
+    t = re.sub(r'(\w)-(\w)', r'\1 \2', t)
+
+    # 4. Ellipses -> comma if followed by lowercase clause, period otherwise
+    t = re.sub(r'\s*\.{2,}\s*(?=[a-z])', ', ', t)
+    t = re.sub(r'\s*\.{2,}\s*', '. ', t)
+
+    # 5. Remove quotes, backticks, brackets, formatting symbols
+    t = re.sub(r'["\'`*~_\[\]\(\)<>{}]', '', t)
+
+    # 6. Normalize punctuation combinations
+    t = re.sub(r',\s*,+', ',', t)
+    t = re.sub(r',\s*\.', '.', t)
+    t = re.sub(r'\.\s*,', '.', t)
+    t = re.sub(r'!\s*,', '!', t)
+    t = re.sub(r'\?\s*,', '?', t)
+
+    # 7. Ensure space after punctuation
+    t = re.sub(r'([,.!?])(?=[^\s\d])', r'\1 ', t)
+
+    # 8. Collapse whitespace
+    t = re.sub(r'\s+', ' ', t).strip()
+    return t
 
 
 class VoiceSynthesizer:
@@ -171,9 +223,12 @@ class VoiceSynthesizer:
         """
         os.makedirs(os.path.dirname(os.path.abspath(output_wav)), exist_ok=True)
 
+        # Sanitize text to remove colons, hyphens, and syntax that break F5 cadence
+        clean_text = sanitize_voice_text(text)
+
         if voice_engine == "gtts":
             from gtts import gTTS
-            tts = gTTS(text=text, lang='en', tld='co.uk', slow=False)
+            tts = gTTS(text=clean_text, lang='en', tld='co.uk', slow=False)
             temp_mp3 = output_wav + ".gtts.mp3"
             tts.save(temp_mp3)
             cmd = [FFMPEG, '-y', '-i', temp_mp3, '-ar', '44100', '-ac', '2', output_wav]
@@ -187,7 +242,7 @@ class VoiceSynthesizer:
         ref_txt = ref_text or DEFAULT_REF_TEXT
         
         # Optimized chunk size (~45 words)
-        chunks = self._chunk_text(text, max_words=45)
+        chunks = self._chunk_text(clean_text, max_words=45)
         temp_dir = os.path.dirname(os.path.abspath(output_wav))
         chunk_wavs = [os.path.join(temp_dir, f"_temp_vchunk_{i:02d}.wav") for i in range(len(chunks))]
         
@@ -195,16 +250,9 @@ class VoiceSynthesizer:
         print(f"      [Voice] Synthesizing {len(chunks)} chunk(s) via F5-TTS cloned voice ({os.path.basename(ref_clip)})...", flush=True)
         t0 = time.time()
 
-        if len(chunks) > 1 and client:
-            # Parallel chunk dispatch to Colab GPU
-            def _synth_worker(idx):
-                self._synthesize_chunk_f5(chunks[idx], chunk_wavs[idx], ref_clip, ref_txt, client_instance=client)
-
-            with ThreadPoolExecutor(max_workers=min(len(chunks), 2)) as executor:
-                list(executor.map(_synth_worker, range(len(chunks))))
-        else:
-            for c_idx, chunk in enumerate(chunks):
-                self._synthesize_chunk_f5(chunk, chunk_wavs[c_idx], ref_clip, ref_txt, client_instance=client)
+        for c_idx, chunk in enumerate(chunks):
+            print(f"      [Voice] Processing chunk {c_idx+1}/{len(chunks)}...", flush=True)
+            self._synthesize_chunk_f5(chunk, chunk_wavs[c_idx], ref_clip, ref_txt, client_instance=client)
 
         # Concatenate chunks into final audio track
         concat_txt = os.path.join(temp_dir, "_temp_vchunks_concat.txt")

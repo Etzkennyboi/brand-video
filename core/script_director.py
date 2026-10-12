@@ -128,9 +128,22 @@ class ScriptDirector:
         topic_lower = topic_str.lower()
 
         if "layi" in active_personality.lower() or "laya" in active_personality.lower() or "prof" in active_personality.lower():
-            return self._generate_prof_layi_script(topic_str, topic_lower)
+            res = self._generate_prof_layi_script(topic_str, topic_lower)
         else:
-            return self._generate_untold_truth_script(topic_str, topic_lower)
+            res = self._generate_untold_truth_script(topic_str, topic_lower)
+
+        try:
+            from the_untold_truth.core.voice_synthesizer import sanitize_voice_text
+        except ImportError:
+            try:
+                from core.voice_synthesizer import sanitize_voice_text
+            except ImportError:
+                sanitize_voice_text = lambda x: x
+
+        for b in res.get("beats", []):
+            b["text"] = sanitize_voice_text(b["text"])
+        res["full_script"] = " ".join([b["text"] for b in res.get("beats", [])])
+        return res
 
     def _synthesize_dynamic_prof_layi(self, subject):
         """

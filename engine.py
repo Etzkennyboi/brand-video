@@ -43,8 +43,6 @@ def resolve_brand_label(personality, default_name="THE UNTOLD TRUTH"):
     p = (personality or "").lower()
     if "layi" in p or "laya" in p or "prof" in p:
         return "PROF LAYI"
-    elif "roger" in p:
-        return "SIR ROGERS"
     return default_name
 
 class MasterEngine:
@@ -83,7 +81,7 @@ class MasterEngine:
         self.renderer.watermark_text = watermark_text
         self.thumb_gen.brand_title = brand_label
 
-    def run(self, topic_input, voice_engine="f5", ref_audio=None, out_name=None, personality=None):
+    def run(self, topic_input, voice_engine="f5", ref_audio=None, out_name=None, personality=None, force_regenerate=False):
         if personality:
             self.set_personality(personality)
 
@@ -115,7 +113,7 @@ class MasterEngine:
         ref = ref_audio or getattr(self.voice, "DEFAULT_REF_AUDIO", None) or os.path.join(ASSETS_DIR, "ref_voice_vid5.wav")
         ref_text = self.brand["audio"]["ref_voice_text"]
 
-        if not (os.path.exists(tight_audio) and os.path.getsize(tight_audio) > 100000):
+        if force_regenerate or not (os.path.exists(tight_audio) and os.path.getsize(tight_audio) > 100000):
             try:
                 self.voice.synthesize_speech(
                     text=story["full_script"],

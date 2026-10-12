@@ -11,14 +11,14 @@ sys.path.insert(0, os.path.abspath(os.path.join(ROOT_DIR, "..")))
 from the_untold_truth.engine import MasterEngine
 from the_untold_truth.core.visual_selector import VisualSelector
 
-SIR_ROGERS_TOPICS = [
-    {"title": "How Casinos Trick Your Brain", "theme": "casino floor layout, chips, and free drink psychology"},
-    {"title": "The Martingale Betting Trap", "theme": "doubling bets on red until life savings are wiped out"},
-    {"title": "How To Build An Addictive Slot Machine", "theme": "near misses, disguised losses as wins, and high-speed trance"},
-    {"title": "The Billionaire Airline Bet", "theme": "Richard Branson and Tony Fernandez cross-dressing F1 wager"},
-    {"title": "The Street Trivia Gambling Trap", "theme": "influencer giveaways, coin flips, and US lottery law"},
-    {"title": "How Scammers Scammed The Politicians", "theme": "fake EFCC agents blackmailing corrupt government officials"},
-    {"title": "The One-Second Delay Hustle", "theme": "stadium live betting latency and AirPod phone calls"}
+UNTOLD_TRUTH_TOPICS = [
+    {"title": "The Trap Of Early Explanation", "theme": "why over-explaining makes you look guilty and invites disrespect"},
+    {"title": "The Illusion Of Reputation", "theme": "how people worship your status until your balance sheet drops"},
+    {"title": "The Syndrome Of Cheap Advice", "theme": "why broke relatives always have the loudest business opinions"},
+    {"title": "The Myth Of Working Hard", "theme": "why the hardest worker in the room rarely owns the building"},
+    {"title": "The Comfort Cage", "theme": "why a comfortable salary is the drug employers give you to forget your ambition"},
+    {"title": "The Loyalty Trap", "theme": "why quiet loyalty gets you replaced faster than bold incompetence"},
+    {"title": "The Power Of Silence", "theme": "why strategic silence intimidates loud competitors"}
 ]
 
 PROF_LAYI_TOPICS = [
@@ -66,14 +66,11 @@ class ScriptRanker:
             hook_score += 8
 
         is_layi = "layi" in personality.lower() or "prof" in personality.lower() or "laya" in personality.lower()
-        is_rogers = "roger" in personality.lower()
 
         if is_layi:
             triggers = ["quiet", "talk", "proof", "demonstration", "nobody", "accomplished", "mathematician", "money", "currency", "mentor", "matrimony", "watch"]
-        elif is_rogers:
-            triggers = ["you", "problem", "bet", "lost", "job", "fix", "guru", "here", "scam", "fool", "delay", "billionaire"]
         else:
-            triggers = ["never", "stop", "mistake", "hate", "silence", "knife", "loyalty", "replaced", "clapping", "winning", "salary", "truth", "secret"]
+            triggers = ["never", "stop", "mistake", "hate", "silence", "knife", "loyalty", "replaced", "clapping", "winning", "salary", "truth", "secret", "explain", "reputation", "advice", "worker"]
 
         matches = sum(1 for tr in triggers if tr in hook.lower())
         hook_score += min(15, matches * 5)
@@ -90,10 +87,8 @@ class ScriptRanker:
         # 3. Psychological Depth & Stakes (25 pts)
         if is_layi:
             depth_markers = ["demonstration", "mentor", "accomplished", "currency", "breakdown", "breakthrough", "intellectual", "arrogance", "matrimony", "value", "formula", "fly", "gncc", "calculus"]
-        elif is_rogers:
-            depth_markers = ["casino", "chips", "exploit", "near miss", "trance", "vip", "algorithm", "loophole", "freeze", "double", "investigator", "bribe", "congrats"]
         else:
-            depth_markers = ["predator", "leverage", "superiority", "contempt", "citadel", "exploit", "predictability", "replace", "ledger", "severance", "pedestal", "galleon", "empire"]
+            depth_markers = ["predator", "leverage", "superiority", "contempt", "citadel", "exploit", "predictability", "replace", "ledger", "severance", "pedestal", "galleon", "empire", "spectator", "cathedral", "blacksmith", "equity"]
 
         depth_matches = sum(1 for dm in depth_markers if dm in full_text.lower())
         depth_score = min(25, 10 + depth_matches * 3)

@@ -2,9 +2,13 @@ import os
 import sys
 import time
 import subprocess
+import shutil
+import platform
 from concurrent.futures import ThreadPoolExecutor
 
-FFMPEG = r'C:\Users\User\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-9.0.1-full_build\bin\ffmpeg.EXE'
+IS_WINDOWS = platform.system().lower() == "windows"
+WIN_FFMPEG = r'C:\Users\User\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-9.0.1-full_build\bin\ffmpeg.EXE'
+FFMPEG = shutil.which("ffmpeg") or (WIN_FFMPEG if IS_WINDOWS else "ffmpeg")
 
 class SinglePassRender:
     def __init__(self, brand_title="THE UNTOLD TRUTH", watermark_text="THE UNTOLD TRUTH"):
@@ -125,11 +129,18 @@ class SinglePassRender:
 
         # Step 5: Final pass - Burn kinetic ASS subtitles + brand watermark
         print(f"      [Render] Burning '{self.brand_title}' branding and kinetic pop subtitles...", flush=True)
+        if IS_WINDOWS and os.path.exists(r"C:\Windows\Fonts\georgiab.ttf"):
+            font_opt = "fontfile='C\\:/Windows/Fonts/georgiab.ttf':"
+            fontsdir_opt = ":fontsdir=C\\\\:/Windows/Fonts"
+        else:
+            font_opt = ""
+            fontsdir_opt = ""
+
         safe_ass = ass_path.replace("\\", "/").replace(":", "\\:")
         final_vf = (
-            f"drawtext=text='{self.watermark_text}':fontfile='C\\:/Windows/Fonts/georgiab.ttf':fontsize=32:fontcolor=white@0.75:"
+            f"drawtext=text='{self.watermark_text}':{font_opt}fontsize=32:fontcolor=white@0.75:"
             f"x=(w-text_w)/2:y=h-240:shadowcolor=black@0.9:shadowx=2:shadowy=2,"
-            f"ass='{safe_ass}':fontsdir=C\\\\:/Windows/Fonts"
+            f"ass='{safe_ass}'{fontsdir_opt}"
         )
 
         final_cmd = [
