@@ -30,7 +30,11 @@ class SubtitleGenerator:
 
     def get_model(self):
         if self._model is None:
-            self._model = WhisperModel(self.model_size, device=self.device, compute_type=self.compute_type)
+            try:
+                self._model = WhisperModel(self.model_size, device=self.device, compute_type=self.compute_type)
+            except Exception as e:
+                print(f"      [Subtitle] Whisper on {self.device} failed ({e}), falling back to CPU int8...", flush=True)
+                self._model = WhisperModel(self.model_size, device="cpu", compute_type="int8")
         return self._model
 
     def extract_words(self, audio_path):
