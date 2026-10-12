@@ -261,3 +261,28 @@ class ColabMasterEngine:
                 raise gr.Error(f"Video generation error: {str(e)}")
             except Exception:
                 raise e
+
+
+def launch_studio(share=True):
+    import gradio as gr
+    engine = ColabMasterEngine()
+
+    def generate_short(topic, personality):
+        return engine.produce_video(topic_input=topic, personality=personality)
+
+    demo = gr.Interface(
+        fn=generate_short,
+        inputs=[
+            gr.Textbox(label="Topic", value="The Trap Of Early Explanation"),
+            gr.Radio(choices=["untold_truth", "prof_layi"], value="untold_truth", label="Persona")
+        ],
+        outputs=gr.Video(label="Rendered Master Short"),
+        title="🎬 The Untold Truth Studio"
+    )
+
+    # inline=False prevents 'NoneType object has no attribute kernel' in Colab
+    demo.launch(share=share, inline=False, show_error=True)
+
+
+if __name__ == "__main__":
+    launch_studio(share=True)
