@@ -1,7 +1,32 @@
 import os
 import subprocess
+import shutil
+import platform
 
-FFMPEG = r'C:\Users\User\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-9.0.1-full_build\bin\ffmpeg.EXE'
+IS_WINDOWS = platform.system().lower() == "windows"
+WIN_FFMPEG = r'C:\Users\User\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-9.0.1-full_build\bin\ffmpeg.EXE'
+FFMPEG = shutil.which("ffmpeg") or (WIN_FFMPEG if IS_WINDOWS else "ffmpeg")
+
+def get_safe_font_option():
+    candidates = [
+        r"C:\Windows\Fonts\georgiab.ttf",
+        r"C:\Windows\Fonts\arial.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
+        "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf",
+    ]
+    for c in candidates:
+        if os.path.exists(c):
+            escaped = c.replace("\\", "/").replace(":", "\\:")
+            return f"fontfile='{escaped}':"
+    if os.path.exists("/usr/share/fonts"):
+        for root, _, files in os.walk("/usr/share/fonts"):
+            for f in files:
+                if f.endswith(".ttf"):
+                    p = os.path.join(root, f).replace("\\", "/").replace(":", "\\:")
+                    return f"fontfile='{p}':"
+    return "font='Sans':"
 
 class ThumbnailGenerator:
     def __init__(self, brand_title="THE UNTOLD TRUTH"):
@@ -39,6 +64,7 @@ class ThumbnailGenerator:
         safe_brand = esc(f"[ {self.brand_title} ]")
         safe_line1 = esc(line1)
         safe_line2 = esc(line2)
+        font_opt = get_safe_font_option()
 
         vf = (
             "scale=1200:2133:force_original_aspect_ratio=increase,"
@@ -46,12 +72,12 @@ class ThumbnailGenerator:
             "vignette=PI/3,"
             "eq=contrast=1.12:saturation=1.06,"
             "drawbox=y=ih*0.34:color=black@0.72:width=iw:height=420:t=fill,"
-            f"drawtext=text='{safe_brand}':fontfile='C\\:/Windows/Fonts/georgiab.ttf':fontsize=36:fontcolor=0xF5A623:x=(w-text_w)/2:y=h*0.37,"
-            f"drawtext=text='{safe_line1}':fontfile='C\\:/Windows/Fonts/georgiab.ttf':fontsize=52:fontcolor=white:x=(w-text_w)/2:y=h*0.43:shadowcolor=black@0.9:shadowx=3:shadowy=3"
+            f"drawtext=text='{safe_brand}':{font_opt}fontsize=36:fontcolor=0xF5A623:x=(w-text_w)/2:y=h*0.37,"
+            f"drawtext=text='{safe_line1}':{font_opt}fontsize=52:fontcolor=white:x=(w-text_w)/2:y=h*0.43:shadowcolor=black@0.9:shadowx=3:shadowy=3"
         )
 
         if safe_line2:
-            vf += f",drawtext=text='{safe_line2}':fontfile='C\\:/Windows/Fonts/georgiab.ttf':fontsize=52:fontcolor=0x23A6F5:x=(w-text_w)/2:y=h*0.50:shadowcolor=black@0.9:shadowx=3:shadowy=3"
+            vf += f",drawtext=text='{safe_line2}':{font_opt}fontsize=52:fontcolor=0x23A6F5:x=(w-text_w)/2:y=h*0.50:shadowcolor=black@0.9:shadowx=3:shadowy=3"
 
         cmd = [
             FFMPEG, '-y',

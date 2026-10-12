@@ -10,6 +10,27 @@ IS_WINDOWS = platform.system().lower() == "windows"
 WIN_FFMPEG = r'C:\Users\User\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-9.0.1-full_build\bin\ffmpeg.EXE'
 FFMPEG = shutil.which("ffmpeg") or (WIN_FFMPEG if IS_WINDOWS else "ffmpeg")
 
+def get_safe_font_option():
+    candidates = [
+        r"C:\Windows\Fonts\georgiab.ttf",
+        r"C:\Windows\Fonts\arial.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
+        "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf",
+    ]
+    for c in candidates:
+        if os.path.exists(c):
+            escaped = c.replace("\\", "/").replace(":", "\\:")
+            return f"fontfile='{escaped}':"
+    if os.path.exists("/usr/share/fonts"):
+        for root, _, files in os.walk("/usr/share/fonts"):
+            for f in files:
+                if f.endswith(".ttf"):
+                    p = os.path.join(root, f).replace("\\", "/").replace(":", "\\:")
+                    return f"fontfile='{p}':"
+    return "font='Sans':"
+
 class SinglePassRender:
     def __init__(self, brand_title="THE UNTOLD TRUTH", watermark_text="THE UNTOLD TRUTH"):
         self.brand_title = brand_title
@@ -129,11 +150,12 @@ class SinglePassRender:
 
         # Step 5: Final pass - Burn kinetic ASS subtitles + brand watermark
         print(f"      [Render] Burning '{self.brand_title}' branding and kinetic pop subtitles...", flush=True)
-        if IS_WINDOWS and os.path.exists(r"C:\Windows\Fonts\georgiab.ttf"):
-            font_opt = "fontfile='C\\:/Windows/Fonts/georgiab.ttf':"
+        font_opt = get_safe_font_option()
+        if IS_WINDOWS and os.path.exists(r"C:\Windows\Fonts"):
             fontsdir_opt = ":fontsdir=C\\\\:/Windows/Fonts"
+        elif os.path.exists("/usr/share/fonts"):
+            fontsdir_opt = ":fontsdir=/usr/share/fonts"
         else:
-            font_opt = ""
             fontsdir_opt = ""
 
         safe_ass = ass_path.replace("\\", "/").replace(":", "\\:")
