@@ -246,9 +246,9 @@ def main():
     else:
         p_lower = chosen_personality.lower()
         if "layi" in p_lower or "laya" in p_lower or "prof" in p_lower:
-            default_topic = "The Fallacy of Free Advice"
+            default_topic = "Nobody Wants To Accompany Who Is Not Accomplished"
         else:
-            default_topic = "The Trap of Artificial Kindness"
+            default_topic = "The Myth of Loyalty at Work"
         engine.run(default_topic, voice_engine=args.voice, ref_audio=args.ref)
 
 if __name__ == "__main__":
