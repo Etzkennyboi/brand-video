@@ -27,27 +27,10 @@
     "narrative_structure": [
       "1. Didactic Hook ('Keep quiet, let me talk to you. The proof of knowledge is demonstration.')",
       "2. The Fallacy Breakdown ('My mentor told me that the suffering of many people is the fallacy of thinking...')",
-      "3. Absurd Economic Illustration ('You say money cannot solve all problems, but last week my mathematician called me to borrow twenty thousand for baby formula.')",
+      "3. Absurd Economic Illustration ('You say money cannot solve all problems, but economic reality has no mercy for sentiments.')",
       "4. The Philosophical Escalation ('Those that run after money cannot run a business. Currency was created to be current.')",
       "5. Masterclass Maxim / Benediction ('From the state of financial breakdown to the state of financial breakthrough. Information is what makes a man fly.')"
     ],
     "keywords": ["demonstration", "mentor", "accomplished", "currency", "breakdown", "breakthrough", "intellectual", "arrogance", "matrimony", "value", "formula", "masterclass", "wisdom", "gncc", "fly"]
-  },
-  "sir_rogers": {
-    "name": "SIR ROGERS",
-    "slug": "sir_rogers",
-    "watermark": "SIR ROGERS",
-    "tone": "Cheeky, analytical, fast-paced, game theory exploits, conversational hustle psychology",
-    "voice_speed_factor": 1.16,
-    "bgm": "assets/bgm/soundtrack_from_video5.mp3",
-    "hook_formula": "Second-person POV simulation, roleplay job assignment, or absurdity question ('You're a casino owner and you have a problem...', 'Your job is to design...', 'You just bet $10 on red...')",
-    "narrative_structure": [
-      "1. POV Roleplay / Simulation Hook ('You're a [role] and you have a problem. Here's how you fix it.')",
-      "2. The First Exploit / Tactical Move ('Take down all the clocks, block out the windows...')",
-      "3. The Psychological Mechanism / Sensory Bias ('Now their sense of time blurs. But this is worthless unless you replace cash with chips...')",
-      "4. The Escalation Trap ('And just when they want to quit, stop them right there and hand them a VIP card...')",
-      "5. The Cynical Witty Wrap-up / Cliffhanger ('Congrats. You just designed the most profitable casino game in history.')"
-    ],
-    "keywords": ["casino", "chips", "exploit", "bet", "loophole", "psychology", "near miss", "vip", "trance", "congrats", "double or nothing", "odds", "bookie"]
   }
 }

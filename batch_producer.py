@@ -11,15 +11,6 @@ sys.path.insert(0, os.path.abspath(os.path.join(ROOT_DIR, "..")))
 from the_untold_truth.engine import MasterEngine
 from the_untold_truth.core.visual_selector import VisualSelector
 
-SIR_ROGERS_TOPICS = [
-    {"title": "How Casinos Trick Your Brain", "theme": "casino floor layout, chips, and free drink psychology"},
-    {"title": "The Martingale Betting Trap", "theme": "doubling bets on red until life savings are wiped out"},
-    {"title": "How To Build An Addictive Slot Machine", "theme": "near misses, disguised losses as wins, and high-speed trance"},
-    {"title": "The Billionaire Airline Bet", "theme": "Richard Branson and Tony Fernandez cross-dressing F1 wager"},
-    {"title": "The Street Trivia Gambling Trap", "theme": "influencer giveaways, coin flips, and US lottery law"},
-    {"title": "How Scammers Scammed The Politicians", "theme": "fake EFCC agents blackmailing corrupt government officials"},
-    {"title": "The One-Second Delay Hustle", "theme": "stadium live betting latency and AirPod phone calls"}
-]
 
 PROF_LAYI_TOPICS = [
     {"title": "Nobody Wants To Accompany Who Is Not Accomplished", "theme": "love does not cost a dime fallacy, London flights, and entourage radius"},
@@ -70,8 +61,6 @@ class ScriptRanker:
 
         if is_layi:
             triggers = ["quiet", "talk", "proof", "demonstration", "nobody", "accomplished", "mathematician", "money", "currency", "mentor", "matrimony", "watch"]
-        elif is_rogers:
-            triggers = ["you", "problem", "bet", "lost", "job", "fix", "guru", "here", "scam", "fool", "delay", "billionaire"]
         else:
             triggers = ["never", "stop", "mistake", "hate", "silence", "knife", "loyalty", "replaced", "clapping", "winning", "salary", "truth", "secret"]
 
@@ -128,8 +117,6 @@ class BatchProducer:
         p_lower = self.personality.lower()
         if "layi" in p_lower or "prof" in p_lower or "laya" in p_lower:
             topic_pool = PROF_LAYI_TOPICS
-        elif "roger" in p_lower:
-            topic_pool = SIR_ROGERS_TOPICS
         else:
             topics_file = os.path.join(ROOT_DIR, "config", "viral_topics_vault.json")
             with open(topics_file, "r", encoding="utf-8") as f:
@@ -150,8 +137,6 @@ class BatchProducer:
         p_lower = self.personality.lower()
         if "layi" in p_lower or "prof" in p_lower or "laya" in p_lower:
             brand_display = "PROF LAYI"
-        elif "roger" in p_lower:
-            brand_display = "SIR ROGERS"
         else:
             brand_display = "THE UNTOLD TRUTH"
 
@@ -216,7 +201,7 @@ class BatchProducer:
 
 def main():
     parser = argparse.ArgumentParser(description="Candidate Tournament & Batch Video Producer")
-    parser.add_argument("--personality", type=str, default="untold_truth", choices=["untold_truth", "prof_layi", "sir_rogers"], help="Personality model")
+    parser.add_argument("--personality", type=str, default="untold_truth", choices=["untold_truth", "prof_layi"], help="Personality model")
     parser.add_argument("--theme", type=str, default=None, help="Theme prompt")
     parser.add_argument("--candidates", type=int, default=7, help="Number of scripts to draft (default: 7)")
     parser.add_argument("--top", type=int, default=3, help="Number of top scripts to render (default: 3)")

@@ -210,18 +210,15 @@ def ask_user_personality():
     print("🎭 CHOOSE SCRIPT PERSONALITY:")
     print("  [1] THE UNTOLD TRUTH (Dark, cynical, Machiavellian realism)")
     print("  [2] PROF LAYI        (Deadpan satirical wisdom, legalistic proverbs)")
-    print("  [3] SIR ROGERS       (Cheeky, game theory, exploits, loopholes)")
     print("=" * 60)
-    choice = input("Enter 1, 2, or 3 (default 1): ").strip()
+    choice = input("Enter 1 or 2 (default 1): ").strip()
     if choice == "2":
         return "prof_layi"
-    elif choice == "3":
-        return "sir_rogers"
     return "untold_truth"
 
 def main():
     parser = argparse.ArgumentParser(description="Automated Video Production Engine")
-    parser.add_argument("--personality", type=str, default=None, choices=["untold_truth", "prof_layi", "sir_rogers", "ask"], help="Writer personality")
+    parser.add_argument("--personality", type=str, default=None, choices=["untold_truth", "prof_layi", "ask"], help="Writer personality")
     parser.add_argument("--topic", type=str, default=None, help="Custom topic to produce")
     parser.add_argument("--auto", action="store_true", help="Pick next viral topic from topics vault")
     parser.add_argument("--voice", type=str, default="f5", choices=["f5", "gtts"], help="Voice engine (main: f5 cloned voice)")
@@ -249,11 +246,9 @@ def main():
     else:
         p_lower = chosen_personality.lower()
         if "layi" in p_lower or "laya" in p_lower or "prof" in p_lower:
-            default_topic = "Nobody Wants To Accompany Who Is Not Accomplished"
-        elif "roger" in p_lower:
-            default_topic = "How Casinos Trick Your Brain"
+            default_topic = "The Fallacy of Free Advice"
         else:
-            default_topic = "The Myth of Loyalty at Work"
+            default_topic = "The Trap of Artificial Kindness"
         engine.run(default_topic, voice_engine=args.voice, ref_audio=args.ref)
 
 if __name__ == "__main__":
