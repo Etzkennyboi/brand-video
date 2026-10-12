@@ -2,6 +2,7 @@ import os
 import sys
 import subprocess
 import numpy as np
+import re
 from faster_whisper import WhisperModel
 
 FFMPEG = r'C:\Users\User\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-9.0.1-full_build\bin\ffmpeg.EXE'
@@ -58,15 +59,15 @@ class SubtitleGenerator:
     def generate_ass_file(self, words, out_ass_path, title=""):
         return self.generate_ass(words, title, out_ass_path)
 
-    def generate_ass(self, words, hook_title, out_ass_path, chunk_size=3):
-
+    def generate_ass(self, words, hook_title, out_ass_path, chunk_size=1):
         """
-        Generates kinetic pop .ass subtitles with brand styling.
+        Generates viral single-word kinetic pop .ass subtitles.
+        Exactly ONE word is visible on screen at a time, synchronized to speech.
         """
         os.makedirs(os.path.dirname(os.path.abspath(out_ass_path)), exist_ok=True)
 
         header = f"""[Script Info]
-Title: THE UNTOLD TRUTH Kinetic Subtitles
+Title: THE UNTOLD TRUTH Single-Word Kinetic Subtitles
 ScriptType: v4.00+
 PlayResX: 1080
 PlayResY: 1920
@@ -74,41 +75,45 @@ ScaledBorderAndShadow: yes
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Caption,Arial,58,&H00FFFFFF,&H0023A6F5,&H00000000,&H90000000,-1,0,0,0,100,100,1,0,1,5,6,5,70,70,950,1
+Style: SingleWord,Arial,74,&H00FFFFFF,&H0023A6F5,&H00000000,&H90000000,-1,0,0,0,100,100,2,0,1,6,5,5,60,60,960,1
 Style: HookBadge,Georgia,32,&H00E0DCD0,&H00FFFFFF,&H00000000,&H80000000,-1,0,0,0,100,100,6,0,1,2,3,8,60,60,180,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 """
         events = []
-        # Upper hook title for the first 3.5 seconds
-        events.append(f"Dialogue: 0,0:00:00.00,0:00:03.50,HookBadge,,0,0,0,,[ {hook_title.upper()} ]")
+        # Upper hook title badge for the first 3.2 seconds
+        events.append(f"Dialogue: 0,0:00:00.00,0:00:03.20,HookBadge,,0,0,0,,[ {hook_title.upper()} ]")
 
-        # Group words into chunks
-        chunks = [words[i:i + chunk_size] for i in range(0, len(words), chunk_size)]
+        # Single word on screen at a time
+        gold_accent_keywords = {
+            "MONEY", "POWER", "CURRENCY", "TRUTH", "SHADOW", "LEVERAGE", "SILENCE", "BREAKTHROUGH",
+            "PROFIT", "DISCIPLINE", "WEALTH", "LEADER", "KING", "PREDATOR", "SECRET", "FREEDOM",
+            "DELUSION", "TRASH", "POISON", "AMBITION", "LIGHTNING", "MASTER", "CERTIFICATE", "PADLOCK"
+        }
 
-        for chunk in chunks:
-            for active_idx, target_word in enumerate(chunk):
-                w_start = target_word['start']
-                w_end = target_word['end']
+        for w in words:
+            w_start = w['start']
+            w_end = w['end']
+            clean_word = re.sub(r"[^\w\'-]", "", w['word']).upper()
+            if not clean_word:
+                continue
 
-                styled_words = []
-                for idx, item in enumerate(chunk):
-                    w_text = item['word'].upper()
-                    if idx == active_idx:
-                        # Highlighted active word: Amber glow + 114% scale bounce
-                        styled_words.append(r"{\c&H0023A6F5\fscx114\fscy114}" + w_text + r"{\r}")
-                    else:
-                        styled_words.append(r"{\c&H00FFFFFF}" + w_text + r"{\r}")
+            # Check if this word should have golden emphasis
+            if clean_word in gold_accent_keywords:
+                # Gold color with 118% energetic kinetic bounce
+                styled = r"{\c&H0023A6F5\fscx118\fscy118\t(0,60,\fscx100\fscy100)}" + clean_word + r"{\r}"
+            else:
+                # Crisp white with 112% pop bounce
+                styled = r"{\c&H00FFFFFF\fscx112\fscy112\t(0,50,\fscx100\fscy100)}" + clean_word + r"{\r}"
 
-                line_text = " ".join(styled_words)
-                ev = f"Dialogue: 0,{format_ass_time(w_start)},{format_ass_time(w_end)},Caption,,0,0,0,,{line_text}"
-                events.append(ev)
+            ev = f"Dialogue: 0,{format_ass_time(w_start)},{format_ass_time(w_end)},SingleWord,,0,0,0,,{styled}"
+            events.append(ev)
 
         with open(out_ass_path, "w", encoding="utf-8") as f:
             f.write(header + "\n".join(events) + "\n")
 
-        print(f"      [Subtitles] Generated kinetic ASS subtitles ({len(words)} words): {out_ass_path}", flush=True)
+        print(f"      [Subtitles] Generated 1-word-at-a-time kinetic subtitles ({len(words)} events): {out_ass_path}", flush=True)
         return out_ass_path
 
 if __name__ == "__main__":
