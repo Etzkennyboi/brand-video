@@ -45,21 +45,37 @@ class SubtitleGenerator:
         res = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=True)
         audio_data = np.frombuffer(res.stdout, dtype=np.int16).astype(np.float32) / 32768.0
 
-        model = self.get_model()
-        segments, info = model.transcribe(audio_data, word_timestamps=True, beam_size=1)
-
-        words = []
-        for seg in segments:
-            if seg.words:
-                for w in seg.words:
-                    cleaned = w.word.strip()
-                    if cleaned:
-                        words.append({
-                            "word": cleaned,
-                            "start": w.start,
-                            "end": w.end
-                        })
-        return words, info.duration
+        try:
+            model = self.get_model()
+            segments, info = model.transcribe(audio_data, word_timestamps=True, beam_size=1)
+            words = []
+            for seg in segments:
+                if seg.words:
+                    for w in seg.words:
+                        cleaned = w.word.strip()
+                        if cleaned:
+                            words.append({
+                                "word": cleaned,
+                                "start": w.start,
+                                "end": w.end
+                            })
+            return words, info.duration
+        except Exception as e:
+            print(f"      [Subtitle] CUDA Whisper execution failed ({e}), switching to CPU Whisper...", flush=True)
+            self._model = WhisperModel(self.model_size, device="cpu", compute_type="int8")
+            segments, info = self._model.transcribe(audio_data, word_timestamps=True, beam_size=1)
+            words = []
+            for seg in segments:
+                if seg.words:
+                    for w in seg.words:
+                        cleaned = w.word.strip()
+                        if cleaned:
+                            words.append({
+                                "word": cleaned,
+                                "start": w.start,
+                                "end": w.end
+                            })
+            return words, info.duration
 
     def transcribe_words(self, audio_path):
         words, duration = self.extract_words(audio_path)

@@ -161,15 +161,8 @@ class ColabMasterEngine:
             images_dir=os.path.join(BASE_DIR, "assets", "visual_vault", "images")
         )
         
-        # Use CUDA for Whisper on Colab
-        try:
-            import torch
-            device = "cuda" if torch.cuda.is_available() else "cpu"
-        except Exception:
-            device = "cpu"
-
-        compute_type = "float16" if device == "cuda" else "int8"
-        self.subtitles = SubtitleGenerator(model_size="base", device=device, compute_type=compute_type)
+        # Use CPU for Whisper on Colab: fast (~2.5s) and avoids CTranslate2 CUDA 12 libcublas mismatch
+        self.subtitles = SubtitleGenerator(model_size="base", device="cpu", compute_type="int8")
         self.voice = ColabVoiceSynthesizer(speed_factor=1.14)
         self.renderer = SinglePassRender(brand_title=self.brand_title, watermark_text=self.brand_title)
         self.thumb_gen = ThumbnailGenerator(brand_title=self.brand_title)
