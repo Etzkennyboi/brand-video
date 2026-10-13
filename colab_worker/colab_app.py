@@ -244,7 +244,32 @@ class ColabMasterEngine:
 
             total_sec = time.time() - t0
             print(f"\n✨ [COLAB T4] VIDEO COMPLETED IN {total_sec:.1f}s -> {final_mp4}", flush=True)
-            return final_mp4
+
+            score_val = story.get("viral_score", 85)
+            brand = brand_label
+            hashtags = "#shorts #theuntoldtruth #machiavelli #psychology #stoicism #power #wisdom #truth #money" if brand == "THE UNTOLD TRUTH" else "#shorts #proflayi #wisdom #comedy #nigeria #information #money #satire #success"
+            
+            pub_copy = f"""📌 TITLE:
+{title} #shorts
+
+📝 VIRAL DESCRIPTION:
+{story['full_script']}
+
+Follow @{brand.lower().replace(' ', '')} for daily unfiltered realism.
+
+🏷️ HASHTAGS:
+{hashtags}
+
+⚡ VIRAL SCORE: {score_val}/100 | Rendered on GPU in {total_sec:.1f}s
+"""
+            return {
+                "video_path": final_mp4,
+                "thumb_path": thumb_path if os.path.exists(thumb_path) else None,
+                "title": title,
+                "score": score_val,
+                "copy": pub_copy,
+                "duration": total_sec
+            }
         except Exception as e:
             import traceback
             err_msg = traceback.format_exc()
@@ -255,25 +280,112 @@ class ColabMasterEngine:
             except Exception:
                 raise e
 
+    def produce_top_3_shorts(self, topic_input, personality="untold_truth"):
+        candidates = self.director.generate_7_angles_and_rank(topic_input, personality=personality)
+        top_3 = candidates[:3]
+
+        # 1. Markdown Scorecard
+        scorecard = "### 📊 7-Script Angle Viral Scorecard\n\n"
+        scorecard += "| Rank | Angle Blueprint | Score | Words | Scroll-Stop Hook | Status |\n"
+        scorecard += "| :---: | :--- | :---: | :---: | :--- | :---: |\n"
+        for c in candidates:
+            status = "🏆 **Rendered (Top 3)**" if c["is_top_3"] else "Drafted"
+            scorecard += f"| **#{c['rank']}** | **{c['angle_name']}**<br>*{c['title']}* | **{c['viral_score']}/100** | {len(c['full_script'].split())} | \"{c['beats'][0]['text'][:45]}...\" | {status} |\n"
+
+        # 2. Render the Top 3
+        rendered = []
+        for i, cand in enumerate(top_3):
+            print(f"\n🎬 [COLAB T4] RENDERING RANK #{i+1} OF 3: {cand['title']} (Score: {cand['viral_score']}/100)...", flush=True)
+            res = self.produce_video(cand, personality=personality)
+            rendered.append(res)
+
+        r1 = rendered[0] if len(rendered) > 0 else {}
+        r2 = rendered[1] if len(rendered) > 1 else {}
+        r3 = rendered[2] if len(rendered) > 2 else {}
+
+        return (
+            scorecard,
+            r1.get("video_path"), r1.get("thumb_path"), r1.get("copy", ""),
+            r2.get("video_path"), r2.get("thumb_path"), r2.get("copy", ""),
+            r3.get("video_path"), r3.get("thumb_path"), r3.get("copy", "")
+        )
+
 
 def launch_studio(share=True):
     import gradio as gr
     engine = ColabMasterEngine()
 
-    def generate_short(topic, personality):
-        return engine.produce_video(topic_input=topic, personality=personality)
-
-    demo = gr.Interface(
-        fn=generate_short,
-        inputs=[
-            gr.Textbox(label="Topic", value="The Trap Of Early Explanation"),
-            gr.Radio(choices=["untold_truth", "prof_layi"], value="untold_truth", label="Persona")
-        ],
-        outputs=gr.Video(label="Rendered Master Short"),
-        title="🎬 The Untold Truth Studio"
+    theme = gr.themes.Soft(
+        primary_hue="amber",
+        secondary_hue="zinc",
+        neutral_hue="slate"
     )
 
-    # inline=False prevents 'NoneType object has no attribute kernel' in Colab
+    with gr.Blocks(theme=theme, title="🎬 The Untold Truth Studio") as demo:
+        gr.Markdown(
+            """
+            # 🎬 THE UNTOLD TRUTH & PROF LAYI MASTER STUDIO
+            ### Auto-Drafts 7 Viral Script Angles ➔ Scores & Ranks ➔ Renders Top 3 GPU Master Shorts in ~2 Minutes
+            """
+        )
+
+        with gr.Row():
+            with gr.Column(scale=4):
+                topic_box = gr.Textbox(
+                    label="💡 Video Topic / Core Idea",
+                    value="The Trap Of Early Explanation",
+                    placeholder="Type any topic (e.g. 'Why Loyalty Keeps You Broke', 'Fake Friends') or click Random..."
+                )
+            with gr.Column(scale=2):
+                persona_radio = gr.Radio(
+                    choices=[("The Untold Truth (Cynical Machiavellian)", "untold_truth"), ("Prof Layi (Satirical Intellectual)", "prof_layi")],
+                    value="untold_truth",
+                    label="🎭 Select Persona"
+                )
+
+        with gr.Row():
+            random_btn = gr.Button("🎲 Random Viral Topic", variant="secondary")
+            generate_btn = gr.Button("🚀 Write 7 Angles, Score, & Produce Top 3 Shorts", variant="primary", size="lg")
+
+        scorecard_display = gr.Markdown("*(Click Generate to analyze 7 script angles and rank the Top 3)*")
+
+        with gr.Tabs():
+            with gr.TabItem("🥇 Rank #1 Short (Highest Viral Score)"):
+                with gr.Row():
+                    v1 = gr.Video(label="🎬 Master Video #1 (1080x1920)", interactive=False)
+                    img1 = gr.Image(label="🖼️ Cover Thumbnail #1", interactive=False)
+                copy1 = gr.Textbox(label="📋 YouTube Shorts & TikTok Publishing Copy Kit", lines=8)
+
+            with gr.TabItem("🥈 Rank #2 Short"):
+                with gr.Row():
+                    v2 = gr.Video(label="🎬 Master Video #2 (1080x1920)", interactive=False)
+                    img2 = gr.Image(label="🖼️ Cover Thumbnail #2", interactive=False)
+                copy2 = gr.Textbox(label="📋 YouTube Shorts & TikTok Publishing Copy Kit", lines=8)
+
+            with gr.TabItem("🥉 Rank #3 Short"):
+                with gr.Row():
+                    v3 = gr.Video(label="🎬 Master Video #3 (1080x1920)", interactive=False)
+                    img3 = gr.Image(label="🖼️ Cover Thumbnail #3", interactive=False)
+                copy3 = gr.Textbox(label="📋 YouTube Shorts & TikTok Publishing Copy Kit", lines=8)
+
+        # Event: Random topic
+        def pick_random(persona):
+            return engine.director.get_random_topic(persona)
+
+        random_btn.click(fn=pick_random, inputs=[persona_radio], outputs=[topic_box])
+
+        # Event: Produce Top 3
+        generate_btn.click(
+            fn=engine.produce_top_3_shorts,
+            inputs=[topic_box, persona_radio],
+            outputs=[
+                scorecard_display,
+                v1, img1, copy1,
+                v2, img2, copy2,
+                v3, img3, copy3
+            ]
+        )
+
     demo.launch(share=share, inline=False, show_error=True)
 
 

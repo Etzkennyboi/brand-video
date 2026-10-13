@@ -276,6 +276,262 @@ class ScriptDirector:
             "beats": beats
         }
 
+    @staticmethod
+    def get_random_topic(personality="untold_truth"):
+        import random
+        key = "prof_layi" if "layi" in personality.lower() else "untold_truth"
+        topics = CURATED_VIRAL_TOPICS.get(key, CURATED_VIRAL_TOPICS["untold_truth"])
+        return random.choice(topics)
+
+    def score_script(self, script_data):
+        """
+        Calculates an objective Viral Retention Score (0 - 100) based on:
+        1. Hook Potency (0-25) - Word brevity + scroll-stop trigger words
+        2. Cadence & Rhythm (0-25) - Optimal 70-88 words for 35-40s short
+        3. Psychological Tension (0-25) - High-contrast polarity words
+        4. Visual Vault Alignability (0-25) - Imagery keyword density
+        """
+        hook_text = script_data["beats"][0]["text"]
+        words = script_data["full_script"].split()
+        total_words = len(words)
+
+        # 1. Hook Score (0-25)
+        hook_words = hook_text.split()
+        hook_score = 15 if len(hook_words) <= 12 else (10 if len(hook_words) <= 16 else 6)
+        hook_triggers = ["nobody", "fastest", "notice", "quiet", "stop", "never", "truth", "secret", "money", "power"]
+        if any(t in hook_text.lower() for t in hook_triggers):
+            hook_score += 10
+
+        # 2. Cadence / Word Count Score (0-25)
+        if 70 <= total_words <= 88:
+            word_score = 25
+        elif 62 <= total_words <= 95:
+            word_score = 18
+        else:
+            word_score = 12
+
+        # 3. Tension Polarity Score (0-25)
+        polar_keywords = [
+            "replace", "leverage", "scarcity", "consume", "poverty", "demonstration",
+            "breakthrough", "sedative", "applaud", "predator", "delusion", "severance", "rent"
+        ]
+        text_lower = script_data["full_script"].lower()
+        tension_matches = sum(1 for kw in polar_keywords if kw in text_lower)
+        tension_score = min(25, tension_matches * 6 + 7)
+
+        # 4. Visual Vault Alignment Score (0-25)
+        vault_keywords = ["king", "throne", "gold", "chains", "mirror", "shadow", "crown", "banquet", "coin", "ruins", "watch"]
+        visual_matches = sum(1 for vk in vault_keywords if vk in text_lower)
+        visual_score = min(25, visual_matches * 6 + 7)
+
+        total_score = hook_score + word_score + tension_score + visual_score
+        return {
+            "total_score": total_score,
+            "hook_score": hook_score,
+            "word_score": word_score,
+            "tension_score": tension_score,
+            "visual_score": visual_score
+        }
+
+    def generate_7_angles_and_rank(self, topic_str, personality="untold_truth"):
+        """
+        Drafts 7 distinct viral angles for the given topic, scores all 7,
+        and returns them ranked with the Top 3 highlighted.
+        """
+        raw = re.sub(r'[^a-zA-Z0-9\s]', '', topic_str).strip()
+        if raw.lower().startswith("the "):
+            clean_subject = raw[4:].strip().title()
+        else:
+            clean_subject = raw.title()
+        p = personality or self.personality
+        is_layi = "layi" in p.lower()
+
+        candidates = []
+
+        if is_layi:
+            # 7 distinct Prof Layi philosophical satire angles
+            angle_blueprints = [
+                ("The Unaccomplished Fallacy", "NOBODY ACCOMPANIES WHO IS UNACCOMPLISHED",
+                 f"Keep quiet, let me talk to you. Nobody wants to accompany who is not accomplished in {clean_subject}.",
+                 f"You said the environment is harsh. Let me ask you: the person who told you to rely on sympathy, was he paying your landlord with good intentions?",
+                 f"When you succeed, even your ordinary cough sounds like deep ancient wisdom. But struggle for two weeks and see how quickly your advice becomes room ventilation.",
+                 f"The size of your financial balance sheet dictates the radius of your loyal entourage. Those who adapt early do not beg for companions.",
+                 f"Become accomplished first, and accompaniment will be completely free of charge. Information is what makes a man fly."),
+                
+                ("The Academic Arithmetic", f"THE MATHEMATICS OF {clean_subject.upper()}",
+                 f"You say money cannot solve all issues around {clean_subject}. Good. But neither can mathematics.",
+                 f"Last week my senior friend tried to settle urgent medical bills with pure theoretical geometry. If calculus cannot feed a toddler, why are you doing simple subtraction?",
+                 f"Hard work pays, but without leverage it pays minimum wage. The elite do not work to chase currency; they work to construct perceived value.",
+                 f"Anybody who is outperforming you simply possesses vital economic information that you have not humbled yourself to seek.",
+                 f"Stop calculating your way through life without capital. Upgrade your leverage today, or remain an academic spectator."),
+
+                ("The Proof of Knowledge", f"DEMONSTRATING {clean_subject.upper()}",
+                 f"The proof of knowledge is demonstration. Keep quiet and let that settle into your bones.",
+                 f"The chronic disease of humanity is boasting: 'I could master {clean_subject} if I wanted to.' But until you execute it and finish it, nobody knows that you know it.",
+                 f"You cannot call yourself a master builder until you construct a wall that does not collapse when the rain falls.",
+                 f"Ancient philosophers debated grand theories, but contemplation alone never bought food at the marketplace. Adaptation is the true hallmark of intelligence.",
+                 f"Either demonstrate your competence today through tangible results, or retire peacefully into theoretical obscurity."),
+
+                ("The Fluid Currency Angle", f"THE CURRENCY LAW IN {clean_subject.upper()}",
+                 f"Money was never designed to sit stagnant. That is why the ancients named it currency.",
+                 f"Currency must be current. If water ceases to flow, it becomes a nursery for mosquitoes. If your energy in {clean_subject} ceases to circulate, it turns into dead weight.",
+                 f"You hoard paper beneath your mattress while inflation downgrades your life savings to peanuts.",
+                 f"Those who run after petty coins cannot command an empire. The wealthy understand that capital is merely fuel to acquire perpetual leverage.",
+                 f"Keep your knowledge current, circulate your leverage boldly, and stop worshipping static numbers that lose value while you sleep."),
+
+                ("The Reality of Matrimony", f"THE COST OF SENTIMENTAL {clean_subject.upper()}",
+                 f"Let me advise you free of charge: sentimental excitement without money is pure illusion.",
+                 f"When economic pressure strikes your devotion to {clean_subject}, do not organize a pity party. View it as an avenue for a financial breakthrough.",
+                 f"Every partner, every colleague, and every institution obeys the immutable law of the stomach. Affection is sweet, but nobody cooks jollof rice with promises.",
+                 f"You must transition from the state of structural breakdown to the state of independent leverage.",
+                 f"My name is Prof Layi, and I am telling you: balance your economic ledger before you demand perpetual loyalty from anyone."),
+
+                ("The 43 Million Perception", f"THE PERCEPTION OF {clean_subject.upper()}",
+                 f"Do not seek guidance on {clean_subject} from unaccomplished men.",
+                 f"A senior tycoon acquired a timepiece for forty-three million naira. A spectator asked: 'Sir, does that tell a different hour from a wall clock?'",
+                 f"The tycoon smiled and said: 'I did not buy it to check the time. I bought it to dictate the time of whoever sits across my table.'",
+                 f"Overthinkers never find time to act, and overdoers never take time to think. Analysis without leverage is just an academic funeral.",
+                 f"Position your value, command respect, and remember that perceived authority dictates ninety percent of reality."),
+
+                ("The Information Altitude", f"THE ALTITUDE OF {clean_subject.upper()}",
+                 f"Without information, you are running in circles believing you are traveling to London.",
+                 f"The tragedy of the average individual is assuming effort equals progress. You can run one hundred miles on a treadmill, yet remain in the exact same bedroom.",
+                 f"Those who reach the mountain peak did not work twenty times harder; they secured vital operational blueprints early.",
+                 f"Pride prevents the broke man from asking questions, while humility allows the ambitious student to inherit an empire.",
+                 f"Upgrade your mental software, acquire vital intelligence, and watch your reality change. Information is what makes a man fly.")
+            ]
+        else:
+            # 7 distinct Untold Truth Machiavellian Realism angles
+            angle_blueprints = [
+                ("The Loyalty Trap", f"THE LOYALTY TRAP OF {clean_subject.upper()}",
+                 f"Being loyal to {clean_subject.lower()} is the fastest way to get replaced.",
+                 f"You trade your youth, your evenings, and your health believing dedication is recorded in some celestial ledger. But the moment revenue dips, your devotion is reduced to a severance check.",
+                 f"Corporations do not reward sacrifice; they exploit predictability. The quiet worker who never complains is not respected—they are utilized.",
+                 f"Your institution is an economic machine, not your family. If you dropped dead on a Tuesday, your position would be advertised by Thursday afternoon.",
+                 f"Work for your equity, build your own assets, but never surrender your soul for a logo that will forget your name before your grave gets cold."),
+
+                ("The Sedation Cage", f"THE SEDATION OF {clean_subject.upper()}",
+                 f"A comfortable compromise in {clean_subject.lower()} is the drug they give you to forget your ambition.",
+                 f"You tell yourself it is only temporary—just until you clear the debt, just until you buy peace. But year by year, the gilded cage shrinks around you.",
+                 f"The modern system does not shackle your wrists with iron; it sedates your mind with convenience, direct deposits, and subscription entertainment.",
+                 f"You are not safe. You are merely well-fed livestock inside an economic pasture designed to harvest your prime years for someone else's balance sheet.",
+                 f"Either build your own vessel today, or spend your entire life rowing someone else's galleon into the sunset."),
+
+                ("The Kingmaker Envy", f"THE KINGMAKER DILEMMA: {clean_subject.upper()}",
+                 f"Notice who stopped clapping when you started winning in {clean_subject.lower()}.",
+                 f"People love supporting you when you are struggling because your pain reassures their superiority. They will happily play the mentor as long as you remain beneath them.",
+                 f"The moment you ascend higher than the pedestal they built for you, their encouragement turns into whispered contempt.",
+                 f"The knife that cuts the deepest is never held by a stranger. It is wielded by the ally who believed they owned your future.",
+                 f"Build your empire with those who celebrate your throne, not those who demand rent for helping you lay the bricks."),
+
+                ("The Power of Silence", f"THE SILENT WEAPON: {clean_subject.upper()}",
+                 f"The loudest person discussing {clean_subject.lower()} is always the most insecure.",
+                 f"Weakness announces itself with noise, bragging, and desperate demands for validation. True power sits in the corner, observing everything and revealing nothing.",
+                 f"When you speak too much, you hand your competitors the blueprint to neutralize you. Information surrendered for free is leverage you will never regain.",
+                 f"The master strategist never explains his moves. He lets the finished result speak while his rivals scramble to understand what hit them.",
+                 f"Learn to move in absolute silence. Surprise is the ultimate weapon."),
+
+                ("The Spectator Hypocrisy", f"THE SPECTATOR CODE: {clean_subject.upper()}",
+                 f"People do not actually hate injustice in {clean_subject.lower()}. They just hate that it is not their turn.",
+                 f"If a desperate man steals bread in the alley, the crowd attacks him without mercy. But when an oligarch takes eighty billion, the same crowd bows for chieftaincy titles.",
+                 f"The problem is rarely the leadership alone; it is the culture of survival. The loudest activist shouts from the barricades, until offered an air-conditioned office.",
+                 f"The secret dream was never to dismantle the citadel. The secret dream was always to hold the golden ladle.",
+                 f"Until people hate the crime more than they envy the criminal, the cycle will repeat forever."),
+
+                ("The Meritocracy Illusion", f"THE ILLUSION OF EFFORT: {clean_subject.upper()}",
+                 f"Hard work in {clean_subject.lower()} pays, but without leverage it pays minimum wage.",
+                 f"You were told from childhood that sweating harder than your neighbor guarantees success. Yet the laborer with calloused hands dies penniless while the silent dealmaker profits.",
+                 f"Power does not reward exhaustion; it rewards scarcity and control of distribution channels.",
+                 f"If sheer physical effort produced wealth, the donkey would own the entire plantation.",
+                 f"Stop glorifying exhaustion. Build irreplaceable leverage, or remain a spectator to your own life."),
+
+                ("The Scaffolding Truth", f"THE SCAFFOLDING REALITY: {clean_subject.upper()}",
+                 f"Nobody respects your sacrifice for {clean_subject.lower()}. They only respect what they cannot replace.",
+                 f"Institutions treat your devotion as a predictable discount on your true worth. They cheer your loyalty while you carry the weight of their cathedral.",
+                 f"The moment the monument is completed, the scaffolding is dismantled and thrown into the fire without a second thought.",
+                 f"Power yields only to scarcity, never to emotional sentimentality. Giving away your energy without leverage is volunteering to be consumed.",
+                 f"Stop building monuments for people who view you as temporary scaffolding. Build your own fortress.")
+            ]
+
+        for angle_name, t_title, h_hook, r_real, m_mech, tr_truth, o_outro in angle_blueprints:
+            beats = [
+                {"beat_index": 1, "name": "1. Contrarian Hook", "text": h_hook, "zoom_dir": "in", "keywords": ["king", "observer", "smirk", "throne", "shadows", "truth"]},
+                {"beat_index": 2, "name": "2. Reality Check", "text": r_real, "zoom_dir": "out", "keywords": ["laborer", "chains", "crowd", "struggle", "desk", "worker"]},
+                {"beat_index": 3, "name": "3. Hidden Mechanism", "text": m_mech, "zoom_dir": "in", "keywords": ["politician", "oligarch", "banker", "gold", "puppet", "scheming"]},
+                {"beat_index": 4, "name": "4. Brutal Truth", "text": tr_truth, "zoom_dir": "out", "keywords": ["cage", "grave", "ruins", "tomb", "mirror", "watch"]},
+                {"beat_index": 5, "name": "5. Maxim / Outro", "text": o_outro, "zoom_dir": "in", "keywords": ["solitary", "departure", "master", "walking", "monument", "crown"]}
+            ]
+            cand = {
+                "angle_name": angle_name,
+                "title": t_title,
+                "personality": p,
+                "topic": topic_str,
+                "full_script": " ".join([b["text"] for b in beats]),
+                "beats": beats
+            }
+            score_res = self.score_script(cand)
+            cand["viral_score"] = score_res["total_score"]
+            cand["score_breakdown"] = score_res
+            candidates.append(cand)
+
+        # Sort by viral score descending
+        candidates.sort(key=lambda x: x["viral_score"], reverse=True)
+
+        # Assign ranks
+        for i, c in enumerate(candidates):
+            c["rank"] = i + 1
+            c["is_top_3"] = (i < 3)
+
+        return candidates
+
+
+CURATED_VIRAL_TOPICS = {
+    "untold_truth": [
+        "The Trap Of Early Explanation",
+        "The Illusion Of Reputation",
+        "The Syndrome Of Cheap Advice",
+        "The Loyalty Trap",
+        "Notice Who Stopped Clapping",
+        "A Comfortable Salary Is A Sedative",
+        "The Power Of Moving In Silence",
+        "Why Weakness Always Demands Applause",
+        "The People Clapping When You Struggle",
+        "Why Hard Work Pays Minimum Wage",
+        "The National Audition For Corruption",
+        "Why Institutions Discard Devoted Men",
+        "The Danger Of Explaining Yourself",
+        "The Myth Of Unconditional Loyalty",
+        "Why The Loudest In The Room Are Powerless",
+        "The Secret Price Of Being Nice",
+        "Why Society Rewards Perceived Leverage",
+        "The Mirage Of Corporate Family",
+        "Why Enemies Pretend To Be Mentors",
+        "The Cost Of Revealing Your Blueprint"
+    ],
+    "prof_layi": [
+        "Nobody Accompanies The Unaccomplished",
+        "The Mathematician's Bankruptcy",
+        "The Proof Of Knowledge Is Demonstration",
+        "Why Currency Must Be Current",
+        "Matrimony Without Money Is Magic",
+        "The Forty-Three Million Naira Watch",
+        "Information Is What Makes A Man Fly",
+        "Why Hard Work Alone Cannot Pay Rent",
+        "Stop Calculating Your Way Out Of Poverty",
+        "The Fallacy Of Trying To Please Everybody",
+        "Why Broke Advice Is Completely Expensive",
+        "Balance Your Economic Ledger First",
+        "Perception Is Ninety Percent Of Reality",
+        "Do Not Confuse Destination With Destiny",
+        "Why Love Cannot Cook Jollof Rice",
+        "The Radius Of Your Loyal Entourage",
+        "Adapting Or Retiring Into Academic Poverty",
+        "Why Ordinary Cough Sounds Like Ancient Wisdom",
+        "Analysis Without Capital Is Academic Funeral",
+        "The Danger Of Being An Unproductive Spectator"
+    ]
+}
+
 if __name__ == "__main__":
     director = ScriptDirector(personality="untold_truth")
     print("Testing Untold Truth dynamic generation...")
