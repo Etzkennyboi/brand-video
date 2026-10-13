@@ -25,8 +25,9 @@ FFMPEG = shutil.which("ffmpeg") or "ffmpeg"
 
 
 class ColabVoiceSynthesizer:
-    def __init__(self, speed_factor=1.14):
+    def __init__(self, speed_factor=1.14, personality="untold_truth"):
         self.speed_factor = speed_factor
+        self.personality = personality
         self.f5_api = None
 
     def get_model(self):
@@ -112,7 +113,27 @@ class ColabVoiceSynthesizer:
         except Exception:
             pass
 
-        # 4. Reliable safety fallback: gTTS if installed
+        # 4. Ultra-fast neural fallback: edge-tts (speaks entire 80-word script in 1.5s)
+        try:
+            import edge_tts
+            import asyncio
+            voice_code = "en-US-ChristopherNeural" if "untold" in self.personality.lower() else "en-GB-RyanNeural"
+            temp_edge = output_wav + ".edge.mp3"
+            async def _edge_synth():
+                comm = edge_tts.Communicate(clean_text, voice_code)
+                await comm.save(temp_edge)
+            asyncio.run(_edge_synth())
+            cmd = [FFMPEG, '-y', '-i', temp_edge, '-ar', '44100', '-ac', '2', output_wav]
+            subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+            if os.path.exists(temp_edge):
+                os.remove(temp_edge)
+            if os.path.exists(output_wav) and os.path.getsize(output_wav) > 1000:
+                print(f"      [Colab T4] High-fidelity voiceover synthesized via neural engine! -> {output_wav}", flush=True)
+                return output_wav
+        except Exception as e:
+            print(f"      [Colab T4] edge-tts fallback note: {e}", flush=True)
+
+        # 5. Backup fallback: gTTS if installed
         try:
             from gtts import gTTS
             tts = gTTS(text=clean_text, lang='en', tld='co.uk', slow=False)
@@ -163,7 +184,7 @@ class ColabMasterEngine:
         
         # Use CPU for Whisper on Colab: fast (~2.5s) and avoids CTranslate2 CUDA 12 libcublas mismatch
         self.subtitles = SubtitleGenerator(model_size="base", device="cpu", compute_type="int8")
-        self.voice = ColabVoiceSynthesizer(speed_factor=1.14)
+        self.voice = ColabVoiceSynthesizer(speed_factor=1.14, personality=self.personality)
         self.renderer = SinglePassRender(brand_title=self.brand_title, watermark_text=self.brand_title)
         self.thumb_gen = ThumbnailGenerator(brand_title=self.brand_title)
 
