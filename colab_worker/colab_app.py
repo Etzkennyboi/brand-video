@@ -305,27 +305,54 @@ Follow @{brand.lower().replace(' ', '')} for daily unfiltered realism.
         candidates = self.director.generate_7_angles_and_rank(topic_input, personality=personality)
         top_3 = candidates[:3]
 
-        # 1. Markdown Scorecard
-        scorecard = "### 📊 7-Script Angle Viral Scorecard\n\n"
-        scorecard += "| Rank | Angle Blueprint | Score | Words | Scroll-Stop Hook | Status |\n"
-        scorecard += "| :---: | :--- | :---: | :---: | :--- | :---: |\n"
-        for c in candidates:
-            status = "🏆 **Rendered (Top 3)**" if c["is_top_3"] else "Drafted"
-            scorecard += f"| **#{c['rank']}** | **{c['angle_name']}**<br>*{c['title']}* | **{c['viral_score']}/100** | {len(c['full_script'].split())} | \"{c['beats'][0]['text'][:45]}...\" | {status} |\n"
+        def get_scorecard_md(status_list):
+            sc = "### 📊 7-Script Angle Viral Scorecard\n\n"
+            sc += "| Rank | Angle Blueprint | Score | Words | Status |\n"
+            sc += "| :---: | :--- | :---: | :---: | :---: |\n"
+            for idx, c in enumerate(candidates):
+                st = status_list[idx] if idx < len(status_list) else "Drafted"
+                sc += f"| **#{c['rank']}** | **{c['angle_name']}**<br>*{c['title']}* | **{c['viral_score']}/100** | {len(c['full_script'].split())} | {st} |\n"
+            return sc
 
-        # 2. Render the Top 3
-        rendered = []
-        for i, cand in enumerate(top_3):
-            print(f"\n🎬 [COLAB T4] RENDERING RANK #{i+1} OF 3: {cand['title']} (Score: {cand['viral_score']}/100)...", flush=True)
-            res = self.produce_video(cand, personality=personality)
-            rendered.append(res)
+        # Step 1: Initial progress stream
+        statuses = ["⏳ Rendering Short #1...", "⏳ Queued (Top 3)", "⏳ Queued (Top 3)", "Drafted", "Drafted", "Drafted", "Drafted"]
+        yield (
+            get_scorecard_md(statuses),
+            None, None, "⚡ Analyzed & scored 7 angles. Rendering Short #1...",
+            None, None, "Queued...",
+            None, None, "Queued..."
+        )
 
-        r1 = rendered[0] if len(rendered) > 0 else {}
-        r2 = rendered[1] if len(rendered) > 1 else {}
-        r3 = rendered[2] if len(rendered) > 2 else {}
+        # Step 2: Render Short #1 and stream instantly
+        print(f"\n🎬 [COLAB T4] RENDERING RANK #1 OF 3: {top_3[0]['title']} (Score: {top_3[0]['viral_score']}/100)...", flush=True)
+        r1 = self.produce_video(top_3[0], personality=personality)
+        statuses[0] = "🏆 **Rendered (Rank 1)**"
+        statuses[1] = "⏳ Rendering Short #2..."
+        yield (
+            get_scorecard_md(statuses),
+            r1.get("video_path"), r1.get("thumb_path"), r1.get("copy", ""),
+            None, None, "Rendering Short #2 now...",
+            None, None, "Queued..."
+        )
 
-        return (
-            scorecard,
+        # Step 3: Render Short #2 and stream instantly
+        print(f"\n🎬 [COLAB T4] RENDERING RANK #2 OF 3: {top_3[1]['title']} (Score: {top_3[1]['viral_score']}/100)...", flush=True)
+        r2 = self.produce_video(top_3[1], personality=personality)
+        statuses[1] = "🏆 **Rendered (Rank 2)**"
+        statuses[2] = "⏳ Rendering Short #3..."
+        yield (
+            get_scorecard_md(statuses),
+            r1.get("video_path"), r1.get("thumb_path"), r1.get("copy", ""),
+            r2.get("video_path"), r2.get("thumb_path"), r2.get("copy", ""),
+            None, None, "Rendering Short #3 now..."
+        )
+
+        # Step 4: Render Short #3 & complete
+        print(f"\n🎬 [COLAB T4] RENDERING RANK #3 OF 3: {top_3[2]['title']} (Score: {top_3[2]['viral_score']}/100)...", flush=True)
+        r3 = self.produce_video(top_3[2], personality=personality)
+        statuses[2] = "🏆 **Rendered (Rank 3)**"
+        yield (
+            get_scorecard_md(statuses),
             r1.get("video_path"), r1.get("thumb_path"), r1.get("copy", ""),
             r2.get("video_path"), r2.get("thumb_path"), r2.get("copy", ""),
             r3.get("video_path"), r3.get("thumb_path"), r3.get("copy", "")
@@ -346,7 +373,7 @@ def launch_studio(share=True):
         gr.Markdown(
             """
             # 🎬 THE UNTOLD TRUTH & PROF LAYI MASTER STUDIO
-            ### Auto-Drafts 7 Viral Script Angles ➔ Scores & Ranks ➔ Renders Top 3 GPU Master Shorts in ~2 Minutes
+            ### Auto-Drafts 7 Viral Script Angles ➔ Scores & Ranks ➔ Streams Top 3 GPU Master Shorts Side-by-Side
             """
         )
 
@@ -368,7 +395,7 @@ def launch_studio(share=True):
             random_btn = gr.Button("🎲 Random Viral Topic", variant="secondary")
             generate_btn = gr.Button("🚀 Write 7 Angles, Score, & Produce Top 3 Shorts", variant="primary", size="lg")
 
-        scorecard_display = gr.Markdown("*(Click Generate to analyze 7 script angles and rank the Top 3)*")
+        scorecard_display = gr.Markdown("*(Click Generate to analyze 7 script angles and stream the Top 3)*")
 
         # 3 Side-by-Side Output Boxes for the 3 Rendered Shorts
         with gr.Row():
@@ -396,7 +423,7 @@ def launch_studio(share=True):
 
         random_btn.click(fn=pick_random, inputs=[persona_radio], outputs=[topic_box])
 
-        # Event: Produce Top 3
+        # Event: Produce Top 3 with real-time streaming
         generate_btn.click(
             fn=engine.produce_top_3_shorts,
             inputs=[topic_box, persona_radio],
@@ -408,7 +435,8 @@ def launch_studio(share=True):
             ]
         )
 
-    demo.launch(share=share, inline=False, show_error=True)
+    # Enable queue with active streaming to eliminate proxy timeout
+    demo.queue(max_size=20).launch(share=share, inline=False, show_error=True)
 
 
 if __name__ == "__main__":
