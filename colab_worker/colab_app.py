@@ -370,24 +370,25 @@ def launch_studio(share=True):
 
         scorecard_display = gr.Markdown("*(Click Generate to analyze 7 script angles and rank the Top 3)*")
 
-        with gr.Tabs():
-            with gr.TabItem("🥇 Rank #1 Short (Highest Viral Score)"):
-                with gr.Row():
-                    v1 = gr.Video(label="🎬 Master Video #1 (1080x1920)", interactive=False)
-                    img1 = gr.Image(label="🖼️ Cover Thumbnail #1", interactive=False)
-                copy1 = gr.Textbox(label="📋 YouTube Shorts & TikTok Publishing Copy Kit", lines=8)
+        # 3 Side-by-Side Output Boxes for the 3 Rendered Shorts
+        with gr.Row():
+            with gr.Column(scale=1):
+                gr.Markdown("### 🥇 Short #1 (Highest Viral Score)")
+                v1 = gr.Video(label="🎬 Rendered Master Short #1", interactive=False)
+                img1 = gr.Image(label="🖼️ Cover Thumbnail #1", interactive=False)
+                copy1 = gr.Textbox(label="📋 Copy Kit #1 (Title, Description, Hashtags)", lines=7)
 
-            with gr.TabItem("🥈 Rank #2 Short"):
-                with gr.Row():
-                    v2 = gr.Video(label="🎬 Master Video #2 (1080x1920)", interactive=False)
-                    img2 = gr.Image(label="🖼️ Cover Thumbnail #2", interactive=False)
-                copy2 = gr.Textbox(label="📋 YouTube Shorts & TikTok Publishing Copy Kit", lines=8)
+            with gr.Column(scale=1):
+                gr.Markdown("### 🥈 Short #2 (Rank #2)")
+                v2 = gr.Video(label="🎬 Rendered Master Short #2", interactive=False)
+                img2 = gr.Image(label="🖼️ Cover Thumbnail #2", interactive=False)
+                copy2 = gr.Textbox(label="📋 Copy Kit #2 (Title, Description, Hashtags)", lines=7)
 
-            with gr.TabItem("🥉 Rank #3 Short"):
-                with gr.Row():
-                    v3 = gr.Video(label="🎬 Master Video #3 (1080x1920)", interactive=False)
-                    img3 = gr.Image(label="🖼️ Cover Thumbnail #3", interactive=False)
-                copy3 = gr.Textbox(label="📋 YouTube Shorts & TikTok Publishing Copy Kit", lines=8)
+            with gr.Column(scale=1):
+                gr.Markdown("### 🥉 Short #3 (Rank #3)")
+                v3 = gr.Video(label="🎬 Rendered Master Short #3", interactive=False)
+                img3 = gr.Image(label="🖼️ Cover Thumbnail #3", interactive=False)
+                copy3 = gr.Textbox(label="📋 Copy Kit #3 (Title, Description, Hashtags)", lines=7)
 
         # Event: Random topic
         def pick_random(persona):
