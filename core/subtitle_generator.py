@@ -3,7 +3,6 @@ import sys
 import subprocess
 import numpy as np
 import re
-from faster_whisper import WhisperModel
 
 import shutil
 import platform
@@ -30,6 +29,13 @@ class SubtitleGenerator:
 
     def get_model(self):
         if self._model is None:
+            try:
+                from faster_whisper import WhisperModel
+            except ImportError:
+                print("      [Subtitle] faster-whisper not found. Auto-installing in Colab...", flush=True)
+                subprocess.run([sys.executable, "-m", "pip", "install", "-q", "faster-whisper"], check=True)
+                from faster_whisper import WhisperModel
+
             try:
                 self._model = WhisperModel(self.model_size, device=self.device, compute_type=self.compute_type)
             except Exception as e:
@@ -62,6 +68,7 @@ class SubtitleGenerator:
             return words, info.duration
         except Exception as e:
             print(f"      [Subtitle] CUDA Whisper execution failed ({e}), switching to CPU Whisper...", flush=True)
+            from faster_whisper import WhisperModel
             self._model = WhisperModel(self.model_size, device="cpu", compute_type="int8")
             segments, info = self._model.transcribe(audio_data, word_timestamps=True, beam_size=1)
             words = []
